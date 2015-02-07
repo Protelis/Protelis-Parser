@@ -1,0 +1,26 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: alchemist.protelis.ui
+Bundle-Vendor: My Company
+Bundle-Version: 0.0.0
+Bundle-SymbolicName: alchemist.protelis.ui; singleton:=true
+Bundle-ActivationPolicy: lazy
+Require-Bundle: alchemist.protelis;visibility:=reexport,
+ org.eclipse.xtext.ui,
+ org.eclipse.ui.editors;bundle-version="3.5.0",
+ org.eclipse.ui.ide;bundle-version="3.5.0",
+ org.eclipse.xtext.ui.shared,
+ org.eclipse.ui,
+ org.eclipse.xtext.builder,
+ org.eclipse.xtext.xbase.lib,
+ org.antlr.runtime,
+ org.eclipse.xtext.common.types.ui,
+ org.eclipse.xtext.ui.codetemplates.ui,
+ org.eclipse.compare
+Import-Package: org.apache.log4j
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: it.unibo.alchemist.language.protelis.ui.quickfix,
+ it.unibo.alchemist.language.protelis.ui.contentassist,
+ it.unibo.alchemist.language.protelis.ui.contentassist.antlr,
+ it.unibo.alchemist.language.protelis.ui.internal
+Bundle-Activator: it.unibo.alchemist.language.protelis.ui.internal.ProtelisActivator

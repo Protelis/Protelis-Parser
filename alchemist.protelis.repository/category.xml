@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <bundle id="alchemist.saperedsl" version="0.0.0">
+      <category name="saperedsl"/>
+   </bundle>
+   <bundle id="alchemist.saperedsl.ui" version="0.0.0">
+      <category name="saperedsl"/>
+   </bundle>
+   <category-def name="saperedsl" label="Alchemist SAPERE DSL"/>
+</site>

@@ -1,0 +1,8 @@
+*/bin/*
+.metadata/*
+.directory
+*/target/*
+*/src-gen/*
+*/xtend-gen/*
+**/generated/*
+
