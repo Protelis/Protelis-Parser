@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <bundle id="alchemist.saperedsl" version="0.0.0">
-      <category name="saperedsl"/>
+   <bundle id="alchemist.protelis" version="0.0.0">
+      <category name="protelis"/>
    </bundle>
-   <bundle id="alchemist.saperedsl.ui" version="0.0.0">
-      <category name="saperedsl"/>
+   <bundle id="alchemist.protelis.ui" version="0.0.0">
+      <category name="protelis"/>
    </bundle>
-   <category-def name="saperedsl" label="Alchemist SAPERE DSL"/>
+   <category-def name="protelis" label="Protelis"/>
 </site>
