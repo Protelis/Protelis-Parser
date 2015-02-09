@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: alchemist.protelis.ui
 Bundle-Vendor: My Company
-Bundle-Version: 0.0.0
+Bundle-Version: 1.0.0
 Bundle-SymbolicName: alchemist.protelis.ui; singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: alchemist.protelis;visibility:=reexport,

@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>it.unibo.alchemist</groupId>
 	<artifactId>alchemist.protelis.parent</artifactId>
-	<version>0.0.0</version>
+	<version>1.0.0</version>
 	<name>alchemist-protelis-parser</name>
 	<description>Parser for Protelis, the practical aggregate programming language</description>
 	<packaging>pom</packaging>
@@ -71,7 +71,7 @@
 						<artifact>
 							<groupId>it.unibo.alchemist</groupId>
 							<artifactId>alchemist.protelis.target</artifactId>
-							<version>0.0.0</version>
+							<version>1.0.0</version>
 						</artifact>
 					</target>
 					<environments>
@@ -184,4 +184,16 @@
 			</plugins>
 		</pluginManagement>
 	</build>
+	<dependencies>
+		<dependency>
+			<groupId>org.eclipse.xtext</groupId>
+			<artifactId>org.eclipse.xtext</artifactId>
+			<version>${xtext-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.xtext</groupId>
+			<artifactId>org.eclipse.xtext.common.types</artifactId>
+			<version>${xtext-version}</version>
+		</dependency>
+	</dependencies>
 </project>
