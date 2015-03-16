@@ -12,12 +12,12 @@ ExprList: args+=Expression (',' args+=Expression)*;
 RepInitialize: x=VAR '<-' w=VarVal;
 
 PackageDeclaration:
-	'package' name=JAVAPACKAGE
+	'package' name=QualifiedName
 ;
 
 Import:
-	'import' class=JAVACLASS'.' method=ATOM 'as' name=ATOM |
-	'import' class=JAVACLASS'.' name=(ATOM|'*')
+	'import' class=QualifiedName'.' method=ID 'as' name=ID |
+	'import' class=QualifiedName'.' name=(ID|'*')
 ;
 
 Block: (first=Statement) (';' others=Block)? ;
@@ -25,23 +25,23 @@ Block: (first=Statement) (';' others=Block)? ;
 Statement: Assignment | LinkableStatement ;
 
 Declaration:
-	'let' name=VARNAME '=' right=Expression
+	'let' name=QualifiedName '=' right=Expression
 ;
 
 LinkableStatement: Declaration | Expression;
 
 Assignment:
-	refVar=[LinkableStatement|VARNAME] name='=' right = Expression
+	refVar=[LinkableStatement|QualifiedName] name='=' right = Expression
 ;
 
 Expression:
  	Logical ';'?
 ;
 
-FunctionDef: 'def' name=ATOM '(' (args=VarList)? ')' '{' body=Block '}';
+FunctionDef: 'def' name=ID '(' (args=VarList)? ')' '{' body=Block '}';
 
 FunctionCall returns Expression:
-	(function=[FunctionDef|ATOM] | name='#' method=ATOM )'('args=ExprList?')'
+	(function=[FunctionDef|ID] | name='#' method=ID )'('args=ExprList?')'
 ;
 
 Lambda returns Expression: '(' (lambdaArgs=VarList)? ')' name='->' '{' body=Block '}';
@@ -64,7 +64,7 @@ Builtin returns Expression:
 	name='dt' |
 	name='pi' |
 	name='e' |
-	name='inject' '(' refVar=[Expression|VARNAME] ')' |
+	name='random' |
 	name='eval' '(' arg = ( VAR | StringVal ) ')' |
 	name='alignedMap' '(' arg=Expression ',' cond=Expression ',' op=Expression ',' default=Expression ')' |
 	name='mux' '(' cond=Expression ')' '{' then=Block '}' 'else' '{'  else=Block '}' |
@@ -106,7 +106,7 @@ Prefix returns Expression:
 Postfix returns Expression:
     Primary
     ({Expression.left=current}(
-    	(name='.' methodName=('apply' | ATOM) '(' (args=ExprList)? ')')
+    	(name='.' methodName=('apply' | ID) '(' (args=ExprList)? ')')
     ))?
 ;
 
@@ -118,7 +118,7 @@ VarVal returns Expression: VAR | Local;
 
 Local returns Expression : Scalar | Builtin | Lambda;
 
-VAR: name=VARNAME;
+VAR: name=QualifiedName;
 
 Scalar: DoubleVal | StringVal | BooleanVal | TupleVal;
 
@@ -130,13 +130,10 @@ BooleanVal: val=BOOLEAN;
 
 TupleVal: name='[' args = ExprList? ']';
 
-VARNAME: ATOM;
-JAVAPACKAGE : ATOM('.'ATOM)*;
-JAVACLASS : UPPERCASE | JAVAPACKAGE'.'UPPERCASE;
+QualifiedName: ID ('.' ID)* ;
+QualifiedNameWithWildcard: QualifiedName '.*'? ;
 
 DOUBLE returns ecore::EDouble: INT('.'INT)?('e'|'E''-'?INT)? | 'Infinity' | 'NaN';
 BOOLEAN returns ecore::EBoolean: "true" | "false";
 
-terminal ATOM : ('a'..'z'|'_')('a'..'z'|'A'..'Z'|'0'..'9'|'_')*;
-terminal UPPERCASE : ('A'..'Z')('a'..'z'|'A'..'Z'|'0'..'9'|'_')*;
 terminal ML_COMMENT	: '/*' -> '*/';
