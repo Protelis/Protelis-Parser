@@ -35,7 +35,7 @@ Assignment:
 ;
 
 Expression:
- 	Logical ';'?
+ 	LogicalOr ';'?
 ;
 
 FunctionDef: 'def' name=ID '(' (args=VarList)? ')' '{' body=Block '}';
@@ -82,8 +82,11 @@ HoodOp returns Expression: (
 ) inclusive='PlusSelf'? '(' arg=Expression ')'
 ;
 
-Logical returns Expression:
- Equality ({Expression.left=current} name=('&&'|'||') right=Equality)*;
+LogicalOr returns Expression:
+ LogicalAnd ({Expression.left=current} name='||' right=LogicalAnd)*;
+
+LogicalAnd returns Expression:
+ Equality ({Expression.left=current} name='&&' right=Equality)*;
 
 Equality returns Expression:
  Relational ({Expression.left=current} name=('=='|'!=') right=Relational)*;
