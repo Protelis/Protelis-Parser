@@ -16,22 +16,26 @@ PackageDeclaration:
 ;
 
 Import:
-	'import' class=QualifiedName'.' method=ID 'as' name=ID |
-	'import' class=QualifiedName'.' name=(ID|'*')
+	'from' class=QualifiedName 'import' methods+=ImportedMethod (',' methods+=ImportedMethod)* ';'
 ;
+
+ImportedMethod:
+	method=AID ('as' name=AID)?
+;
+
 
 Block: (first=Statement) (';' others=Block)? ;
 
 Statement: Assignment | LinkableStatement ;
 
 Declaration:
-	'let' name=QualifiedName '=' right=Expression
+	'let' name=ID '=' right=Expression
 ;
 
 LinkableStatement: Declaration | Expression;
 
 Assignment:
-	refVar=[LinkableStatement|QualifiedName] name='=' right = Expression
+	refVar=[LinkableStatement] name='=' right = Expression
 ;
 
 Expression:
@@ -40,8 +44,12 @@ Expression:
 
 FunctionDef: 'def' name=ID '(' (args=VarList)? ')' '{' body=Block '}';
 
-FunctionCall returns Expression:
-	(function=[FunctionDef|ID] | name='#' method=ID )'('args=ExprList?')'
+
+Call returns Expression:
+	/*
+	 * Use manual scoping to solve this
+	 */
+	reference=[ecore::EObject] '('args=ExprList?')'
 ;
 
 Lambda returns Expression: '(' (lambdaArgs=VarList)? ')' name='->' '{' body=Block '}';
@@ -108,20 +116,18 @@ Prefix returns Expression:
 
 Postfix returns Expression:
     Primary
-    ({Expression.left=current}(
-    	(name='.' methodName=('apply' | ID) '(' (args=ExprList)? ')')
-    ))?
+    ({Expression.left=current}(name='.' methodName=ID '(' (args=ExprList)? ')'))*
 ;
 
 Primary returns Expression:
- (v = (VarVal | FunctionCall | Rep | NBR | If) | '(' Expression ')')
+ (v = (VarVal | Call | Rep | NBR | If) | '(' Expression ')')
 ;
 
 VarVal returns Expression: VAR | Local;
 
 Local returns Expression : Scalar | Builtin | Lambda;
 
-VAR: name=QualifiedName;
+VAR: name=ID;
 
 Scalar: DoubleVal | StringVal | BooleanVal | TupleVal;
 
@@ -133,8 +139,9 @@ BooleanVal: val=BOOLEAN;
 
 TupleVal: name='[' args = ExprList? ']';
 
-QualifiedName: ID ('.' ID)* ;
-QualifiedNameWithWildcard: QualifiedName '.*'? ;
+QualifiedName: AID ('.' AID)* ;
+
+AID: =>ID | 'random' | 'PlusSelf' | 'self' | 'pi' | 'e' | 'dt';
 
 DOUBLE returns ecore::EDouble: INT('.'INT)?('e'|'E''-'?INT)? | 'Infinity' | 'NaN';
 BOOLEAN returns ecore::EBoolean: "true" | "false";

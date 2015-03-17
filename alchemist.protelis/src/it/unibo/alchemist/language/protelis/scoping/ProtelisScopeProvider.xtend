@@ -3,6 +3,17 @@
  */
 package it.unibo.alchemist.language.protelis.scoping
 
+import it.unibo.alchemist.language.protelis.protelis.Import
+import it.unibo.alchemist.language.protelis.protelis.Program
+import java.util.ArrayList
+import java.util.List
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.EReference
+import org.eclipse.xtext.scoping.IScope
+import org.eclipse.xtext.scoping.Scopes
+import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider
+import it.unibo.alchemist.language.protelis.protelis.ImportedMethod
+
 /**
  * This class contains custom scoping description.
  * 
@@ -10,6 +21,21 @@ package it.unibo.alchemist.language.protelis.scoping
  * on how and when to use it 
  *
  */
-class ProtelisScopeProvider extends org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider {
+class ProtelisScopeProvider extends AbstractDeclarativeScopeProvider {
+	
+	def IScope scope_Expression_reference(Program model, EReference ref) {
+		val List<EObject> crossRefTargets = new ArrayList<EObject>(model.definitions)
+		for(Import i: model.imports) {
+			val clazz = i.class_
+			for(ImportedMethod m: i.methods) {
+				if(m.name == null) {
+					m.name = m.method
+				}
+				m.method = clazz + m.method
+				crossRefTargets.add(m);
+			}
+		}
+		Scopes.scopeFor(crossRefTargets)
+	}
 
 }
