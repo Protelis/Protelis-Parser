@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>it.unibo.alchemist</groupId>
 	<artifactId>alchemist.protelis.parent</artifactId>
-	<version>1.0.0</version>
+	<version>2.0.0</version>
 	<name>alchemist-protelis-parser</name>
 	<description>Parser for Protelis, the practical aggregate programming language</description>
 	<packaging>pom</packaging>
