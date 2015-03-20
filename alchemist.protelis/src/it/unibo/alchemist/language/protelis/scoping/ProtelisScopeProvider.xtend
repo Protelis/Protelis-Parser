@@ -26,12 +26,10 @@ class ProtelisScopeProvider extends AbstractDeclarativeScopeProvider {
 	def IScope scope_Expression_reference(Program model, EReference ref) {
 		val List<EObject> crossRefTargets = new ArrayList<EObject>(model.definitions)
 		for(Import i: model.imports) {
-			val clazz = i.class_
 			for(ImportedMethod m: i.methods) {
 				if(m.name == null) {
 					m.name = m.method
 				}
-				m.method = clazz + m.method
 				crossRefTargets.add(m);
 			}
 		}
