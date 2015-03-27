@@ -49,7 +49,7 @@ Expression:
  	LogicalOr ';'?
 ;
 
-FunctionDef: 'def' name=ID '(' (args=VarList)? ')' '{' body=Block '}';
+FunctionDef: public?="public"? 'def' name=ID '(' (args=VarList)? ')' '{' body=Block '}';
 
 
 Call returns Expression:
@@ -96,7 +96,7 @@ HoodOp returns Expression: (
 	name='sumHood' |
 	name='meanHood' |
 	name='unionHood'
-) inclusive?='PlusSelf' '(' arg=Expression ')'
+) inclusive?='PlusSelf'? '(' arg=Expression ')'
 ;
 
 LogicalOr returns Expression:
@@ -148,7 +148,7 @@ BooleanVal: val=BOOLEAN;
 
 TupleVal: name='[' args = ExprList? ']';
 
-CallRule: ID (JCallElement+ | ProtelisCallElement+)?;
+CallRule: AID (JCallElement+ | ProtelisCallElement+)?;
 
 JCallElement: '::' AID;
 

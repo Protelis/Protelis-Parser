@@ -3,13 +3,14 @@
  */
 package it.unibo.alchemist.language.protelis.scoping
 
-import it.unibo.alchemist.language.protelis.protelis.FunctionDef
-import it.unibo.alchemist.language.protelis.protelis.Import
+import it.unibo.alchemist.language.protelis.protelis.ImportDeclaration
 import it.unibo.alchemist.language.protelis.protelis.Program
 import java.util.ArrayList
+import java.util.Collection
 import java.util.List
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
+import org.eclipse.xtext.common.types.JvmOperation
 import org.eclipse.xtext.naming.QualifiedName
 import org.eclipse.xtext.resource.EObjectDescription
 import org.eclipse.xtext.resource.IEObjectDescription
@@ -18,9 +19,6 @@ import org.eclipse.xtext.scoping.Scopes
 import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider
 import org.eclipse.xtext.scoping.impl.MapBasedScope
 import org.eclipse.xtext.scoping.impl.SimpleScope
-import it.unibo.alchemist.language.protelis.protelis.ImportDeclaration
-import org.eclipse.xtext.common.types.JvmOperation
-import java.util.Collection
 
 /**
  * This class contains custom scoping description.
@@ -35,12 +33,13 @@ class ProtelisScopeProvider extends AbstractDeclarativeScopeProvider {
 		val List<EObject> internal = new ArrayList<EObject>(model.definitions)
 		val List<IEObjectDescription> externalProtelis = new ArrayList<IEObjectDescription>()
 		val List<IEObjectDescription> java = new ArrayList<IEObjectDescription>()
-		for(Import i: model.protelisImport) {
-			internal.addAll(i.module.definitions)
-			for (FunctionDef fd: i.module.definitions) {
-				externalProtelis.add(generateDescription(i.module.name + ":" + fd.name, fd))
-			}
-		}
+		model.protelisImport.forEach[ 
+			val moduleName = it.module.name
+			it.module.definitions.filter[public].forEach[
+				externalProtelis.add(generateDescription(it.name, it))
+				externalProtelis.add(generateDescription(moduleName + ":" + it.name, it))
+			]
+		]
 		for(ImportDeclaration id: model.javaimports.importDeclarations) {
 			val type = id.importedType
 			if(id.wildcard) {
@@ -54,6 +53,9 @@ class ProtelisScopeProvider extends AbstractDeclarativeScopeProvider {
 		}
 		val plainProtelis = Scopes.scopeFor(internal)
 		val refJava = new SimpleScope(java)
+		/*
+		 * Search locally => search Protelis imports => search Java imports
+		 */
 		val outer = MapBasedScope.createScope(refJava, externalProtelis)
 		val final = MapBasedScope.createScope(outer, plainProtelis.allElements)
 		final
