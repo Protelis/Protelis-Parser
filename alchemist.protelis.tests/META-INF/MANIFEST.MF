@@ -2,15 +2,16 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: alchemist.protelis.tests
 Bundle-Vendor: University of Bologna
-Bundle-Version: 2.0.1
+Bundle-Version: 3.0.0
 Bundle-SymbolicName: alchemist.protelis.tests; singleton:=true
 Bundle-ActivationPolicy: lazy
-Require-Bundle: alchemist.protelis,
+Require-Bundle: alchemist.protelis;bundle-version="3.0.0",
  alchemist.protelis.ui,
  org.eclipse.core.runtime,
  org.eclipse.xtext.junit4,
  org.eclipse.ui.workbench;resolution:=optional,
- org.objectweb.asm;bundle-version="[5.0.1,6.0.0)";resolution:=optional
+ org.objectweb.asm;bundle-version="[5.0.1,6.0.0)";resolution:=optional,
+ org.eclipse.xtext.xbase.lib
 Import-Package: org.apache.log4j,
  org.junit;version="4.5.0",
  org.junit.runner;version="4.5.0",
