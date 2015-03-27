@@ -3,16 +3,24 @@
  */
 package it.unibo.alchemist.language.protelis.scoping
 
+import it.unibo.alchemist.language.protelis.protelis.FunctionDef
 import it.unibo.alchemist.language.protelis.protelis.Import
 import it.unibo.alchemist.language.protelis.protelis.Program
 import java.util.ArrayList
 import java.util.List
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
+import org.eclipse.xtext.naming.QualifiedName
+import org.eclipse.xtext.resource.EObjectDescription
+import org.eclipse.xtext.resource.IEObjectDescription
 import org.eclipse.xtext.scoping.IScope
 import org.eclipse.xtext.scoping.Scopes
 import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider
-import it.unibo.alchemist.language.protelis.protelis.ImportedMethod
+import org.eclipse.xtext.scoping.impl.MapBasedScope
+import org.eclipse.xtext.scoping.impl.SimpleScope
+import it.unibo.alchemist.language.protelis.protelis.ImportDeclaration
+import org.eclipse.xtext.common.types.JvmOperation
+import java.util.Collection
 
 /**
  * This class contains custom scoping description.
@@ -24,16 +32,43 @@ import it.unibo.alchemist.language.protelis.protelis.ImportedMethod
 class ProtelisScopeProvider extends AbstractDeclarativeScopeProvider {
 	
 	def IScope scope_Expression_reference(Program model, EReference ref) {
-		val List<EObject> crossRefTargets = new ArrayList<EObject>(model.definitions)
-		for(Import i: model.imports) {
-			for(ImportedMethod m: i.methods) {
-				if(m.name == null) {
-					m.name = m.method
-				}
-				crossRefTargets.add(m);
+		val List<EObject> internal = new ArrayList<EObject>(model.definitions)
+		val List<IEObjectDescription> externalProtelis = new ArrayList<IEObjectDescription>()
+		val List<IEObjectDescription> java = new ArrayList<IEObjectDescription>()
+		for(Import i: model.protelisImport) {
+			internal.addAll(i.module.definitions)
+			for (FunctionDef fd: i.module.definitions) {
+				externalProtelis.add(generateDescription(i.module.name + ":" + fd.name, fd))
 			}
 		}
-		Scopes.scopeFor(crossRefTargets)
+		for(ImportDeclaration id: model.javaimports.importDeclarations) {
+			val type = id.importedType
+			if(id.wildcard) {
+				type.declaredOperations.filter[it.isStatic].populateMethodReferences(java)
+			} else {
+				val methodName = id.memberName
+				type.declaredOperations.filter[it.isStatic]
+					.filter[it.simpleName.equals(methodName)]
+					.populateMethodReferences(java)
+			}
+		}
+		val plainProtelis = Scopes.scopeFor(internal)
+		val refJava = new SimpleScope(java)
+		val outer = MapBasedScope.createScope(refJava, externalProtelis)
+		val final = MapBasedScope.createScope(outer, plainProtelis.allElements)
+		final
+	}
+	
+	def static populateMethodReferences(Iterable<JvmOperation> source, Collection<IEObjectDescription> destination) {
+		source.forEach[
+			destination.add(generateDescription(it.simpleName, it))
+			destination.add(generateDescription(it.qualifiedName.replace(".", "::"), it))
+		]
+	}
+	
+	def static generateDescription(String name, EObject obj) {
+		val ref = QualifiedName.create(name)
+		EObjectDescription.create(ref, obj)
 	}
 
 }

@@ -1,9 +1,17 @@
-grammar it.unibo.alchemist.language.protelis.Protelis with org.eclipse.xtext.common.Terminals
+grammar it.unibo.alchemist.language.protelis.Protelis with 
+//	org.eclipse.xtext.xbase.Xbase
+ 	org.eclipse.xtext.common.Terminals
 import "http://www.eclipse.org/emf/2002/Ecore" as ecore
+import "http://www.eclipse.org/xtext/common/JavaVMTypes"
+import "http://www.eclipse.org/xtext/xbase/Xtype"
 
 generate protelis "http://alchemist.apice.unibo.it/Protelis"
 
-Program: package=PackageDeclaration? (imports+=Import)* (definitions+=FunctionDef)* program=Block;
+Program: ('module' name=ProtelisQualifiedName)?
+	(javaimports=ImportSection)?
+	protelisImport+=Import*
+	(definitions+=FunctionDef)* program=Block
+;
 
 VarList: args += VAR (',' args += VAR)* ;
 
@@ -11,18 +19,17 @@ RepList: args+=RepInitialize (',' args+=RepInitialize)*;
 ExprList: args+=Expression (',' args+=Expression)*;
 RepInitialize: x=VAR '<-' w=VarVal;
 
-PackageDeclaration:
-	'package' name=QualifiedName
+ImportSection:
+	importDeclarations+=ImportDeclaration+;
+
+ImportDeclaration: 
+	'import'
+		importedType=[JvmDeclaredType|QualifiedNameInStaticImport] (wildcard?='*' | memberName=AID)
 ;
 
-Import:
-	'from' class=QualifiedName 'import' methods+=ImportedMethod (',' methods+=ImportedMethod)* ';'
+Import: 
+	'import' module=[Program|ProtelisQualifiedName]
 ;
-
-ImportedMethod:
-	method=AID ('as' name=AID)?
-;
-
 
 Block: (first=Statement) (';' others=Block)? ;
 
@@ -49,7 +56,9 @@ Call returns Expression:
 	/*
 	 * Use manual scoping to solve this
 	 */
-	reference=[ecore::EObject] '('args=ExprList?')'
+//	 (reference=[ecore::EObject|ProtelisQualifiedName] | 
+	  (reference = [ecore::EObject|CallRule]
+	) '('args=ExprList?')'
 ;
 
 Lambda returns Expression: '(' (lambdaArgs=VarList)? ')' name='->' '{' body=Block '}';
@@ -87,7 +96,7 @@ HoodOp returns Expression: (
 	name='sumHood' |
 	name='meanHood' |
 	name='unionHood'
-) inclusive='PlusSelf'? '(' arg=Expression ')'
+) inclusive?='PlusSelf' '(' arg=Expression ')'
 ;
 
 LogicalOr returns Expression:
@@ -139,9 +148,19 @@ BooleanVal: val=BOOLEAN;
 
 TupleVal: name='[' args = ExprList? ']';
 
-QualifiedName: AID ('.' AID)* ;
+CallRule: ID (JCallElement+ | ProtelisCallElement+)?;
+
+JCallElement: '::' AID;
+
+ProtelisCallElement: ':' ID;
+
+ProtelisQualifiedName: ID (':' ID)* ;
 
 AID: =>ID | 'random' | 'PlusSelf' | 'self' | 'pi' | 'e' | 'dt';
+
+QualifiedNameInStaticImport:
+  (AID '.')+
+;
 
 DOUBLE returns ecore::EDouble: INT('.'INT)?('e'|'E''-'?INT)? | 'Infinity' | 'NaN';
 BOOLEAN returns ecore::EBoolean: "true" | "false";
