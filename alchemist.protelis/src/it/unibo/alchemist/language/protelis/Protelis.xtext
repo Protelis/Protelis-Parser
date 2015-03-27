@@ -123,7 +123,7 @@ Prefix returns Expression:
 
 Postfix returns Expression:
     Primary
-    ({Expression.left=current}(name='.' methodName=ID '(' (args=ExprList)? ')'))*
+    ({Expression.left=current}(name='.' methodName=AID '(' (args=ExprList)? ')'))*
 ;
 
 Primary returns Expression:
