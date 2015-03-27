@@ -56,9 +56,7 @@ Call returns Expression:
 	/*
 	 * Use manual scoping to solve this
 	 */
-//	 (reference=[ecore::EObject|ProtelisQualifiedName] | 
-	  (reference = [ecore::EObject|CallRule]
-	) '('args=ExprList?')'
+	reference = [ecore::EObject|CallRule] '('args=ExprList?')'
 ;
 
 Lambda returns Expression: '(' (lambdaArgs=VarList)? ')' name='->' '{' body=Block '}';
