@@ -3,7 +3,6 @@
  */
 package it.unibo.alchemist.language.protelis.scoping
 
-import it.unibo.alchemist.language.protelis.protelis.ImportDeclaration
 import it.unibo.alchemist.language.protelis.protelis.Program
 import java.util.ArrayList
 import java.util.Collection
