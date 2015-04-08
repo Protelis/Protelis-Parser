@@ -40,16 +40,19 @@ class ProtelisScopeProvider extends AbstractDeclarativeScopeProvider {
 				externalProtelis.add(generateDescription(moduleName + ":" + it.name, it))
 			]
 		]
-		for(ImportDeclaration id: model.javaimports.importDeclarations) {
-			val type = id.importedType
-			if(id.wildcard) {
-				type.declaredOperations.filter[it.isStatic].populateMethodReferences(java)
-			} else {
-				val methodName = id.memberName
-				type.declaredOperations.filter[it.isStatic]
-					.filter[it.simpleName.equals(methodName)]
-					.populateMethodReferences(java)
-			}
+		val javaImports = model.javaimports
+		if(javaImports != null) {
+			javaImports.importDeclarations.forEach[id |
+				val type = id.importedType
+				if(id.wildcard) {
+					type.declaredOperations.filter[it.isStatic].populateMethodReferences(java)
+				} else {
+					val methodName = id.memberName
+					type.declaredOperations.filter[it.isStatic]
+						.filter[it.simpleName.equals(methodName)]
+						.populateMethodReferences(java)
+				}
+			]
 		}
 		val plainProtelis = Scopes.scopeFor(internal)
 		val refJava = new SimpleScope(java)
