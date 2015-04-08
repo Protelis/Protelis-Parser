@@ -4,14 +4,15 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>it.unibo.alchemist</groupId>
 	<artifactId>alchemist.protelis.parent</artifactId>
-	<version>3.0.0</version>
+	<version>3.1.0</version>
 	<name>alchemist-protelis-parser</name>
 	<description>Parser for Protelis, the practical aggregate programming language</description>
 	<packaging>pom</packaging>
 	<properties>
 		<tycho-version>0.22.0</tycho-version>
 		<xtext-version>2.8.1</xtext-version>
-		<!-- This property must be overridden on sign-server -->
+		<eclipse-version>3.10.0-v20140318-2214</eclipse-version>
+				<!-- This property must be overridden on sign-server -->
 		<skip-signature>true</skip-signature>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
@@ -194,6 +195,11 @@
 			<groupId>org.eclipse.xtext</groupId>
 			<artifactId>org.eclipse.xtext.common.types</artifactId>
 			<version>${xtext-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.core</groupId>
+			<artifactId>runtime</artifactId>
+			<version>${eclipse-version}</version>
 		</dependency>
 	</dependencies>
 </project>
