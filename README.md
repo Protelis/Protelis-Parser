@@ -18,6 +18,12 @@ Parser for Protelis, the practical aggregate programming language
   Makes sure that you can fire up an instance of Eclipse that can
   load the plugin
 
+## Develop and test the plugin using Eclipse
+
+## Compile and produce a working artifact for your own use
+
+## Prepare for a release
+
 ## How to prepare a working Eclipse environment
 
 A working Eclipse environment is the best way to develop the parser, since it gives immediate feedback about errors.
