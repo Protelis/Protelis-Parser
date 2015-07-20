@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: alchemist.protelis
 Bundle-Vendor: Alma Mater Studiorum Università di Bologna
-Bundle-Version: 3.1.0
+Bundle-Version: 3.1.1
 Bundle-SymbolicName: alchemist.protelis; singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.xtext;visibility:=reexport,
@@ -21,7 +21,7 @@ Require-Bundle: org.eclipse.xtext;visibility:=reexport,
  org.objectweb.asm;bundle-version="[5.0.1,6.0.0)";resolution:=optional,
  org.eclipse.xtext.common.types
 Import-Package: org.apache.log4j
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: it.unibo.alchemist.language.protelis,
  it.unibo.alchemist.language.protelis.services,
  it.unibo.alchemist.language.protelis.protelis,
