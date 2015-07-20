@@ -24,7 +24,7 @@ Parser for Protelis, the practical aggregate programming language
   Makes sure that you can fire up an instance of Eclipse that can
   load the plugin
 
-## Develop and test the plugin using Eclipse
+## Develop and test the DSL and plugin using Eclipse
 
 Once the repositories are imported, there will likely be a lot of errors.
 
@@ -44,7 +44,18 @@ In order to test both of these at once (there is no separate test for just the D
 4. In the src folder, create a new file, named [something].pt (.pt means it is a Protelis file)
 5. Write some Protelis code or hit Ctrl-space for autocompletion: you should be getting Protelis syntax evaluation and coloring
 
-## Compile and produce a working artifact for your own use
+## Co-develop Protelis DSL and Protelis VM
+
+In order to co-develop on the Protelis DSL and VM simultaneously, you will need to download the VM (project: Protelis) and link it with this DSL project.  Install following the instructions on that repository.
+
+Once it has been installed, change the build path by right clicking on the Protelis project and selecting Build Path > Configure Build Path.  On the "Projects" tab, add the alchemist.protelis project.  Finally, in the "Order and Export" tab, move alchemist.protelis to the top, so that it will be loaded first in case of any conflicts.
+
+Finally, still in the Protelis project, edit "build.gradle" and comment out the line
+> compile "it.unibo.alchemist:alchemist.protelis:$protelisVersion"
+
+by putting a "//" in front of it.  Finally, refresh the Gradle dependencies by right-clicking on the project and running Gradle > Refresh Dependencies.  This should remove the Gradle Dependency on the Protelis .jar file.
+
+You can then test that everything is running correctly by running the Protelis JUnit tests.
 
 ## Prepare for a release
 
