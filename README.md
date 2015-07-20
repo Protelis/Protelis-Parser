@@ -1,6 +1,12 @@
 # Protelis-Parser
 Parser for Protelis, the practical aggregate programming language
 
+## Required Eclipse plugins
+
+* Xtext 2.7.3+
+* Maven support via m2e
+* git
+
 ## Project structure
 
 * *alchemist.protelis.parent*:
@@ -19,6 +25,11 @@ Parser for Protelis, the practical aggregate programming language
   load the plugin
 
 ## Develop and test the plugin using Eclipse
+
+Once the repositories are imported, there will likely be a lot of errors.
+
+* First, if there are "Plugin execution not covered by lifecycle configuration" errors, go to Eclipse Preferences > Maven > Errors/Warnings and switch this error type to warning.  This is OK because Eclipse uses its own build system, and can ignore these Maven problems (which are not due to the Maven configuration, but lack of certain current Eclipse/Maven integrations).
+* Second, go to alchemist.protelis project and run src/it.unibo.alchemist.language.protelis/GenerateProtelis.mwe2 as an MWE2 workflow.  This generates the DSL using Xtext, and should resolve all of the outstanding errors.
 
 ## Compile and produce a working artifact for your own use
 
