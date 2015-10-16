@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <bundle id="protelis.parser" version="3.1.1">
+      <category name="protelis"/>
+   </bundle>
+   <bundle id="protelis.parser.ui" version="3.1.1">
+      <category name="protelis"/>
+   </bundle>
+   <category-def name="protelis" label="Protelis"/>
+</site>
