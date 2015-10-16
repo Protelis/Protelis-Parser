@@ -3,9 +3,9 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>it.unibo.alchemist</groupId>
-	<artifactId>alchemist.protelis.parent</artifactId>
+	<artifactId>protelis.parent</artifactId>
 	<version>3.1.1</version>
-	<name>alchemist-protelis-parser</name>
+	<name>protelis-parser</name>
 	<description>Parser for Protelis, the practical aggregate programming language</description>
 	<packaging>pom</packaging>
 	<properties>
@@ -76,7 +76,7 @@
 					<target>
 						<artifact>
 							<groupId>it.unibo.alchemist</groupId>
-							<artifactId>alchemist.protelis.target</artifactId>
+							<artifactId>protelis.target</artifactId>
 							<version>3.1.1</version>
 						</artifact>
 					</target>
