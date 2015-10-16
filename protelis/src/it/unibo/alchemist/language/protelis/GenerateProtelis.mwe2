@@ -4,7 +4,7 @@ import org.eclipse.emf.mwe.utils.*
 import org.eclipse.xtext.generator.*
 import org.eclipse.xtext.ui.generator.*
 
-var projectName = "alchemist.protelis"
+var projectName = "protelis"
 var runtimeProject = "../${projectName}"
 var grammarURI = "platform:/resource/${projectName}/src/it/unibo/alchemist/language/protelis/Protelis.xtext"
 var fileExtensions = "pt"
