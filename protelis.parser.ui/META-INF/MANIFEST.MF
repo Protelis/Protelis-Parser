@@ -19,8 +19,8 @@ Require-Bundle: protelis.parser;bundle-version="3.1.1";visibility:=reexport,
  org.eclipse.compare
 Import-Package: org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Export-Package: it.unibo.alchemist.language.protelis.ui.quickfix,
- it.unibo.alchemist.language.protelis.ui.contentassist,
- it.unibo.alchemist.language.protelis.ui.contentassist.antlr,
- it.unibo.alchemist.language.protelis.ui.internal
-Bundle-Activator: it.unibo.alchemist.language.protelis.ui.internal.ProtelisActivator
+Export-Package: org.protelis.parser.ui.quickfix,
+ org.protelis.parser.ui.contentassist,
+ org.protelis.parser.ui.contentassist.antlr,
+ org.protelis.parser.ui.internal
+Bundle-Activator: org.protelis.parser.ui.internal.ProtelisActivator

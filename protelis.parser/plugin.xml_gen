@@ -6,7 +6,7 @@
   <extension point="org.eclipse.emf.ecore.generated_package">
     <package 
        uri = "http://alchemist.apice.unibo.it/Protelis" 
-       class = "it.unibo.alchemist.language.protelis.protelis.ProtelisPackage"
+       class = "org.protelis.parser.protelis.ProtelisPackage"
        genModel = "model/generated/Protelis.genmodel" /> 
 	
   </extension>

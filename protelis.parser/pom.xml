@@ -22,7 +22,7 @@
 				<configuration>
 					<mainClass>org.eclipse.emf.mwe2.launch.runtime.Mwe2Launcher</mainClass>
 					<arguments>
-						<argument>/${project.basedir}/src/it/unibo/alchemist/language/protelis/GenerateProtelis.mwe2</argument>
+						<argument>/${project.basedir}/src/org/protelis/parser/GenerateProtelis.mwe2</argument>
             <!-- if you use a hierarchical layout (plugins inside the parent folder
 						<argument>-p</argument>
 						<argument>runtimeProject=/${project.basedir}</argument>

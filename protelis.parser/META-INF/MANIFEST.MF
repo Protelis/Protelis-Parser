@@ -22,17 +22,17 @@ Require-Bundle: org.eclipse.xtext;visibility:=reexport,
  org.eclipse.xtext.common.types
 Import-Package: org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Export-Package: it.unibo.alchemist.language.protelis,
- it.unibo.alchemist.language.protelis.services,
- it.unibo.alchemist.language.protelis.protelis,
- it.unibo.alchemist.language.protelis.protelis.impl,
- it.unibo.alchemist.language.protelis.protelis.util,
- it.unibo.alchemist.language.protelis.serializer,
- it.unibo.alchemist.language.protelis.parser.antlr,
- it.unibo.alchemist.language.protelis.parser.antlr.internal,
- it.unibo.alchemist.language.protelis.validation,
- it.unibo.alchemist.language.protelis.scoping,
- it.unibo.alchemist.language.protelis.generator,
- it.unibo.alchemist.language.protelis.formatting,
- it.unibo.alchemist.language.protelis.jvmmodel
+Export-Package: org.protelis.parser,
+ org.protelis.parser.formatting,
+ org.protelis.parser.generator,
+ org.protelis.parser.jvmmodel,
+ org.protelis.parser.scoping,
+ org.protelis.parser.validation,
+ org.protelis.parser.services,
+ org.protelis.parser.protelis,
+ org.protelis.parser.protelis.impl,
+ org.protelis.parser.protelis.util,
+ org.protelis.parser.serializer,
+ org.protelis.parser.parser.antlr,
+ org.protelis.parser.parser.antlr.internal
 
