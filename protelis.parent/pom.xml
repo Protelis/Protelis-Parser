@@ -17,11 +17,11 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<modules>
-		<module>../alchemist.protelis.target</module>
-		<module>../alchemist.protelis.ui</module>
-		<module>../alchemist.protelis.tests</module>
-		<module>../alchemist.protelis</module>
-		<module>../alchemist.protelis.repository</module>
+		<module>../protelis.target</module>
+		<module>../protelis.ui</module>
+		<module>../protelis.tests</module>
+		<module>../protelis</module>
+		<module>../protelis.repository</module>
 	</modules>
 	<url>https://github.com/DanySK/alchemist-dsl-protelis-parser</url>
 	<licenses>
