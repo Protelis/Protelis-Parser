@@ -85,7 +85,20 @@ Builtin returns Expression:
 	HoodOp
 ;
 
-HoodOp returns Expression: (
+HoodOp returns Expression:
+	BuiltinHoodOp |	GenericHood  
+;
+
+GenericHood returns Expression:
+		(name = 'hood' | name = 'hoodPlusSelf') '('
+			(reference = [ecore::EObject|CallRule] | op = Lambda ) ','
+			default = Expression ','
+			arg = Expression
+		')'
+;
+	
+BuiltinHoodOp returns Expression:
+	(
 	name='minHood' |
 	name='maxHood' |
 	name='anyHood' |
