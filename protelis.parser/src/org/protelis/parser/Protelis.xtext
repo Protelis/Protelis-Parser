@@ -74,7 +74,6 @@ NBR returns Expression:
 
 Builtin returns Expression:
 	name='self' |
-	name='nbrRange' |
 	name='dt' |
 	name='pi' |
 	name='e' |
