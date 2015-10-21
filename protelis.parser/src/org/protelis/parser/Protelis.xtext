@@ -76,7 +76,6 @@ Builtin returns Expression:
 	name='self' |
 	name='pi' |
 	name='e' |
-	name='random' |
 	name='eval' '(' arg = ( VAR | StringVal ) ')' |
 	name='alignedMap' '(' arg=Expression ',' cond=Expression ',' op=Expression ',' default=Expression ')' |
 	name='mux' '(' cond=Expression ')' '{' then=Block '}' 'else' '{'  else=Block '}' |
