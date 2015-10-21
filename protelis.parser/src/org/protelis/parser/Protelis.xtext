@@ -9,7 +9,7 @@ generate protelis "http://alchemist.apice.unibo.it/Protelis"
 Program: ('module' name=ProtelisQualifiedName)?
 	(javaimports=ImportSection)?
 	protelisImport+=Import*
-	(definitions+=FunctionDef)* program=Block
+	(definitions+=FunctionDef)* program=Block?
 ;
 
 VarList: args += VAR (',' args += VAR)* ;
