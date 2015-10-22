@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.protelis</groupId>
 	<artifactId>protelis.parser.parent</artifactId>
-	<version>3.1.1</version>
+	<version>4.0.0</version>
 	<name>protelis.parser</name>
 	<description>Parser for Protelis, the practical aggregate programming language</description>
 	<packaging>pom</packaging>
@@ -77,7 +77,7 @@
 						<artifact>
 							<groupId>org.protelis</groupId>
 							<artifactId>protelis.parser.target</artifactId>
-							<version>3.1.1</version>
+							<version>4.0.0</version>
 						</artifact>
 					</target>
 					<environments>

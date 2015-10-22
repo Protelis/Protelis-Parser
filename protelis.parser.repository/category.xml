@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <bundle id="protelis.parser" version="3.1.1">
+   <bundle id="protelis.parser" version="4.0.0">
       <category name="protelis"/>
    </bundle>
-   <bundle id="protelis.parser.ui" version="3.1.1">
+   <bundle id="protelis.parser.ui" version="4.0.0">
       <category name="protelis"/>
    </bundle>
    <category-def name="protelis" label="Protelis"/>
