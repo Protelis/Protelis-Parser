@@ -5,7 +5,7 @@
 
   <extension point="org.eclipse.emf.ecore.generated_package">
     <package 
-       uri = "http://alchemist.apice.unibo.it/Protelis" 
+       uri = "http://protelis.org" 
        class = "org.protelis.parser.protelis.ProtelisPackage"
        genModel = "model/generated/Protelis.genmodel" /> 
 	

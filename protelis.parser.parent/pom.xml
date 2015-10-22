@@ -23,12 +23,12 @@
 		<module>../protelis.parser</module>
 		<module>../protelis.parser.repository</module>
 	</modules>
-	<url>https://github.com/DanySK/alchemist-dsl-protelis-parser</url>
+	<url>http://protelis.org</url>
 	<licenses>
 		<license>
 			<name>GPL linking exception</name>
 			<url>
-			https://github.com/DanySK/alchemist-dsl-protelis-parser/blob/master/LICENSE.txt
+			https://github.com/Protelis/Protelis-Parser/blob/master/LICENSE.txt
 			</url>
 		</license>
 	</licenses>
