@@ -1,0 +1,176 @@
+grammar org.protelis.parser.Protelis with 
+//	org.eclipse.xtext.xbase.Xbase
+ 	org.eclipse.xtext.common.Terminals
+import "http://www.eclipse.org/emf/2002/Ecore" as ecore
+import "http://www.eclipse.org/xtext/common/JavaVMTypes"
+
+generate protelis "http://protelis.org"
+
+Module: ('module' name=ProtelisQualifiedName)?
+	(javaimports=ImportSection)?
+	protelisImport+=Import*
+	(definitions+=FunctionDef)* program=Block?
+;
+
+VarList: args += VAR (',' args += VAR)* ;
+
+RepList: args+=RepInitialize (',' args+=RepInitialize)*;
+ExprList: args+=Expression (',' args+=Expression)*;
+RepInitialize: x=VAR '<-' w=VarVal;
+
+ImportSection:
+	importDeclarations+=ImportDeclaration+;
+
+ImportDeclaration: 
+	'import'
+		importedType=[JvmDeclaredType|QualifiedNameInStaticImport] (wildcard?='*' | memberName=AID)
+;
+
+Import: 
+	'import' module=[Module|ProtelisQualifiedName]
+;
+
+Block: (first=Statement) (';' others=Block)? ;
+
+Statement: Assignment | LinkableStatement ;
+
+Declaration:
+	'let' name=ID '=' right=Expression
+;
+
+LinkableStatement: Declaration | Expression;
+
+Assignment:
+	refVar=[LinkableStatement] name='=' right = Expression
+;
+
+Expression:
+ 	LogicalOr ';'?
+;
+
+FunctionDef: public?="public"? 'def' name=ID '(' (args=VarList)? ')' '{' body=Block '}';
+
+
+Call returns Expression:
+	/*
+	 * Use manual scoping to solve this
+	 */
+	reference = [ecore::EObject|CallRule] '('args=ExprList?')'
+;
+
+Lambda returns Expression: '(' (lambdaArgs=VarList)? ')' name='->' '{' body=Block '}';
+
+Rep returns Expression: 
+	name='rep' '(' init=RepList ')' '{' body=Block '}' 
+;
+
+If returns Expression:
+	name='if' '(' cond=Expression ')' '{' then=Block '}' 'else' '{' else=Block '}'
+;
+
+NBR returns Expression:
+	name='nbr' '(' arg=Expression ')' 
+;
+
+Builtin returns Expression:
+	name='self' |
+	name='env' |
+	name='pi' |
+	name='e' |
+	name='eval' '(' arg = ( VAR | StringVal ) ')' |
+	name='alignedMap' '(' arg=Expression ',' cond=Expression ',' op=Expression ',' default=Expression ')' |
+	name='mux' '(' cond=Expression ')' '{' then=Block '}' 'else' '{'  else=Block '}' |
+	HoodOp
+;
+
+HoodOp returns Expression:
+	BuiltinHoodOp |	GenericHood  
+;
+
+GenericHood returns Expression:
+		(name = 'hood' | name = 'hoodPlusSelf') '('
+			(reference = [ecore::EObject|CallRule] | op = Lambda ) ','
+			default = Expression ','
+			arg = Expression
+		')'
+;
+	
+BuiltinHoodOp returns Expression:
+	(
+	name='minHood' |
+	name='maxHood' |
+	name='anyHood' |
+	name='allHood' |
+	name='sumHood' |
+	name='meanHood' |
+	name='unionHood'
+) inclusive?='PlusSelf'? '(' arg=Expression ')'
+;
+
+LogicalOr returns Expression:
+ LogicalAnd ({Expression.left=current} name='||' right=LogicalAnd)*;
+
+LogicalAnd returns Expression:
+ Equality ({Expression.left=current} name='&&' right=Equality)*;
+
+Equality returns Expression:
+ Relational ({Expression.left=current} name=('=='|'!=') right=Relational)*;
+
+Relational returns Expression:
+ Addition ({Expression.left=current} name=('>'|'>='|'<'|'<=') right=Addition)*;
+
+Addition returns Expression:
+ Multiplication ({Expression.left=current} name=('+'|'-') right=Multiplication)*;
+
+Multiplication returns Expression:
+ Power ({Expression.left=current} name=('*'|'/'|'%') right=Power)*;
+
+Power returns Expression:
+ Prefix ({Expression.left=current} name=('^') right=Prefix)*;
+
+Prefix returns Expression:
+    Postfix | ({Prefix} name=('-'|'!') right=Postfix);
+
+Postfix returns Expression:
+    Primary
+    ({Expression.left=current}(name='.' methodName=AID '(' (args=ExprList)? ')'))*
+;
+
+Primary returns Expression:
+ (v = (VarVal | Call | Rep | NBR | If) | '(' Expression ')')
+;
+
+VarVal returns Expression: VAR | Local;
+
+Local returns Expression : Scalar | Builtin | Lambda;
+
+VAR: name=ID;
+
+Scalar: DoubleVal | StringVal | BooleanVal | TupleVal;
+
+DoubleVal: val=DOUBLE;
+
+StringVal: val=STRING;
+
+BooleanVal: val=BOOLEAN;
+
+TupleVal: name='[' args = ExprList? ']';
+
+CallRule: AID (JCallElement+ | ProtelisCallElement+)?;
+
+JCallElement: '::' AID;
+
+ProtelisCallElement: ':' ID;
+
+ProtelisQualifiedName: ID (':' ID)* ;
+
+AID: =>ID | 'random' | 'PlusSelf' | 'self' | 'env' | 'pi' | 'e';
+
+QualifiedNameInStaticImport:
+  (AID '.')+
+;
+
+DOUBLE returns ecore::EDouble: INT('.'INT)?('e'|'E''-'?INT)? | 'Infinity' | 'NaN';
+BOOLEAN returns ecore::EBoolean: "true" | "false";
+
+terminal ML_COMMENT	: '/*' -> '*/';
