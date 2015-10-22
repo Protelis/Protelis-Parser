@@ -1,4 +1,4 @@
-package alchemist.protelis.tests;
+package org.protelis.parser.tests;
 
 import org.junit.Test;
 
