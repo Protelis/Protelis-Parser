@@ -74,6 +74,7 @@ NBR returns Expression:
 
 Builtin returns Expression:
 	name='self' |
+	name='env' |
 	name='pi' |
 	name='e' |
 	name='eval' '(' arg = ( VAR | StringVal ) ')' |
@@ -163,7 +164,7 @@ ProtelisCallElement: ':' ID;
 
 ProtelisQualifiedName: ID (':' ID)* ;
 
-AID: =>ID | 'random' | 'PlusSelf' | 'self' | 'pi' | 'e';
+AID: =>ID | 'random' | 'PlusSelf' | 'self' | 'env' | 'pi' | 'e';
 
 QualifiedNameInStaticImport:
   (AID '.')+
