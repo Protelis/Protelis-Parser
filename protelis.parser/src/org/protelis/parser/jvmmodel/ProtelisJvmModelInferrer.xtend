@@ -1,9 +1,9 @@
 package org.protelis.parser.jvmmodel
 
-import org.protelis.parser.protelis.Program
 import org.eclipse.xtext.common.types.JvmDeclaredType
 import org.eclipse.xtext.xbase.jvmmodel.AbstractModelInferrer
 import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor
+import org.protelis.parser.protelis.Module
 
 /**
  * <p>Infers a JVM model from the source model.</p> 
@@ -43,7 +43,7 @@ class ProtelisJvmModelInferrer extends AbstractModelInferrer {
 	 *            rely on linking using the index if isPreIndexingPhase is
 	 *            <code>true</code>.
 	 */
-   	def dispatch void infer(Program element, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
+   	def dispatch void infer(Module element, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
    		// Here you explain how your model is mapped to Java elements, by writing the actual translation code.
    		
    		// An implementation for the initial hello world example could look like this:

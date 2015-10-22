@@ -3,7 +3,6 @@
  */
 package org.protelis.parser.scoping
 
-import org.protelis.parser.protelis.Program
 import java.util.ArrayList
 import java.util.Collection
 import java.util.List
@@ -18,6 +17,7 @@ import org.eclipse.xtext.scoping.Scopes
 import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider
 import org.eclipse.xtext.scoping.impl.MapBasedScope
 import org.eclipse.xtext.scoping.impl.SimpleScope
+import org.protelis.parser.protelis.Module
 
 /**
  * This class contains custom scoping description.
@@ -28,7 +28,7 @@ import org.eclipse.xtext.scoping.impl.SimpleScope
  */
 class ProtelisScopeProvider extends AbstractDeclarativeScopeProvider {
 	
-	def IScope scope_Expression_reference(Program model, EReference ref) {
+	def IScope scope_Expression_reference(Module model, EReference ref) {
 		val List<EObject> internal = new ArrayList<EObject>(model.definitions)
 		val List<IEObjectDescription> externalProtelis = new ArrayList<IEObjectDescription>()
 		val List<IEObjectDescription> java = new ArrayList<IEObjectDescription>()
