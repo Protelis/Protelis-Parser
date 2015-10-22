@@ -7,3 +7,5 @@
 **/generated/*
 *.xml_gen
 **/.recommenders/*
+*_gen
+
