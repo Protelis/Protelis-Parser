@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: alchemist.protelis
+Bundle-Name: protelis.parser
 Bundle-Vendor: Alma Mater Studiorum Università di Bologna
-Bundle-Version: 3.1.1
+Bundle-Version: 4.0.0
 Bundle-SymbolicName: protelis.parser;singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.xtext;visibility:=reexport,
