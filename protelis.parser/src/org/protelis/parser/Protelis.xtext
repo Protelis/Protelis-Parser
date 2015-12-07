@@ -16,7 +16,7 @@ VarList: args += VAR (',' args += VAR)* ;
 
 RepList: args+=RepInitialize (',' args+=RepInitialize)*;
 ExprList: args+=Expression (',' args+=Expression)*;
-RepInitialize: x=VAR '<-' w=VarVal;
+RepInitialize: x=VAR '<-' w=Expression;
 
 ImportSection:
 	importDeclarations+=ImportDeclaration+;
