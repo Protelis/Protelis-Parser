@@ -12,11 +12,11 @@ Module: ('module' name=ProtelisQualifiedName)?
 	(definitions+=FunctionDef)* program=Block?
 ;
 
-VarList: args += VAR (',' args += VAR)* ;
+VarDefList: args += VarDef (',' args += VarDef)* ;
 
 RepList: args+=RepInitialize (',' args+=RepInitialize)*;
 ExprList: args+=Expression (',' args+=Expression)*;
-RepInitialize: x=VAR '<-' w=Expression;
+RepInitialize: x=VarDef '<-' w=Expression;
 
 ImportSection:
 	importDeclarations+=ImportDeclaration+;
@@ -48,7 +48,7 @@ Expression:
  	LogicalOr ';'?
 ;
 
-FunctionDef: public?="public"? 'def' name=ID '(' (args=VarList)? ')' '{' body=Block '}';
+FunctionDef: public?="public"? 'def' name=ID '(' (args=VarDefList)? ')' '{' body=Block '}';
 
 
 Call returns Expression:
@@ -58,7 +58,7 @@ Call returns Expression:
 	reference = [ecore::EObject|CallRule] '('args=ExprList?')'
 ;
 
-Lambda returns Expression: '(' (lambdaArgs=VarList)? ')' name='->' '{' body=Block '}';
+Lambda returns Expression: '(' (lambdaArgs=VarDefList)? ')' name='->' '{' body=Block '}';
 
 Rep returns Expression: 
 	name='rep' '(' init=RepList ')' '{' body=Block '}' 
@@ -77,7 +77,7 @@ Builtin returns Expression:
 	name='env' |
 	name='pi' |
 	name='e' |
-	name='eval' '(' arg = ( VAR | StringVal ) ')' |
+	name='eval' '(' arg = ( VarUse | StringVal ) ')' |
 	name='alignedMap' '(' arg=Expression ',' cond=Expression ',' op=Expression ',' default=Expression ')' |
 	name='mux' '(' cond=Expression ')' '{' then=Block '}' 'else' '{'  else=Block '}' |
 	HoodOp
@@ -137,14 +137,16 @@ Postfix returns Expression:
 ;
 
 Primary returns Expression:
- (v = (VarVal | Call | Rep | NBR | If) | '(' Expression ')')
+ (v = (VarUse | Local | Call | Rep | NBR | If) | '(' Expression ')')
 ;
 
-VarVal returns Expression: VAR | Local;
+//VarVal returns Expression: VAR | Local;
 
 Local returns Expression : Scalar | Builtin | Lambda;
 
-VAR: name=ID;
+VarDef returns Expression: name = ID;
+
+VarUse returns Expression: refVar=[LinkableStatement];
 
 Scalar: DoubleVal | StringVal | BooleanVal | TupleVal;
 
