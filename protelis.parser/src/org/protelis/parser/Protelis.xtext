@@ -14,7 +14,7 @@ Module: ('module' name=ProtelisQualifiedName)?
 
 VarDefList: args += VarDef (',' args += VarDef)* ;
 
-RepList: args+=RepInitialize (',' args+=RepInitialize)*;
+// RepList: args+=RepInitialize (',' args+=RepInitialize)*;
 ExprList: args+=Expression (',' args+=Expression)*;
 RepInitialize: x=VarDef '<-' w=Expression;
 
@@ -61,7 +61,7 @@ Call returns Expression:
 Lambda returns Expression: '(' (lambdaArgs=VarDefList)? ')' name='->' '{' body=Block '}';
 
 Rep returns Expression: 
-	name='rep' '(' init=RepList ')' '{' body=Block '}' 
+	name='rep' '(' init=RepInitialize ')' '{' body=Block '}' 
 ;
 
 If returns Expression:
@@ -139,8 +139,6 @@ Postfix returns Expression:
 Primary returns Expression:
  (v = (VarUse | Local | Call | Rep | NBR | If) | '(' Expression ')')
 ;
-
-//VarVal returns Expression: VAR | Local;
 
 Local returns Expression : Scalar | Builtin | Lambda;
 
