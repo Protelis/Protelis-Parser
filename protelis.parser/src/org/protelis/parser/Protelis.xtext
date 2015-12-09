@@ -40,7 +40,7 @@ Declaration returns VarDef:
 
 //LinkableStatement: Declaration | Expression;
 
-Assignment returns Expression:
+Assignment:
 	refVar=[VarDef] name='=' right = Expression
 ;
 
@@ -51,29 +51,29 @@ Expression:
 FunctionDef: public?="public"? 'def' name=ID '(' (args=VarDefList)? ')' '{' body=Block '}';
 
 
-Call returns Expression:
+Call:
 	/*
 	 * Use manual scoping to solve this
 	 */
 	reference = [ecore::EObject|CallRule] '('args=ExprList?')'
 ;
 
-Lambda returns Expression:
+Lambda:
 	('(' (lambdaArgs=VarDefList)? ')' | lambdaArgs = VarDef) name='->' '{' body=Block '}';
 
-Rep returns Expression: 
+Rep: 
 	name='rep' '(' init=RepInitialize ')' '{' body=Block '}' 
 ;
 
-If returns Expression:
+If:
 	name='if' '(' cond=Expression ')' '{' then=Block '}' 'else' '{' else=Block '}'
 ;
 
-NBR returns Expression:
+NBR:
 	name='nbr' '(' arg=Expression ')' 
 ;
 
-Builtin returns Expression:
+Builtin:
 	name='self' |
 	name='env' |
 	name='pi' |
@@ -84,11 +84,11 @@ Builtin returns Expression:
 	HoodOp
 ;
 
-HoodOp returns Expression:
+HoodOp:
 	BuiltinHoodOp |	GenericHood  
 ;
 
-GenericHood returns Expression:
+GenericHood:
 		(name = 'hood' | name = 'hoodPlusSelf') '('
 			(reference = [ecore::EObject|CallRule] | op = Lambda ) ','
 			default = Expression ','
@@ -96,7 +96,7 @@ GenericHood returns Expression:
 		')'
 ;
 	
-BuiltinHoodOp returns Expression:
+BuiltinHoodOp:
 	(
 	name='minHood' |
 	name='maxHood' |
@@ -141,11 +141,11 @@ Primary returns Expression:
  (v = (VarUse | Local | Call | Rep | NBR | If) | '(' Expression ')')
 ;
 
-Local returns Expression : Scalar | Builtin | Lambda;
+Local: Scalar | Builtin | Lambda;
 
 VarDef: name = ID;
 
-VarUse returns Expression: reference=[ecore::EObject|CallRuleNoConflict];
+VarUse: reference=[ecore::EObject|CallRuleNoConflict];
 
 Scalar: DoubleVal | StringVal | BooleanVal | TupleVal;
 

@@ -4,11 +4,11 @@
 package org.protelis.parser.validation
 
 import org.eclipse.xtext.validation.Check
-import org.protelis.parser.protelis.Expression
 import org.protelis.parser.protelis.Block
+import org.protelis.parser.protelis.FunctionDef
+import org.protelis.parser.protelis.Lambda
 import org.protelis.parser.protelis.ProtelisPackage
 import org.protelis.parser.protelis.VarDef
-import org.protelis.parser.protelis.FunctionDef
 import org.protelis.parser.protelis.VarDefList
 
 //import org.eclipse.xtext.validation.Check
@@ -19,17 +19,6 @@ import org.protelis.parser.protelis.VarDefList
  * see http://www.eclipse.org/Xtext/documentation.html#validation
  */
 class ProtelisValidator extends AbstractProtelisValidator {
-
-//  public static val INVALID_NAME = 'invalidName'
-//
-//	@Check
-//	def checkGreetingStartsWithCapital(Greeting greeting) {
-//		if (!Character.isUpperCase(greeting.name.charAt(0))) {
-//			warning('Name should start with a capital', 
-//					MyDslPackage.Literals.GREETING__NAME,
-//					INVALID_NAME)
-//		}
-//	}
 
 	/**
 	 * Make sure that nobody defined the variable already:
@@ -62,7 +51,7 @@ class ProtelisValidator extends AbstractProtelisValidator {
 					}
 				}
 			}
-			if (parent instanceof Expression) {
+			if (parent instanceof Lambda) {
 				if(parent.lambdaArgs != null) {
 					val args = parent.lambdaArgs;
 					if(args instanceof VarDef){

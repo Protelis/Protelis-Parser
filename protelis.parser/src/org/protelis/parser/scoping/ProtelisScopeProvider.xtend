@@ -24,6 +24,9 @@ import org.protelis.parser.protelis.FunctionDef
 import org.protelis.parser.protelis.Module
 import org.protelis.parser.protelis.VarDef
 import org.protelis.parser.protelis.VarDefList
+import org.protelis.parser.protelis.Lambda
+import org.protelis.parser.protelis.Rep
+import org.protelis.parser.protelis.VarUse
 
 /**
  * This class contains custom scoping description.
@@ -34,10 +37,10 @@ import org.protelis.parser.protelis.VarDefList
  */
 class ProtelisScopeProvider extends AbstractDeclarativeScopeProvider {
 
-	def IScope scope_VarUse_reference(Expression expression, EReference ref) {
+	def IScope scope_VarUse_reference(VarUse expression, EReference ref) {
 		val list = new ArrayList
 		var container = expression.eContainer
-		while (container != null) {
+	 	while (container != null) {
 			switch container {
 				Block:
 					if (container.first instanceof VarDef) {
@@ -47,33 +50,31 @@ class ProtelisScopeProvider extends AbstractDeclarativeScopeProvider {
 					if (container.args != null) {
 						list.addAll(container.args.args)
 					}
-				Expression:
-					/*
-					 * new variables can be defined in Reps or Lambdas
-					 */
-					 if(container.lambdaArgs != null) {
-						val lambdaArgs = container.lambdaArgs
-						switch lambdaArgs {
-							VarDef: list.add(lambdaArgs)
-							VarDefList: list.addAll((lambdaArgs as VarDefList).args)
-						}
-					 } else if (container.init != null) {
-					 	list.add(container.init.x)
-					 }
-				VarDef:
-					list.add(container)
+				Lambda: {
+					val lambdaArgs = container.lambdaArgs
+					switch lambdaArgs {
+						VarDef: list.add(lambdaArgs)
+						VarDefList: list.addAll((lambdaArgs as VarDefList).args)
+					}
+				}
+				Rep: list.add(container.init.x)
+				VarDef: list.add(container)
 				Module:
-					return MapBasedScope.createScope(scope_Expression_reference(container, ref), Scopes.scopeFor(list).allElements)
+					return MapBasedScope.createScope(scope_Call_reference(container, ref), Scopes.scopeFor(list).allElements)
 			}
 			container = container.eContainer
 		}
 		Scopes.scopeFor(Collections.emptyList)
 	}
 	
-	def IScope scope_Expression_reference(Module model, EReference ref) {
-		val List<EObject> internal = new ArrayList<EObject>(model.definitions)
-		val List<IEObjectDescription> externalProtelis = new ArrayList<IEObjectDescription>()
-		val List<IEObjectDescription> java = new ArrayList<IEObjectDescription>()
+	def IScope scope_GenericHood_reference(Module model, EReference ref) {
+		scope_Call_reference(model, ref)
+	}
+	
+	def IScope scope_Call_reference(Module model, EReference ref) {
+		val List<EObject> internal = new ArrayList(model.definitions)
+		val List<IEObjectDescription> externalProtelis = new ArrayList
+		val List<IEObjectDescription> java = new ArrayList
 		model.protelisImport.forEach[ 
 			val moduleName = it.module.name
 			it.module.definitions.filter[public].forEach[
