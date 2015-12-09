@@ -145,7 +145,7 @@ Local returns Expression : Scalar | Builtin | Lambda;
 
 VarDef: name = ID;
 
-VarUse: reference=[ecore::EObject|CallRuleNoConflict];
+VarUse returns Expression: reference=[ecore::EObject|CallRuleNoConflict];
 
 Scalar: DoubleVal | StringVal | BooleanVal | TupleVal;
 
