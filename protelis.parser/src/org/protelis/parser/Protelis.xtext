@@ -32,20 +32,20 @@ Import:
 
 Block: (first=Statement) (';' others=Block)? ;
 
-Statement: Assignment | LinkableStatement ;
+Statement: (Declaration | Assignment | Expression) ';'*;
 
-Declaration:
-	'let' name=ID '=' right=Expression
+Declaration returns VarDef:
+	'let' VarDef '=' right=Expression
 ;
 
-LinkableStatement: Declaration | Expression;
+//LinkableStatement: Declaration | Expression;
 
-Assignment:
-	refVar=[LinkableStatement] name='=' right = Expression
+Assignment returns Expression:
+	refVar=[VarDef] name='=' right = Expression
 ;
 
 Expression:
- 	LogicalOr ';'?
+ 	LogicalOr
 ;
 
 FunctionDef: public?="public"? 'def' name=ID '(' (args=VarDefList)? ')' '{' body=Block '}';
@@ -58,7 +58,8 @@ Call returns Expression:
 	reference = [ecore::EObject|CallRule] '('args=ExprList?')'
 ;
 
-Lambda returns Expression: '(' (lambdaArgs=VarDefList)? ')' name='->' '{' body=Block '}';
+Lambda returns Expression:
+	('(' (lambdaArgs=VarDefList)? ')' | lambdaArgs = VarDef) name='->' '{' body=Block '}';
 
 Rep returns Expression: 
 	name='rep' '(' init=RepInitialize ')' '{' body=Block '}' 
@@ -142,9 +143,9 @@ Primary returns Expression:
 
 Local returns Expression : Scalar | Builtin | Lambda;
 
-VarDef returns Expression: name = ID;
+VarDef: name = ID;
 
-VarUse returns Expression: refVar=[LinkableStatement];
+VarUse: reference=[ecore::EObject|CallRuleNoConflict];
 
 Scalar: DoubleVal | StringVal | BooleanVal | TupleVal;
 
@@ -157,6 +158,8 @@ BooleanVal: val=BOOLEAN;
 TupleVal: name='[' args = ExprList? ']';
 
 CallRule: AID (JCallElement+ | ProtelisCallElement+)?;
+
+CallRuleNoConflict: AID (JCallElement+ | ProtelisCallElement+) | ID;
 
 JCallElement: '::' AID;
 
