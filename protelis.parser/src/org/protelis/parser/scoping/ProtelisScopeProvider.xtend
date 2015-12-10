@@ -19,7 +19,6 @@ import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider
 import org.eclipse.xtext.scoping.impl.MapBasedScope
 import org.eclipse.xtext.scoping.impl.SimpleScope
 import org.protelis.parser.protelis.Block
-import org.protelis.parser.protelis.Expression
 import org.protelis.parser.protelis.FunctionDef
 import org.protelis.parser.protelis.Module
 import org.protelis.parser.protelis.VarDef
@@ -51,7 +50,7 @@ class ProtelisScopeProvider extends AbstractDeclarativeScopeProvider {
 						list.addAll(container.args.args)
 					}
 				Lambda: {
-					val lambdaArgs = container.lambdaArgs
+					val lambdaArgs = container.args
 					switch lambdaArgs {
 						VarDef: list.add(lambdaArgs)
 						VarDefList: list.addAll((lambdaArgs as VarDefList).args)

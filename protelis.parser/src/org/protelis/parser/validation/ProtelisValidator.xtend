@@ -52,8 +52,8 @@ class ProtelisValidator extends AbstractProtelisValidator {
 				}
 			}
 			if (parent instanceof Lambda) {
-				if(parent.lambdaArgs != null) {
-					val args = parent.lambdaArgs;
+				if(parent.args != null) {
+					val args = parent.args;
 					if(args instanceof VarDef){
 						if (args.name.equals(exp.name)) {
 							error(exp)
