@@ -59,7 +59,7 @@ Call:
 ;
 
 Lambda:
-	('(' (lambdaArgs=VarDefList)? ')' | lambdaArgs = VarDef) name='->' '{' body=Block '}';
+	('(' (args=VarDefList)? ')' | args = VarDef) name='->' '{' body=Block '}';
 
 Rep: 
 	name='rep' '(' init=RepInitialize ')' '{' body=Block '}' 
