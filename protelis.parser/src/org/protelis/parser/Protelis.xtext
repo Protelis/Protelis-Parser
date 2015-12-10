@@ -74,17 +74,18 @@ NBR:
 ;
 
 Builtin:
-	name='self' |
-	name='env' |
-	name='pi' |
-	name='e' |
-	name='eval' '(' arg = ( VarUse | StringVal ) ')' |
-	name='alignedMap' '(' arg=Expression ',' cond=Expression ',' op=Expression ',' default=Expression ')' |
-	name='mux' '(' cond=Expression ')' '{' then=Block '}' 'else' '{'  else=Block '}' |
-	HoodOp
+	Self | Env | Pi | E | Eval | AlignedMap | Mux | Hood
 ;
 
-HoodOp:
+Self: name = 'self';
+Env: name = 'env';
+Pi: name = 'pi';
+E: name = 'e';
+Eval: name='eval' '(' arg = ( VarUse | StringVal ) ')';
+AlignedMap: name='alignedMap' '(' arg=Expression ',' cond=Expression ',' op=Expression ',' default=Expression ')';
+Mux: name='mux' '(' cond=Expression ')' '{' then=Block '}' 'else' '{'  else=Block '}';
+
+Hood:
 	BuiltinHoodOp |	GenericHood  
 ;
 
