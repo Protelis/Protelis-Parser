@@ -12,11 +12,11 @@ Module: ('module' name=ProtelisQualifiedName)?
 	(definitions+=FunctionDef)* program=Block?
 ;
 
-VarList: args += VAR (',' args += VAR)* ;
+VarDefList: args += VarDef (',' args += VarDef)* ;
 
-RepList: args+=RepInitialize (',' args+=RepInitialize)*;
+// RepList: args+=RepInitialize (',' args+=RepInitialize)*;
 ExprList: args+=Expression (',' args+=Expression)*;
-RepInitialize: x=VAR '<-' w=VarVal;
+RepInitialize: x=VarDef '<-' w=Expression;
 
 ImportSection:
 	importDeclarations+=ImportDeclaration+;
@@ -32,62 +32,64 @@ Import:
 
 Block: (first=Statement) (';' others=Block)? ;
 
-Statement: Assignment | LinkableStatement ;
+Statement: (Declaration | Assignment | Expression) ';'*;
 
-Declaration:
-	'let' name=ID '=' right=Expression
+Declaration returns VarDef:
+	'let' VarDef '=' right=Expression
 ;
 
-LinkableStatement: Declaration | Expression;
+//LinkableStatement: Declaration | Expression;
 
 Assignment:
-	refVar=[LinkableStatement] name='=' right = Expression
+	refVar=[VarDef] name='=' right = Expression
 ;
 
 Expression:
- 	LogicalOr ';'?
+ 	LogicalOr
 ;
 
-FunctionDef: public?="public"? 'def' name=ID '(' (args=VarList)? ')' '{' body=Block '}';
+FunctionDef: public?="public"? 'def' name=ID '(' (args=VarDefList)? ')' '{' body=Block '}';
 
 
-Call returns Expression:
+Call:
 	/*
 	 * Use manual scoping to solve this
 	 */
 	reference = [ecore::EObject|CallRule] '('args=ExprList?')'
 ;
 
-Lambda returns Expression: '(' (lambdaArgs=VarList)? ')' name='->' '{' body=Block '}';
+Lambda:
+	('(' (args=VarDefList)? ')' | args = VarDef) name='->' '{' body=Block '}';
 
-Rep returns Expression: 
-	name='rep' '(' init=RepList ')' '{' body=Block '}' 
+Rep: 
+	name='rep' '(' init=RepInitialize ')' '{' body=Block '}' 
 ;
 
-If returns Expression:
+If:
 	name='if' '(' cond=Expression ')' '{' then=Block '}' 'else' '{' else=Block '}'
 ;
 
-NBR returns Expression:
+NBR:
 	name='nbr' '(' arg=Expression ')' 
 ;
 
-Builtin returns Expression:
-	name='self' |
-	name='env' |
-	name='pi' |
-	name='e' |
-	name='eval' '(' arg = ( VAR | StringVal ) ')' |
-	name='alignedMap' '(' arg=Expression ',' cond=Expression ',' op=Expression ',' default=Expression ')' |
-	name='mux' '(' cond=Expression ')' '{' then=Block '}' 'else' '{'  else=Block '}' |
-	HoodOp
+Builtin:
+	Self | Env | Pi | E | Eval | AlignedMap | Mux | Hood
 ;
 
-HoodOp returns Expression:
+Self: name = 'self';
+Env: name = 'env';
+Pi: name = 'pi';
+E: name = 'e';
+Eval: name='eval' '(' arg = ( VarUse | StringVal ) ')';
+AlignedMap: name='alignedMap' '(' arg=Expression ',' cond=Expression ',' op=Expression ',' default=Expression ')';
+Mux: name='mux' '(' cond=Expression ')' '{' then=Block '}' 'else' '{'  else=Block '}';
+
+Hood:
 	BuiltinHoodOp |	GenericHood  
 ;
 
-GenericHood returns Expression:
+GenericHood:
 		(name = 'hood' | name = 'hoodPlusSelf') '('
 			(reference = [ecore::EObject|CallRule] | op = Lambda ) ','
 			default = Expression ','
@@ -95,7 +97,7 @@ GenericHood returns Expression:
 		')'
 ;
 	
-BuiltinHoodOp returns Expression:
+BuiltinHoodOp:
 	(
 	name='minHood' |
 	name='maxHood' |
@@ -137,14 +139,14 @@ Postfix returns Expression:
 ;
 
 Primary returns Expression:
- (v = (VarVal | Call | Rep | NBR | If) | '(' Expression ')')
+ (v = (VarUse | Local | Call | Rep | NBR | If) | '(' Expression ')')
 ;
 
-VarVal returns Expression: VAR | Local;
+Local: Scalar | Builtin | Lambda;
 
-Local returns Expression : Scalar | Builtin | Lambda;
+VarDef: name = ID;
 
-VAR: name=ID;
+VarUse: reference=[ecore::EObject|CallRuleNoConflict];
 
 Scalar: DoubleVal | StringVal | BooleanVal | TupleVal;
 
@@ -157,6 +159,8 @@ BooleanVal: val=BOOLEAN;
 TupleVal: name='[' args = ExprList? ']';
 
 CallRule: AID (JCallElement+ | ProtelisCallElement+)?;
+
+CallRuleNoConflict: AID (JCallElement+ | ProtelisCallElement+) | ID;
 
 JCallElement: '::' AID;
 
