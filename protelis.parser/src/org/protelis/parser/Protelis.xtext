@@ -91,7 +91,7 @@ Hood:
 
 GenericHood:
 		(name = 'hood' | name = 'hoodPlusSelf') '('
-			(reference = [ecore::EObject|CallRule] | op = Lambda ) ','
+			(reference = VarUse | op = Lambda ) ','
 			default = Expression ','
 			arg = Expression
 		')'
