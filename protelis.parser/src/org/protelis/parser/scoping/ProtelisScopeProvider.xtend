@@ -66,10 +66,6 @@ class ProtelisScopeProvider extends AbstractDeclarativeScopeProvider {
 		Scopes.scopeFor(Collections.emptyList)
 	}
 	
-	def IScope scope_GenericHood_reference(Module model, EReference ref) {
-		scope_Call_reference(model, ref)
-	}
-	
 	def IScope scope_Call_reference(Module model, EReference ref) {
 		val List<EObject> internal = new ArrayList(model.definitions)
 		val List<IEObjectDescription> externalProtelis = new ArrayList
