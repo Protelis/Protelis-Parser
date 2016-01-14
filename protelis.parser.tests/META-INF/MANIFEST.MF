@@ -2,10 +2,10 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: protelis.parser.tests
 Bundle-Vendor: Alma Mater Studiorum Università di Bologna
-Bundle-Version: 5.0.0
+Bundle-Version: 6.0.0
 Bundle-SymbolicName: protelis.parser.tests;singleton:=true
 Bundle-ActivationPolicy: lazy
-Require-Bundle: protelis.parser;bundle-version="5.0.0",
+Require-Bundle: protelis.parser;bundle-version="6.0.0",
  protelis.parser.ui,
  org.eclipse.core.runtime,
  org.eclipse.xtext.junit4,
