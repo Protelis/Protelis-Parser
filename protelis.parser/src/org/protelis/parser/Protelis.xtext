@@ -1,6 +1,4 @@
-grammar org.protelis.parser.Protelis with 
-//	org.eclipse.xtext.xbase.Xbase
- 	org.eclipse.xtext.common.Terminals
+grammar org.protelis.parser.Protelis with org.eclipse.xtext.common.Terminals
 import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 import "http://www.eclipse.org/xtext/common/JavaVMTypes"
 
@@ -177,4 +175,3 @@ QualifiedNameInStaticImport:
 DOUBLE returns ecore::EDouble: INT('.'INT)?('e'|'E''-'?INT)? | 'Infinity' | 'NaN';
 BOOLEAN returns ecore::EBoolean: "true" | "false";
 
-terminal ML_COMMENT	: '/*' -> '*/';

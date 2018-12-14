@@ -34,7 +34,7 @@ class ProtelisValidator extends AbstractProtelisValidator {
 	@Check
 	def letNameDoesNotShadowArguments(VarDef exp) {
 		var parent = exp.eContainer
-		while (parent != null) {
+		while (parent !== null) {
 			if (parent instanceof Block) {
 				if (parent.first instanceof VarDef && parent.first != exp) {
 					val otherLet = parent.first as VarDef

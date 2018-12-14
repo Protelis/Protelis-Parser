@@ -39,14 +39,14 @@ class ProtelisScopeProvider extends AbstractDeclarativeScopeProvider {
 	def IScope scope_VarUse_reference(VarUse expression, EReference ref) {
 		val list = new ArrayList
 		var container = expression.eContainer
-	 	while (container != null) {
+	 	while (container !== null) {
 			switch container {
 				Block:
 					if (container.first instanceof VarDef) {
 						list.add(container.first)
 					}
 				FunctionDef:
-					if (container.args != null) {
+					if (container.args !== null) {
 						list.addAll(container.args.args)
 					}
 				Lambda: {
