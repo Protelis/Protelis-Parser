@@ -4,7 +4,7 @@ import "http://www.eclipse.org/xtext/common/JavaVMTypes"
 
 generate protelis "http://protelis.org"
 
-Module: ('module' name=ProtelisQualifiedName)?
+ProtelisModule: ('module' name=ProtelisQualifiedName)?
 	(javaimports=ImportSection)?
 	protelisImport+=Import*
 	(definitions+=FunctionDef)* program=Block?
@@ -25,7 +25,7 @@ ImportDeclaration:
 ;
 
 Import: 
-	'import' module=[Module|ProtelisQualifiedName]
+	'import' module=[ProtelisModule|ProtelisQualifiedName]
 ;
 
 Block: (first=Statement) (';' others=Block)? ;

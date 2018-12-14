@@ -20,12 +20,12 @@ import org.eclipse.xtext.scoping.impl.MapBasedScope
 import org.eclipse.xtext.scoping.impl.SimpleScope
 import org.protelis.parser.protelis.Block
 import org.protelis.parser.protelis.FunctionDef
-import org.protelis.parser.protelis.Module
 import org.protelis.parser.protelis.VarDef
 import org.protelis.parser.protelis.VarDefList
 import org.protelis.parser.protelis.Lambda
 import org.protelis.parser.protelis.Rep
 import org.protelis.parser.protelis.VarUse
+import org.protelis.parser.protelis.ProtelisModule
 
 /**
  * This class contains custom scoping description.
@@ -58,7 +58,7 @@ class ProtelisScopeProvider extends AbstractDeclarativeScopeProvider {
 				}
 				Rep: list.add(container.init.x)
 				VarDef: list.add(container)
-				Module:
+				ProtelisModule:
 					return MapBasedScope.createScope(scope_Call_reference(container, ref), Scopes.scopeFor(list).allElements)
 			}
 			container = container.eContainer
@@ -66,7 +66,7 @@ class ProtelisScopeProvider extends AbstractDeclarativeScopeProvider {
 		Scopes.scopeFor(Collections.emptyList)
 	}
 	
-	def IScope scope_Call_reference(Module model, EReference ref) {
+	def IScope scope_Call_reference(ProtelisModule model, EReference ref) {
 		val List<EObject> internal = new ArrayList(model.definitions)
 		val List<IEObjectDescription> externalProtelis = new ArrayList
 		val List<IEObjectDescription> java = new ArrayList
