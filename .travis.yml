@@ -8,3 +8,8 @@ jdk:
   - openjdk10
   - openjdk11
   - oraclejdk11
+
+install: true
+
+script:
+  - mvn clean install
