@@ -16,7 +16,7 @@ jdk:
 install: true
 
 script:
-  - "mvn clean install | egrep -v ' Download(ing|ed): '"
+  - "mvn clean install > >(egrep -v ' Download(ing|ed): ')"
 
 after_failure:
   # Print the maven log for more information
