@@ -18,6 +18,6 @@ install: true
 script:
   - mvn clean install 
 
-after_failure
+after_failure:
   # Print the maven log for more information
   - cat target/work/data/.metadata/.log
