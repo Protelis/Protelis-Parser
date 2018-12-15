@@ -20,4 +20,4 @@ script:
 
 after_failure:
   # Print the maven log for more information
-  - cat target/work/data/.metadata/.log
+  - cat */target/work/data/.metadata/.log
