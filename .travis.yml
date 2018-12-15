@@ -2,7 +2,7 @@ language: java
 
 env:
   global:
-    - MAVEN_OPTS=-Dorg.slf4j.simpleLogger.defaultLogLevel=warn
+    - MAVEN_OPTS="-Dorg.slf4j.simpleLogger.defaultLogLevel=warn -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
 
 jdk:
   - openjdk7
