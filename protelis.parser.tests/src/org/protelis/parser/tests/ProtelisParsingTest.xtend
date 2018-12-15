@@ -15,7 +15,7 @@ import org.junit.jupiter.api.^extension.ExtendWith
 @InjectWith(ProtelisInjectorProvider)
 class ProtelisParsingTest {
 	@Inject
-	ParseHelper<org.protelis.parser.protelis.Module> parseHelper
+	ParseHelper<org.protelis.parser.protelis.ProtelisModule> parseHelper
 	
 	@Test
 	def void loadModel() {
