@@ -8,7 +8,6 @@
 	</parent>
 	<artifactId>protelis.parser.ui.tests</artifactId>
 	<packaging>eclipse-test-plugin</packaging>
-
 	<build>
 		<plugins>
 			<plugin>
@@ -19,7 +18,7 @@
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-surefire-plugin</artifactId>
 				<configuration>
-					<useUIHarness>true</useUIHarness>
+					<useUIHarness>false</useUIHarness>
 				</configuration>
 			</plugin>
 			<plugin>
