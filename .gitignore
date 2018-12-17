@@ -8,4 +8,4 @@
 *.xml_gen
 **/.recommenders/*
 *_gen
-
+/.metadata/
