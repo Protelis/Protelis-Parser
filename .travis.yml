@@ -10,8 +10,8 @@ jdk:
   - oraclejdk8
   - openjdk9
   - openjdk10
-  - openjdk11
-  - oraclejdk11
+#  - openjdk11
+#  - oraclejdk11
 
 install: true
 
