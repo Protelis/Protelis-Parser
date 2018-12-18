@@ -9,3 +9,4 @@
 **/.recommenders/*
 *_gen
 /.metadata/
+.gradle/
