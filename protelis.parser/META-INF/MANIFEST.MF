@@ -7,5 +7,23 @@ Bundle-SymbolicName: protelis.parser; singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.xtext,
  org.eclipse.xtext.xbase,
- org.eclipse.equinox.common;bundle-version="3.5.0"
+ org.eclipse.equinox.common;bundle-version="3.5.0",
+ org.eclipse.emf.ecore,
+ org.eclipse.xtext.util,
+ org.antlr.runtime,
+ org.eclipse.xtend.lib,
+ org.eclipse.emf.common,
+ org.eclipse.xtext.xbase.lib
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Export-Package: org.protelis.parser.parser.antlr.internal,
+ org.protelis.parser.generator,
+ org.protelis.parser.protelis.impl,
+ org.protelis.parser.validation,
+ org.protelis.parser.scoping,
+ org.protelis.parser,
+ org.protelis.parser.parser.antlr,
+ org.protelis.parser.protelis.util,
+ org.protelis.parser.services,
+ org.protelis.parser.serializer,
+ org.protelis.parser.protelis
+Import-Package: org.apache.log4j
