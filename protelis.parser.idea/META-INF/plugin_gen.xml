@@ -1,0 +1,93 @@
+<idea-plugin version="2">
+	<extensions defaultExtensionNs="org.eclipse.xtext.idea">
+		<package
+			uri="http://protelis.org"
+			class="org.protelis.parser.protelis.ProtelisPackage"
+		/>
+		<resourceFactory 
+			type="pt"
+			class="org.eclipse.xtext.resource.IResourceFactory"
+			factoryClass="org.protelis.parser.idea.ProtelisExtensionFactory"
+		/>
+		<resourceServiceProvider
+			uriExtension="pt"
+			class="org.eclipse.xtext.idea.resource.IResourceIdeaServiceProvider"
+			factoryClass="org.protelis.parser.idea.ProtelisExtensionFactory"
+		/>
+
+		<lang.setup
+			language="org.protelis.parser.Protelis"
+			implementationClass="org.protelis.parser.idea.ProtelisIdeaSetup"
+		/>
+	</extensions>
+
+	<extensions defaultExtensionNs="com.intellij">
+		<psi.treeChangePreprocessor implementation="org.protelis.parser.idea.lang.psi.ProtelisCodeBlockModificationListener"/>
+
+		<fileTypeFactory implementation="org.protelis.parser.idea.lang.ProtelisFileTypeFactory"/>
+		<stubElementTypeHolder class="org.protelis.parser.idea.lang.ProtelisElementTypeProvider"/>
+		<lang.ast.factory 
+			language="org.protelis.parser.Protelis"
+			factoryClass="org.protelis.parser.idea.ProtelisExtensionFactory"
+			implementationClass="org.eclipse.xtext.idea.lang.BaseXtextASTFactory"
+		/>
+		<lang.parserDefinition 
+			language="org.protelis.parser.Protelis"
+			factoryClass="org.protelis.parser.idea.ProtelisExtensionFactory"
+			implementationClass="org.protelis.parser.idea.lang.parser.ProtelisParserDefinition"
+		/>
+		<lang.findUsagesProvider 
+			language="org.protelis.parser.Protelis"
+			factoryClass="org.protelis.parser.idea.ProtelisExtensionFactory"
+			implementationClass="org.eclipse.xtext.idea.findusages.BaseXtextFindUsageProvider"
+		/>
+		<lang.refactoringSupport 
+			language="org.protelis.parser.Protelis"
+			factoryClass="org.protelis.parser.idea.ProtelisExtensionFactory"
+			implementationClass="org.eclipse.xtext.idea.refactoring.BaseXtextRefactoringSupportProvider"
+		/>
+		<lang.namesValidator 
+			language="org.protelis.parser.Protelis"
+			factoryClass="org.protelis.parser.idea.ProtelisExtensionFactory"
+			implementationClass="com.intellij.lang.refactoring.NamesValidator"
+		/>
+		<lang.syntaxHighlighterFactory key="org.protelis.parser.Protelis" implementationClass="org.protelis.parser.idea.highlighting.ProtelisSyntaxHighlighterFactory" />
+		<lang.braceMatcher 
+			language="org.protelis.parser.Protelis"
+			factoryClass="org.protelis.parser.idea.ProtelisExtensionFactory"
+			implementationClass="com.intellij.lang.PairedBraceMatcher"
+		/>
+		<annotator 
+			language="org.protelis.parser.Protelis"
+			factoryClass="org.protelis.parser.idea.ProtelisExtensionFactory"
+			implementationClass="org.eclipse.xtext.idea.annotation.IssueAnnotator"
+		/>
+		<completion.contributor language="org.protelis.parser.Protelis" implementationClass="org.protelis.parser.idea.completion.ProtelisCompletionContributor"/>
+		<pom.declarationSearcher implementation="org.protelis.parser.idea.lang.pom.ProtelisPomDeclarationSearcher"/>
+
+		<lang.psiStructureViewFactory 
+			language="org.protelis.parser.Protelis"
+			factoryClass="org.protelis.parser.idea.ProtelisExtensionFactory"
+			implementationClass="com.intellij.lang.PsiStructureViewFactory"
+		/>
+		<facetType implementation="org.protelis.parser.idea.facet.ProtelisFacetType"/>
+		<lang.documentationProvider 
+			language="org.protelis.parser.Protelis"
+			factoryClass="org.protelis.parser.idea.ProtelisExtensionFactory"
+			implementationClass="org.eclipse.xtext.idea.documentation.IdeaDocumentationProvider"
+		/>
+		<colorSettingsPage implementation="org.protelis.parser.idea.highlighting.ProtelisColorSettingsPage"/>
+		<highlightVisitor implementation="org.protelis.parser.idea.highlighting.ProtelisSemanticHighlightVisitor"/>
+
+		<lang.formatter 
+			language="org.protelis.parser.Protelis"
+			factoryClass="org.protelis.parser.idea.ProtelisExtensionFactory"
+			implementationClass="com.intellij.formatting.FormattingModelBuilder"
+		/>
+		<lang.commenter 
+			language="org.protelis.parser.Protelis"
+			factoryClass="org.protelis.parser.idea.ProtelisExtensionFactory"
+			implementationClass="com.intellij.lang.CodeDocumentationAwareCommenter"
+		/>
+	</extensions>
+</idea-plugin>
