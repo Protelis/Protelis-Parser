@@ -40,7 +40,7 @@ class ProtelisScopeProvider extends AbstractProtelisScopeProvider {
 			switch container {
 				Block:
 					if (container.first instanceof VarDef) {
-						list.add(container.first)
+						list.add(container.first as VarDef)
 					}
 				FunctionDef:
 					if (container.args !== null) {
@@ -50,7 +50,7 @@ class ProtelisScopeProvider extends AbstractProtelisScopeProvider {
 					val lambdaArgs = container.args
 					switch lambdaArgs {
 						VarDef: list.add(lambdaArgs)
-						VarDefList: list.addAll((lambdaArgs as VarDefList).args)
+						VarDefList: list.addAll(lambdaArgs.args)
 					}
 				}
 				Rep: list.add(container.init.x)
