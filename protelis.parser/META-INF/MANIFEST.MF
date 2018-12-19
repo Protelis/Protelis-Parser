@@ -1,5 +1,4 @@
 Manifest-Version: 1.0
-Automatic-Module-Name: protelis.parser
 Bundle-ManifestVersion: 2
 Bundle-Name: protelis.parser
 Bundle-Vendor: Alma Mater Studiorum Università di Bologna
@@ -8,23 +7,5 @@ Bundle-SymbolicName: protelis.parser; singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.xtext,
  org.eclipse.xtext.xbase,
- org.eclipse.equinox.common;bundle-version="3.5.0",
- org.eclipse.emf.ecore,
- org.eclipse.xtext.xbase.lib;bundle-version="2.14.0",
- org.eclipse.xtext.util,
- org.eclipse.emf.common,
- org.eclipse.xtend.lib;bundle-version="2.14.0",
- org.antlr.runtime;bundle-version="[3.2.0,3.2.1)"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Export-Package: org.protelis.parser.generator,
- org.protelis.parser.protelis.util,
- org.protelis.parser.validation,
- org.protelis.parser,
- org.protelis.parser.protelis,
- org.protelis.parser.scoping,
- org.protelis.parser.serializer,
- org.protelis.parser.parser.antlr,
- org.protelis.parser.parser.antlr.internal,
- org.protelis.parser.services,
- org.protelis.parser.protelis.impl
-Import-Package: org.apache.log4j
+ org.eclipse.equinox.common;bundle-version="3.5.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7

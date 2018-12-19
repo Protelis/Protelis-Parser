@@ -1,0 +1,3 @@
+include 'protelis.parser'
+include 'protelis.parser.ide'
+include 'protelis.parser.idea'
