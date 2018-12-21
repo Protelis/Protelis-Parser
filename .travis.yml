@@ -30,10 +30,9 @@ after_failure:
   # Print the maven log for more information
   - cat */target/work/data/.metadata/.log
 
-deploy:
+after_success:
   - mvn deploy
 
 stages:
-  - name: deploy
-    # require the branch name to be master (note for PRs this is the base branch name)
+  - name: after_success
     if: jdk = openjdk8
