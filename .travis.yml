@@ -24,15 +24,15 @@ before_install:
 install: true
 
 script:
-  - "mvn clean compile test > >(egrep -v 'Download(ing|ed) ')"
+  - export OPENJDK_VERSION=$(java -version 2>&1 | grep openjdk | awk -F '"' '/version/ {print $2}')
+  - if [[ $OPENJDK_VERSION == "1.8.0"* ]]; then
+      echo "Detected OpenJDK ${OPENJDK_VERSION}, enabling deploy on Central"
+      mvn clean deploy > >(egrep -v 'Download(ing|ed) ')
+    else
+      mvn clean install > >(egrep -v 'Download(ing|ed) ')
+    fi
 
 after_failure:
   # Print the maven log for more information
   - cat */target/work/data/.metadata/.log
 
-after_success:
-  - mvn deploy
-
-stages:
-  - name: after_success
-    if: jdk = openjdk8
