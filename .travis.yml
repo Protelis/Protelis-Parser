@@ -26,7 +26,7 @@ install: true
 script:
   - export OPENJDK_VERSION=$(java -version 2>&1 | grep openjdk | awk -F '"' '/version/ {print $2}')
   - if [[ $OPENJDK_VERSION == "1.8.0"* ]]; then
-      echo "Detected OpenJDK ${OPENJDK_VERSION}, enabling deploy on Central";
+      echo "Detected OpenJDK ${OPENJDK_VERSION}, enabling deployment on Central";
       mvn clean deploy > >(egrep -v 'Download(ing|ed) ');
     else
       mvn clean install > >(egrep -v 'Download(ing|ed) ');
