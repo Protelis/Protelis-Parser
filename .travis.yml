@@ -24,7 +24,7 @@ before_install:
 install: true
 
 script:
-  - "mvn clean compile test deploy > >(egrep -v 'Download(ing|ed) ')"
+  - "mvn clean compile test > >(egrep -v 'Download(ing|ed) ')"
 
 after_failure:
   # Print the maven log for more information
