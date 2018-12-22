@@ -12,3 +12,4 @@
 .gradle/
 prepare_environment.sh
 settings.xml
+target/
