@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>protelis.parser</groupId>
+	<groupId>org.protelis</groupId>
 	<version>6.1.0</version>
 	<artifactId>protelis.parser.parent</artifactId>
 	<packaging>pom</packaging>
@@ -39,46 +39,61 @@
 			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
 		</repository>
 	</distributionManagement>
+	<url>http://protelis.org</url>
+	<licenses>
+		<license>
+			<name>GPL linking exception</name>
+			<url>
+			https://github.com/Protelis/Protelis-Parser/blob/master/LICENSE.txt
+			</url>
+		</license>
+	</licenses>
+	<name>Protelis Parser</name>
+	<description>Parser for Protelis, the practical aggregate programming language</description>
+	<developers>
+		<developer>
+			<name>Danilo Pianini</name>
+			<email>danilo.pianini@unibo.it</email>
+			<url>http://danilopianini.apice.unibo.it/</url>
+		</developer>
+		<developer>
+			<name>Jacob Beal</name>
+			<email>jakebeal@bbn.com</email>
+			<url>http://web.mit.edu/jakebeal/www/</url>
+		</developer>
+	</developers>
+	<scm>
+		<connection>scm:git:git@github.com:Protelis/Protelis-parser.git</connection>
+		<developerConnection>scm:git:git@github.com:Protelis/Protelis-parser.git</developerConnection>
+		<url>https://github.com/Protelis/Protelis-parser</url>
+	</scm>
 	<build>
 		<plugins>
-		    <plugin>
-   		        <groupId>org.sonatype.plugins</groupId>
-		        <artifactId>nexus-staging-maven-plugin</artifactId>
-		        <version>1.6.8</version>
-		        <extensions>true</extensions>
-		        <configuration>
-			        <serverId>ossrh</serverId>
-			        <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-			        <autoReleaseAfterClose>false</autoReleaseAfterClose>
-		        </configuration>
-		    </plugin>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-				<version>3.0.1</version>
-				<executions>
-					<execution>
-						<id>attach-sources</id>
-						<goals>
-							<goal>jar-no-fork</goal>
-						</goals>
-					</execution>
-				</executions>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+				<version>1.6.8</version>
+				<extensions>true</extensions>
+				<configuration>
+					<serverId>ossrh</serverId>
+					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+					<autoReleaseAfterClose>false</autoReleaseAfterClose>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>3.0.1</version>
+				<configuration>
+					<doclint>none</doclint>
+					<failOnError>false</failOnError>
+				</configuration>
 				<executions>
 					<execution>
-						<id>attach-javadocs</id>
-						<goals>
+						<!-- <goals>
 							<goal>jar</goal>
-						</goals>
-						<configuration>
-							<doclint>none</doclint>
-		                </configuration>
-   					</execution>
+						</goals> -->
+					</execution>
 				</executions>
 			</plugin>
 			<plugin>
@@ -95,7 +110,7 @@
 					</execution>
 				</executions>
 			</plugin>
-   			<plugin>
+			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-maven-plugin</artifactId>
 				<version>${tycho-version}</version>
@@ -149,7 +164,7 @@
 				<configuration>
 					<target>
 						<artifact>
-							<groupId>protelis.parser</groupId>
+							<groupId>org.protelis</groupId>
 							<artifactId>protelis.parser.target</artifactId>
 							<version>${project.version}</version>
 						</artifact>
