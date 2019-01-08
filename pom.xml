@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>protelis.parser</groupId>
+	<groupId>org.protelis</groupId>
 	<version>6.1.0</version>
 	<artifactId>protelis.parser.parent</artifactId>
 	<packaging>pom</packaging>
@@ -80,7 +80,7 @@
 				<configuration>
 					<target>
 						<artifact>
-							<groupId>protelis.parser</groupId>
+							<groupId>org.protelis</groupId>
 							<artifactId>protelis.parser.target</artifactId>
 							<version>${project.version}</version>
 						</artifact>
