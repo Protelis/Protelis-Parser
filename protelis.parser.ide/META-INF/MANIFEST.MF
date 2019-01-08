@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Automatic-Module-Name: protelis.parser.ide
+Bundle-ManifestVersion: 2
+Bundle-Name: protelis.parser.ide
+Bundle-Vendor: Alma Mater Studiorum Università di Bologna
+Bundle-Version: 6.1.0
+Bundle-SymbolicName: protelis.parser.ide; singleton:=true
+Bundle-ActivationPolicy: lazy
+Require-Bundle: protelis.parser,
+ org.eclipse.xtext.ide,
+ org.eclipse.xtext.xbase.ide,
+ org.antlr.runtime;bundle-version="[3.2.0,3.2.1)"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: org.protelis.parser.ide.contentassist.antlr,
+ org.protelis.parser.ide.contentassist.antlr.internal
