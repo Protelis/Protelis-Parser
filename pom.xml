@@ -24,13 +24,89 @@
 		<module>protelis.parser.tests</module>
 		<module>protelis.parser.ui.tests</module>
 	</modules>
+	<distributionManagement>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
+	<url>http://protelis.org</url>
+	<licenses>
+		<license>
+			<name>GPL linking exception</name>
+			<url>
+			https://github.com/Protelis/Protelis-Parser/blob/master/LICENSE.txt
+			</url>
+		</license>
+	</licenses>
+	<name>Protelis Parser</name>
+	<description>Parser for Protelis, the practical aggregate programming language</description>
+	<developers>
+		<developer>
+			<name>Danilo Pianini</name>
+			<email>danilo.pianini@unibo.it</email>
+			<url>http://danilopianini.apice.unibo.it/</url>
+		</developer>
+		<developer>
+			<name>Jacob Beal</name>
+			<email>jakebeal@bbn.com</email>
+			<url>http://web.mit.edu/jakebeal/www/</url>
+		</developer>
+	</developers>
+	<scm>
+		<connection>scm:git:git@github.com:Protelis/Protelis-parser.git</connection>
+		<developerConnection>scm:git:git@github.com:Protelis/Protelis-parser.git</developerConnection>
+		<url>https://github.com/Protelis/Protelis-parser</url>
+	</scm>
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+				<version>1.6.8</version>
+				<extensions>true</extensions>
+				<configuration>
+					<serverId>ossrh</serverId>
+					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+					<autoReleaseAfterClose>false</autoReleaseAfterClose>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-maven-plugin</artifactId>
 				<version>${tycho-version}</version>
 				<extensions>true</extensions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.0.1</version>
+				<configuration>
+					<doclint>none</doclint>
+					<failOnError>false</failOnError>
+				</configuration>
+				<executions>
+					<execution>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>1.6</version>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
@@ -295,7 +371,6 @@
 			</snapshots>
 		</pluginRepository>
 	</pluginRepositories>
-
 	<dependencies>
 	</dependencies>
 </project>
