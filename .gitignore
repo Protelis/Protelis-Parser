@@ -12,4 +12,5 @@
 .gradle/
 prepare_environment.sh
 settings.xml
+secrets.tar
 target/
