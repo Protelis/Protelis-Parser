@@ -4,7 +4,7 @@
 	<description>
 		This plugin enables smart editing of Protelis files.
 	</description>
-	<version>6.1.0</version>
+	<version>6.1.0.java7legacy</version>
 	<vendor>Alma Mater Studiorum Università di Bologna</vendor>
 
 	<idea-version since-build="145"/>
