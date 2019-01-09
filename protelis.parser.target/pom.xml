@@ -8,8 +8,6 @@
 	</parent>
 	<artifactId>protelis.parser.target</artifactId>
 	<packaging>eclipse-target-definition</packaging>
-
-
 	<dependencies>
 	</dependencies>
 </project>

@@ -8,7 +8,6 @@
 	</parent>
 	<artifactId>protelis.parser.tests</artifactId>
 	<packaging>eclipse-test-plugin</packaging>
-
 	<build>
 		<plugins>
 			<plugin>
@@ -25,5 +24,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>

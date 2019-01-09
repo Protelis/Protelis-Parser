@@ -8,7 +8,6 @@
 	</parent>
 	<artifactId>protelis.parser.web</artifactId>
 	<packaging>war</packaging>
-
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<resources>
@@ -71,7 +70,6 @@
 			</plugin>
 		</plugins>
 	</build>
-
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
