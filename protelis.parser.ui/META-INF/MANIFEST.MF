@@ -16,7 +16,9 @@ Require-Bundle: protelis.parser,
  org.eclipse.ui,
  org.eclipse.xtend.lib;resolution:=optional,
  org.eclipse.xtext.builder,
- org.eclipse.xtext.xbase.lib
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtext.xbase.ui,
+ org.eclipse.xtext.common.types.ui
 Import-Package: org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.protelis.parser.ui.quickfix,
