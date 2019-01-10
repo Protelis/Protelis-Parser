@@ -30,4 +30,21 @@ class ProtelisParsingTest{
 		val errors = result.eResource.errors
 		Assert.assertTrue('''Unexpected errors: «errors.join(", ")»''', errors.isEmpty)
 	}
+	
+		@Test
+	def void testParseTupleReduce01() {
+		val result = parseHelper.parse('''
+// EXPECTED_RESULT: 1
+[5, 4, 3, 2, 1].reduce(self, Infinity, (a, b) -> {
+	if(a < b) {
+		a
+	} else {
+		b
+	}
+})
+		''')
+		Assertions.assertNotNull(result)
+		val errors = result.eResource.errors
+		Assertions.assertTrue(errors.isEmpty, '''Unexpected errors: «errors.join(", ")»''')
+	}
 }
