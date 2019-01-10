@@ -31,7 +31,7 @@ class ProtelisParsingTest{
 		Assert.assertTrue('''Unexpected errors: «errors.join(", ")»''', errors.isEmpty)
 	}
 	
-		@Test
+	@Test
 	def void testParseTupleReduce01() {
 		val result = parseHelper.parse('''
 // EXPECTED_RESULT: 1
@@ -46,5 +46,17 @@ class ProtelisParsingTest{
 		Assert.assertNotNull(result)
 		val errors = result.eResource.errors
 		Assert.assertTrue('''Unexpected errors: «errors.join(", ")»''', errors.isEmpty)
+	}
+
+	@Test
+	def void testJavaParse() {
+		val result = parseHelper.parse('''
+// EXPECTED_RESULT: 0
+import java.lang.Math.sin
+java::lang::Math::sin(0)
+		''')
+		Assertions.assertNotNull(result)
+		val errors = result.eResource.errors
+		Assertions.assertTrue(errors.isEmpty, '''Unexpected errors: «errors.join(", ")»''')
 	}
 }
