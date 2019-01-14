@@ -25,6 +25,8 @@ import org.protelis.parser.protelis.Lambda
 import org.protelis.parser.protelis.Rep
 import org.protelis.parser.protelis.VarUse
 import org.protelis.parser.protelis.ProtelisModule
+import org.protelis.parser.protelis.Call
+
 /**
  * This class contains custom scoping description.
  * 
@@ -32,6 +34,20 @@ import org.protelis.parser.protelis.ProtelisModule
  * on how and when to use it.
  */
 class ProtelisScopeProvider extends AbstractProtelisScopeProvider {
+	
+	override IScope getScope(EObject context, EReference reference) {
+		if (context instanceof VarUse) {
+			scope_VarUse_reference(context, reference)
+		} else if (context instanceof Call) {
+			var global = context.eContainer
+			while (!(global instanceof ProtelisModule)) {
+				global = global.eContainer
+			}
+			scope_Call_reference(global as ProtelisModule, reference)
+		} else {
+			super.getScope(context, reference)
+		}
+	}
 
 	def IScope scope_VarUse_reference(VarUse expression, EReference ref) {
 		val list = new ArrayList
@@ -77,15 +93,13 @@ class ProtelisScopeProvider extends AbstractProtelisScopeProvider {
 		val javaImports = model.javaimports
 		if(javaImports !== null) {
 			javaImports.importDeclarations.forEach[id |
-				val type = id.importedType
-				if(id.wildcard) {
-					type.declaredOperations.filter[it.isStatic].populateMethodReferences(java)
-				} else {
-					val methodName = id.memberName
-					type.declaredOperations.filter[it.isStatic]
-						.filter[it.simpleName.equals(methodName)]
-						.populateMethodReferences(java)
-				}
+				val type = id.importedType;
+				type.eContents
+					.filter[it instanceof JvmOperation]
+					.map[it as JvmOperation]
+					.filter[it.isStatic]
+					.filter[if (id.wildcard) true else it.simpleName.equals(id.memberName)]
+					.populateMethodReferences(java)
 			]
 		}
 		val plainProtelis = Scopes.scopeFor(internal)

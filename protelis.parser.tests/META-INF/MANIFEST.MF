@@ -3,13 +3,14 @@ Automatic-Module-Name: protelis.parser.tests
 Bundle-ManifestVersion: 2
 Bundle-Name: protelis.parser.tests
 Bundle-Vendor: Alma Mater Studiorum Università di Bologna
-Bundle-Version: 6.1.0
+Bundle-Version: 7.0.0
 Bundle-SymbolicName: protelis.parser.tests; singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: protelis.parser,
  org.junit.jupiter.api;bundle-version="[5.0.0,6.0.0)",
  org.eclipse.xtext.testing,
  org.eclipse.xtext.xbase.testing,
- org.eclipse.xtext.xbase.lib;bundle-version="2.14.0"
+ org.eclipse.xtext.xbase.lib;bundle-version="2.14.0",
+ org.objectweb.asm;bundle-version="[7.0.0,7.1.0)";resolution:=optional
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: org.protelis.parser.tests;x-internal=true
