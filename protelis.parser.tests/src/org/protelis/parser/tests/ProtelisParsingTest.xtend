@@ -43,8 +43,8 @@ class ProtelisParsingTest{
 	}
 })
 		''')
-		Assertions.assertNotNull(result)
+		Assert.assertNotNull(result)
 		val errors = result.eResource.errors
-		Assertions.assertTrue(errors.isEmpty, '''Unexpected errors: «errors.join(", ")»''')
+		Assert.assertTrue('''Unexpected errors: «errors.join(", ")»''', errors.isEmpty)
 	}
 }
