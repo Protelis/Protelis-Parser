@@ -55,8 +55,8 @@ class ProtelisParsingTest{
 import java.lang.Math.sin
 java::lang::Math::sin(0)
 		''')
-		Assertions.assertNotNull(result)
+		Assert.assertNotNull(result)
 		val errors = result.eResource.errors
-		Assertions.assertTrue(errors.isEmpty, '''Unexpected errors: «errors.join(", ")»''')
+		Assert.assertTrue('''Unexpected errors: «errors.join(", ")»''', errors.isEmpty)
 	}
 }
