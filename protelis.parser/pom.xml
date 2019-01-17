@@ -45,6 +45,30 @@
 			<version>${xtextVersion}</version>
 			<scope>runtime</scope>
 		</dependency>
+        <dependency>
+            <groupId>org.eclipse.emf</groupId>
+            <artifactId>org.eclipse.emf.common</artifactId>
+            <version>2.12.0</version>
+			<scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.emf</groupId>
+            <artifactId>org.eclipse.emf.codegen</artifactId>
+            <version>2.11.0</version>
+			<scope>runtime</scope>
+        </dependency>
+		<dependency>
+			<groupId>org.eclipse.emf</groupId>
+			<artifactId>org.eclipse.emf.codegen.ecore</artifactId>
+			<version>2.12.0</version>
+			<scope>runtime</scope>
+		</dependency>
+			<dependency>
+			<groupId>org.eclipse.emf</groupId>
+			<artifactId>org.eclipse.emf.mwe2.launch</artifactId>
+			<version>2.8.3</version>
+			<scope>runtime</scope>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
