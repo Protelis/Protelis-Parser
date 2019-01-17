@@ -3,7 +3,7 @@ Automatic-Module-Name: protelis.parser.tests
 Bundle-ManifestVersion: 2
 Bundle-Name: protelis.parser.tests
 Bundle-Vendor: Alma Mater Studiorum Università di Bologna
-Bundle-Version: 7.0.1.java7legacy
+Bundle-Version: 7.0.2.java7legacy
 Bundle-SymbolicName: protelis.parser.tests; singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: protelis.parser,
@@ -21,3 +21,4 @@ Import-Package: org.junit.runners;version="4.5.0",
  org.junit.runner.notification;version="4.5.0",
  org.junit;version="4.5.0",
  org.junit.runner;version="4.5.0"
+ 

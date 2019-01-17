@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.protelis</groupId>
 		<artifactId>protelis.parser.parent</artifactId>
-		<version>7.0.1.java7legacy</version>
+		<version>7.0.2.java7legacy</version>
 	</parent>
 	<artifactId>protelis.parser.repository</artifactId>
 	<packaging>eclipse-repository</packaging>
