@@ -15,6 +15,7 @@ VarDefList: args += VarDef (',' args += VarDef)* ;
 // RepList: args+=RepInitialize (',' args+=RepInitialize)*;
 ExprList: args+=Expression (',' args+=Expression)*;
 RepInitialize: x=VarDef '<-' w=Expression;
+ShareInitialize: local=VarDef ',' field=VarDef '<-' w=Expression;
 
 ImportSection:
 	importDeclarations+=ImportDeclaration+;
@@ -61,6 +62,10 @@ Lambda:
 
 Rep: 
 	name='rep' '(' init=RepInitialize ')' '{' body=Block '}' 
+;
+
+Share: 
+	name='share' '(' init=ShareInitialize ')' '{' body=Block '}' 
 ;
 
 If:
