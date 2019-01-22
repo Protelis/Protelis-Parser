@@ -59,4 +59,15 @@ java::lang::Math::sin(0)
 		val errors = result.eResource.errors
 		Assert.assertTrue('''Unexpected errors: «errors.join(", ")»''', errors.isEmpty)
 	}
+
+	@Test
+	def void testParseShare() {
+		val result = parseHelper.parse('''
+share (x, y <- 0) { x + 1 }
+		''')
+		Assert.assertNotNull(result)
+		val errors = result.eResource.errors
+		Assert.assertTrue('''Unexpected errors: «errors.join(", ")»''', errors.isEmpty)
+	}
+
 }
