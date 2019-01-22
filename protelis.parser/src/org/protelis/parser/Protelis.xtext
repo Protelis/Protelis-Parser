@@ -142,7 +142,7 @@ Postfix returns Expression:
 ;
 
 Primary returns Expression:
- (v = (VarUse | Local | Call | Rep | NBR | If) | '(' Expression ')')
+ (v = (VarUse | Local | Call | Rep | Share | NBR | If) | '(' Expression ')')
 ;
 
 Local: Scalar | Builtin | Lambda;
