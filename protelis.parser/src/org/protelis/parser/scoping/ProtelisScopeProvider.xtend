@@ -23,6 +23,7 @@ import org.protelis.parser.protelis.VarDef
 import org.protelis.parser.protelis.VarDefList
 import org.protelis.parser.protelis.Lambda
 import org.protelis.parser.protelis.Rep
+import org.protelis.parser.protelis.Share
 import org.protelis.parser.protelis.VarUse
 import org.protelis.parser.protelis.ProtelisModule
 import org.protelis.parser.protelis.Call
@@ -70,6 +71,10 @@ class ProtelisScopeProvider extends AbstractProtelisScopeProvider {
 					}
 				}
 				Rep: list.add(container.init.x)
+				Share: {
+                    list.add(container.init.local)
+                    list.add(container.init.field)
+				}
 				VarDef: list.add(container)
 				ProtelisModule:
 					return MapBasedScope.createScope(scope_Call_reference(container, ref), Scopes.scopeFor(list).allElements)
