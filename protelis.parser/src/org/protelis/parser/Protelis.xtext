@@ -15,7 +15,7 @@ VarDefList: args += VarDef (',' args += VarDef)* ;
 // RepList: args+=RepInitialize (',' args+=RepInitialize)*;
 ExprList: args+=Expression (',' args+=Expression)*;
 RepInitialize: x=VarDef '<-' w=Expression;
-ShareInitialize: local=VarDef ',' field=VarDef '<-' w=Expression;
+ShareInitialize: (local=VarDef ',')? field=VarDef '<-' w=Expression;
 
 ImportSection:
 	importDeclarations+=ImportDeclaration+;
@@ -61,15 +61,17 @@ Lambda:
 	('(' (args=VarDefList)? ')' | args = VarDef) name='->' '{' body=Block '}';
 
 Rep: 
-	name='rep' '(' init=RepInitialize ')' '{' body=Block '}' 
+	name='rep' '(' init=RepInitialize ')' '{' body=Block '}'  (yields = Yield)?
 ;
 
 Share: 
-	name='share' '(' init=ShareInitialize ')' '{' body=Block '}' 
+	name='share' '(' init=ShareInitialize ')' '{' body=Block '}' (yields = Yield)?
 ;
 
+Yield: 'yield' '{' body = Block '}';
+
 If:
-	name='if' '(' cond=Expression ')' '{' then=Block '}' 'else' '{' else=Block '}'
+	'if' '(' cond=Expression ')' '{' then=Block '}' 'else' '{' else=Block '}' 
 ;
 
 NBR:
@@ -104,6 +106,7 @@ BuiltinHoodOp:
 	(
 	name='minHood' |
 	name='maxHood' |
+	name='localHood' |
 	name='anyHood' |
 	name='allHood' |
 	name='sumHood' |
