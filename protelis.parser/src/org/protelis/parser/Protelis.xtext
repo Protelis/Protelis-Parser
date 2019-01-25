@@ -71,7 +71,7 @@ Share:
 Yield: 'yield' '{' body = Block '}';
 
 If:
-	'if' '(' cond=Expression ')' '{' then=Block '}' 'else' '{' else=Block '}' 
+	name='if' '(' cond=Expression ')' '{' then=Block '}' 'else' '{' else=Block '}'
 ;
 
 NBR:
