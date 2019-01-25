@@ -23,9 +23,11 @@ import org.protelis.parser.protelis.VarDef
 import org.protelis.parser.protelis.VarDefList
 import org.protelis.parser.protelis.Lambda
 import org.protelis.parser.protelis.Rep
+import org.protelis.parser.protelis.Share
 import org.protelis.parser.protelis.VarUse
 import org.protelis.parser.protelis.ProtelisModule
 import org.protelis.parser.protelis.Call
+import org.protelis.parser.protelis.Yield
 
 /**
  * This class contains custom scoping description.
@@ -48,31 +50,51 @@ class ProtelisScopeProvider extends AbstractProtelisScopeProvider {
 			super.getScope(context, reference)
 		}
 	}
-
-	def IScope scope_VarUse_reference(VarUse expression, EReference ref) {
-		val list = new ArrayList
-		var container = expression.eContainer
-	 	while (container !== null) {
-			switch container {
-				Block:
-					if (container.first instanceof VarDef) {
-						list.add(container.first as VarDef)
-					}
-				FunctionDef:
-					if (container.args !== null) {
-						list.addAll(container.args.args)
-					}
+	
+	private def Iterable<VarDef> extractReferences(EObject container) {
+		switch container {
+				Block: if (container.first instanceof VarDef) #[container.first as VarDef] else emptyList
+				FunctionDef: container.args?.args ?: emptyList
 				Lambda: {
 					val lambdaArgs = container.args
 					switch lambdaArgs {
-						VarDef: list.add(lambdaArgs)
-						VarDefList: list.addAll(lambdaArgs.args)
+						VarDef: #[lambdaArgs]
+						VarDefList: lambdaArgs.args
+						default: emptyList
 					}
 				}
-				Rep: list.add(container.init.x)
-				VarDef: list.add(container)
+				Rep: #[container.init.x]
+				Share: {
+					val init = container.init
+                    #[container.init.field] + if (init.local === null) #[] else #[init.local]
+				}
+				VarDef: #[container]
+				Yield: {
+					val parent = container.eContainer
+					var Block body = switch parent {
+						Rep: parent.body
+						Share: parent.body
+					}
+					// Get to the last instruction and scan the whole block
+					val result = new ArrayList
+					while (body !== null) {
+						result.addAll(extractReferences(body))
+						body = body.others
+					}
+					result
+				}
+				default: emptyList
+		}
+	}
+
+	def IScope scope_VarUse_reference(VarUse expression, EReference ref) {
+		val list = new ArrayList<VarDef>
+		var container = expression.eContainer
+	 	while (container !== null) {
+			switch container {
 				ProtelisModule:
 					return MapBasedScope.createScope(scope_Call_reference(container, ref), Scopes.scopeFor(list).allElements)
+				default: list.addAll(extractReferences(container))
 			}
 			container = container.eContainer
 		}
