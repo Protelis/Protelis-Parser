@@ -29,7 +29,7 @@ Import:
 	'import' module=[ProtelisModule|ProtelisQualifiedName]
 ;
 
-Block: (first=Statement) (';' others=Block)? ;
+Block: first=Statement (';' others=Block)? ;
 
 Statement: (Declaration | Assignment | Expression) ';'*;
 
