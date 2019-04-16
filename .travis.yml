@@ -29,9 +29,9 @@ script:
   - export OPENJDK_VERSION=$(java -version 2>&1 | grep openjdk | awk -F '"' '/version/ {print $2}')
   - if [[ $OPENJDK_VERSION == "1.8.0"* ]]; then
       echo "Detected OpenJDK ${OPENJDK_VERSION}, enabling deployment on Central";
-      mvn clean test deploy > >(egrep -v 'Download(ing|ed) ');
+      mvn clean test integration-test deploy > >(egrep -v 'Download(ing|ed) ');
     else
-      mvn clean test package > >(egrep -v 'Download(ing|ed) ');
+      mvn clean test integration-test package > >(egrep -v 'Download(ing|ed) ');
     fi
 
 after_failure:
