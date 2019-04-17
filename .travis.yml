@@ -30,7 +30,7 @@ script:
   - if [[ $OPENJDK_VERSION == "1.8.0"* ]]; then
       echo "Detected OpenJDK ${OPENJDK_VERSION}, enabling deployment on Central";
       mvn clean install > >(egrep -v 'Download(ing|ed) ');
-      mvn clean deploy > >(egrep -v 'Download(ing|ed) ');
+      mvn deploy > >(egrep -v 'Download(ing|ed) ');
     else
       mvn clean install > >(egrep -v 'Download(ing|ed) ');
     fi
