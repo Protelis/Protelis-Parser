@@ -1,24 +1,22 @@
 package org.protelis.parser.tests
 
 import com.google.inject.Inject
+import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.testing.InjectWith
+import org.eclipse.xtext.testing.extensions.InjectionExtension
 import org.eclipse.xtext.testing.util.ParseHelper
+import org.eclipse.xtext.testing.validation.ValidationTestHelper
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
 import org.protelis.parser.protelis.ProtelisModule
-import org.junit.runner.RunWith
-import org.eclipse.xtext.testing.XtextRunner
-import org.eclipse.xtext.testing.validation.ValidationTestHelper
-import org.eclipse.emf.ecore.EObject
-import org.eclipse.xtext.testing.extensions.InjectionExtension
 
 @ExtendWith(InjectionExtension)
 @InjectWith(ProtelisInjectorProvider)
 class ProtelisParsingTest {
 	@Inject	extension ParseHelper<ProtelisModule> parseHelper
 	@Inject	extension ValidationTestHelper validationHelper
-	
+
 	@Test
 	def void loadModel() {
 		val result = parseHelper.parse('''
@@ -33,7 +31,7 @@ class ProtelisParsingTest {
 		val errors = result.eResource.errors
 		Assertions.assertTrue(errors.isEmpty, '''Unexpected errors: «errors.join(", ")»''')
 	}
-	
+
 	@Test
 	def void testParseTupleReduce01() {
 		val result = parseHelper.parse('''
