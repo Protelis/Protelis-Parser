@@ -16,7 +16,7 @@ jdk:
   - openjdk10
   - openjdk11
   - oraclejdk11
-  - openjdk13
+#  - openjdk12
 
 before_install:
   - openssl aes-256-cbc -K $encrypted_c2ba7c32533d_key -iv $encrypted_c2ba7c32533d_iv -in secrets.tar.enc -out secrets.tar -d
