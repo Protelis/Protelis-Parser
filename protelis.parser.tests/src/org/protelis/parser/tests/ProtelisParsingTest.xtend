@@ -74,6 +74,21 @@ share (x, y <- 0) { x + 1 }
 	}
 
 	@Test
+	def void testImportsInAnyOrder() {
+		val result = parseHelper.parse('''
+import protelis:lang:state
+import java.lang.Math.sin
+import protelis:lang:coord
+import java.lang.Math.cos
+import protelis:lang:meta
+1
+		''')
+		Assertions.assertNotNull(result)
+		val errors = result.eResource.errors
+		Assertions.assertTrue(errors.isEmpty, '''Unexpected errors: «errors.join(", ")»''')
+	}
+
+	@Test
 	def void testJavaResolveFailure() {
 		val EObject result = 
 '''

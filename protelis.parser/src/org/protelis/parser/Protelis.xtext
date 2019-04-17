@@ -5,14 +5,12 @@ import "http://www.eclipse.org/xtext/common/JavaVMTypes" as jvmTypes
 generate protelis "http://protelis.org"
 
 ProtelisModule: ('module' name=ProtelisQualifiedName)?
-	(javaimports=ImportSection)?
-	protelisImport+=Import*
+	(imports=ImportSection)?
 	(definitions+=FunctionDef)* program=Block?
 ;
 
 VarDefList: args += VarDef (',' args += VarDef)* ;
 
-// RepList: args+=RepInitialize (',' args+=RepInitialize)*;
 ExprList: args+=Expression (',' args+=Expression)*;
 RepInitialize: x=VarDef '<-' w=Expression;
 ShareInitialize: (local=VarDef ',')? field=VarDef '<-' w=Expression;
@@ -21,13 +19,12 @@ ImportSection:
 	importDeclarations+=ImportDeclaration+;
 
 ImportDeclaration: 
-	'import'
-		importedType=[jvmTypes::JvmType|QualifiedNameInStaticImport] (wildcard?='*' | memberName=AID)
+	'import' (JavaImport | ProtelisImport)
 ;
 
-Import: 
-	'import' module=[ProtelisModule|ProtelisQualifiedName]
-;
+JavaImport: importedType=[jvmTypes::JvmType|QualifiedNameInStaticImport] (wildcard?='*' | memberName=AID);
+
+ProtelisImport: module=[ProtelisModule|ProtelisQualifiedName];
 
 Block: first=Statement (';' others=Block)? ;
 
@@ -36,8 +33,6 @@ Statement: (Declaration | Assignment | Expression) ';'*;
 Declaration returns VarDef:
 	'let' VarDef '=' right=Expression
 ;
-
-//LinkableStatement: Declaration | Expression;
 
 Assignment:
 	refVar=[VarDef] name='=' right = Expression

@@ -28,6 +28,8 @@ import org.protelis.parser.protelis.VarUse
 import org.protelis.parser.protelis.ProtelisModule
 import org.protelis.parser.protelis.Call
 import org.protelis.parser.protelis.Yield
+import org.protelis.parser.protelis.ProtelisImport
+import org.protelis.parser.protelis.JavaImport
 
 /**
  * This class contains custom scoping description.
@@ -105,25 +107,23 @@ class ProtelisScopeProvider extends AbstractProtelisScopeProvider {
 		val List<EObject> internal = new ArrayList(model.definitions)
 		val List<IEObjectDescription> externalProtelis = new ArrayList
 		val List<IEObjectDescription> java = new ArrayList
-		model.protelisImport.forEach[ 
-			val moduleName = it.module.name
-			it.module.definitions.filter[public].forEach[
-				externalProtelis.add(generateDescription(it.name, it))
-				externalProtelis.add(generateDescription(moduleName + ":" + it.name, it))
-			]
-		]
-		val javaImports = model.javaimports
-		if(javaImports !== null) {
-			javaImports.importDeclarations.forEach[id |
-				val type = id.importedType;
+		model.imports.importDeclarations.forEach[ import |
+			if (import instanceof ProtelisImport) {
+				val moduleName = import.module.name
+				import.module.definitions.filter[public].forEach[
+					externalProtelis.add(generateDescription(it.name, it))
+					externalProtelis.add(generateDescription(moduleName + ":" + it.name, it))
+				]
+			} else if (import instanceof JavaImport) {
+				val type = import.importedType;
 				type.eContents
 					.filter[it instanceof JvmOperation]
 					.map[it as JvmOperation]
 					.filter[it.isStatic]
-					.filter[if (id.wildcard) true else it.simpleName.equals(id.memberName)]
+					.filter[if (import.wildcard) true else it.simpleName.equals(import.memberName)]
 					.populateMethodReferences(java)
-			]
-		}
+			}
+		]
 		val plainProtelis = Scopes.scopeFor(internal)
 		val refJava = new SimpleScope(java)
 		/*
