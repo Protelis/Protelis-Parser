@@ -9,7 +9,10 @@ import java.util.Collections
 import java.util.List
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
+import org.eclipse.xtext.common.types.JvmFeature
+import org.eclipse.xtext.common.types.JvmField
 import org.eclipse.xtext.common.types.JvmOperation
+import org.eclipse.xtext.common.types.JvmVisibility
 import org.eclipse.xtext.naming.QualifiedName
 import org.eclipse.xtext.resource.EObjectDescription
 import org.eclipse.xtext.resource.IEObjectDescription
@@ -18,18 +21,18 @@ import org.eclipse.xtext.scoping.Scopes
 import org.eclipse.xtext.scoping.impl.MapBasedScope
 import org.eclipse.xtext.scoping.impl.SimpleScope
 import org.protelis.parser.protelis.Block
+import org.protelis.parser.protelis.Call
 import org.protelis.parser.protelis.FunctionDef
-import org.protelis.parser.protelis.VarDef
-import org.protelis.parser.protelis.VarDefList
+import org.protelis.parser.protelis.JavaImport
 import org.protelis.parser.protelis.Lambda
+import org.protelis.parser.protelis.ProtelisImport
+import org.protelis.parser.protelis.ProtelisModule
 import org.protelis.parser.protelis.Rep
 import org.protelis.parser.protelis.Share
+import org.protelis.parser.protelis.VarDef
+import org.protelis.parser.protelis.VarDefList
 import org.protelis.parser.protelis.VarUse
-import org.protelis.parser.protelis.ProtelisModule
-import org.protelis.parser.protelis.Call
 import org.protelis.parser.protelis.Yield
-import org.protelis.parser.protelis.ProtelisImport
-import org.protelis.parser.protelis.JavaImport
 
 /**
  * This class contains custom scoping description.
@@ -106,8 +109,8 @@ class ProtelisScopeProvider extends AbstractProtelisScopeProvider {
 	def IScope scope_Call_reference(ProtelisModule model, EReference ref) {
 		val List<EObject> internal = new ArrayList(model.definitions)
 		val List<IEObjectDescription> externalProtelis = new ArrayList
-		val List<IEObjectDescription> java = new ArrayList
-		model.imports.importDeclarations.forEach[ import |
+		val List<IEObjectDescription> executables = new ArrayList
+		model?.imports?.importDeclarations?.forEach[ import |
 			if (import instanceof ProtelisImport) {
 				val moduleName = import.module.name
 				import.module.definitions.filter[public].forEach[
@@ -117,15 +120,16 @@ class ProtelisScopeProvider extends AbstractProtelisScopeProvider {
 			} else if (import instanceof JavaImport) {
 				val type = import.importedType;
 				type.eContents
-					.filter[it instanceof JvmOperation]
-					.map[it as JvmOperation]
+					.filter[it instanceof JvmField || it instanceof JvmOperation]
+					.map[it as JvmFeature]
 					.filter[it.isStatic]
-					.filter[if (import.wildcard) true else it.simpleName.equals(import.memberName)]
-					.populateMethodReferences(java)
+					.filter[it.visibility == JvmVisibility.PUBLIC]
+					.filter[import.wildcard || it.simpleName == import.importedMemberName]
+					.populateMethodReferences(executables)
 			}
 		]
 		val plainProtelis = Scopes.scopeFor(internal)
-		val refJava = new SimpleScope(java)
+		val refJava = new SimpleScope(executables)
 		/*
 		 * Search locally => search Protelis imports => search Java imports
 		 */
@@ -134,7 +138,7 @@ class ProtelisScopeProvider extends AbstractProtelisScopeProvider {
 		final
 	}
 	
-	def static populateMethodReferences(Iterable<JvmOperation> source, Collection<IEObjectDescription> destination) {
+	def static populateMethodReferences(Iterable<JvmFeature> source, Collection<IEObjectDescription> destination) {
 		source.forEach[
 			destination.add(generateDescription(it.simpleName, it))
 			destination.add(generateDescription(it.qualifiedName.replace(".", "::"), it))

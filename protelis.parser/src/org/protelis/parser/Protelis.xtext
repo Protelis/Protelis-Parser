@@ -18,11 +18,19 @@ ShareInitialize: (local=VarDef ',')? field=VarDef '<-' w=Expression;
 ImportSection:
 	importDeclarations+=ImportDeclaration+;
 
+//ImportDeclaration: 'import' (
+//		{ImportDeclaration} value = [ProtelisModule|ProtelisQualifiedName] |
+////		{JavaMethodImport} value = [jvmTypes::JvmOperation|JavaQualifiedName] |
+//		{ImportDeclaration} value = [jvmTypes::JvmDeclaredType|JavaQualifiedName] -> '.''*')
+//;
+
 ImportDeclaration: 
-	'import' (JavaImport | ProtelisImport)
+	'import' (=>(ProtelisImport) | JavaImport)
 ;
 
-JavaImport: importedType=[jvmTypes::JvmType|QualifiedNameInStaticImport] (wildcard?='*' | memberName=AID);
+JavaImport:
+	(importedType=[jvmTypes::JvmDeclaredType|QualifiedNameInStaticImport] (wildcard?='*' | importedMemberName=AID))
+;
 
 ProtelisImport: module=[ProtelisModule|ProtelisQualifiedName];
 
