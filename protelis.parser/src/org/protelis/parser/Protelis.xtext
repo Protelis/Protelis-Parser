@@ -18,12 +18,6 @@ ShareInitialize: (local=VarDef ',')? field=VarDef '<-' w=Expression;
 ImportSection:
 	importDeclarations+=ImportDeclaration+;
 
-//ImportDeclaration: 'import' (
-//		{ImportDeclaration} value = [ProtelisModule|ProtelisQualifiedName] |
-////		{JavaMethodImport} value = [jvmTypes::JvmOperation|JavaQualifiedName] |
-//		{ImportDeclaration} value = [jvmTypes::JvmDeclaredType|JavaQualifiedName] -> '.''*')
-//;
-
 ImportDeclaration: 
 	'import' (=>(ProtelisImport) | JavaImport)
 ;
