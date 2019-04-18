@@ -6,12 +6,9 @@ import org.eclipse.xtext.testing.extensions.InjectionExtension
 import org.eclipse.xtext.testing.util.ParseHelper
 import org.eclipse.xtext.testing.validation.ValidationTestHelper
 import org.junit.jupiter.api.Test
+import static org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.^extension.ExtendWith
 import org.protelis.parser.protelis.ProtelisModule
-
-import static org.junit.Assert.assertFalse
-import static org.junit.Assert.assertNotNull
-import static org.junit.Assert.assertTrue
 
 @ExtendWith(InjectionExtension)
 @InjectWith(ProtelisInjectorProvider)
@@ -22,10 +19,10 @@ class ProtelisParsingTest {
 	def ProtelisModule shouldParseCorrectly(CharSequence program) {
 		assertNotNull(program)
 		val result = program.parse
-		assertNotNull('''Could not initialize «program»''', result)
+		assertNotNull(result, [ '''Could not initialize «program»''' ])
 		assertNotNull(result.eResource)
 		assertNotNull(result.eResource.errors)
-		assertTrue('''Unexpected Parsing errors:\n«result.eResource.errors.join("\n")»''', result.eResource.errors.isEmpty)
+		assertTrue(result.eResource.errors.isEmpty, [ '''Unexpected Parsing errors:\n«result.eResource.errors.join("\n")»''' ])
 		result
 	}
 
@@ -37,12 +34,12 @@ class ProtelisParsingTest {
 
 	def void shouldBeValid(CharSequence program) {
 		val result = program.validate
-		assertTrue('''Unexpected validation errors:\n«result.join("\n")»''', result.isEmpty)
+		assertTrue(result.isEmpty, ['''Unexpected validation errors:\n«result.join("\n")»'''])
 	}
 
 	def void shouldNotBeValid(CharSequence program) {
 		val result = program.validate
-		assertFalse('''Errors expected, but parsing and validation competed successfully for\n«program»''', result.isEmpty)
+		assertFalse(result.isEmpty, [ '''Errors expected, but parsing and validation competed successfully for\n«program»''' ])
 	}
 
 	@Test
