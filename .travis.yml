@@ -59,7 +59,7 @@ script: >-
         mvn clean deploy > >(egrep -v 'Download(ing|ed) ');
     else
         echo Running as PR.;
-        mvn clean install > >(egrep -v 'Download(ing|ed) ');
+        mvn clean install -Dgpg.skip=true > >(egrep -v 'Download(ing|ed) ');
     fi
 
 after_failure:
