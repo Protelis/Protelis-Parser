@@ -65,14 +65,18 @@ deploy:
     domain: protelis-eclipse.surge.sh
     skip_cleanup: true
     on:
+        os: linux
         jdk: openjdk8
+        repo: Protelis/Protelis-Parser
         tags: true
   - provider: surge
     project: protelis.parser.repository/target/repository/
     domain: protelis-eclipse-development.surge.sh
     skip_cleanup: true
     on:
+        os: linux
         jdk: openjdk8
+        repo: Protelis/Protelis-Parser
         branch: develop
 
 
