@@ -38,7 +38,7 @@ before_install: >-
     echo Is pull request? $TRAVIS_PULL_REQUEST;
     echo Repo slug: $TRAVIS_REPO_SLUG;
     if [ $TRAVIS_OS_NAME = 'linux' ]; then
-        export SHOULD_CONFIGURE="$(if [ $TRAVIS_PULL_REQUEST != "false" ] && [ $TRAVIS_REPO_SLUG = 'Protelis/Protelis-Parser' ]; then echo 'true'; else echo 'false'; fi)"
+        export SHOULD_CONFIGURE="$(if [ $TRAVIS_PULL_REQUEST == "false" ] && [ $TRAVIS_REPO_SLUG = 'Protelis/Protelis-Parser' ]; then echo 'true'; else echo 'false'; fi)"
     else
         export SHOULD_CONFIGURE="$(echo 'false')"
     fi;
