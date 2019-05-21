@@ -160,6 +160,10 @@ class ProtelisParsingTest {
 		'''
 		if (1 < 3) { 1 }
 		'''.shouldNotParse
+		''' // Jake's example from https://github.com/Protelis/Protelis/issues/65
+		let y = if (false) { 3 };
+		y+1;
+		'''.shouldNotParse
 		'''
 		if (1 < 3) { 1 } else { 2 }
 		'''.shouldBeValid
@@ -167,10 +171,15 @@ class ProtelisParsingTest {
 		if (1 < 3) { 1 };
 		if (1 < 3) { 1 } else { 2 }
 		'''.shouldBeValid
-		''' // Jake's example from https://github.com/Protelis/Protelis/issues/65
-		let y = if (false) { 3 };
-		y+1;
-		'''.shouldNotParse
+		'''
+		let x = if (1 < 3) { 1 } else { 2 };
+		1
+		'''.shouldBeValid
+		'''
+		let foo = true;
+		if (foo) { 1 };
+		2
+		'''.shouldBeValid
 	}
 
 }
