@@ -8,7 +8,7 @@ jdk:
   - openjdk10
   - openjdk11
   - oraclejdk11
-#  - openjdk12
+  - openjdk12
 
 env:
   global:
