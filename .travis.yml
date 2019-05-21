@@ -36,8 +36,10 @@ matrix:
     
 before_install: >-
     if [ $TRAVIS_OS_NAME = 'linux' ]; then
+        echo Preparing configuration.
         export SHOULD_CONFIGURE="$(if ! $TRAVIS_PULL_REQUEST && [ $TRAVIS_REPO_SLUG = 'Protelis/Protelis-Parser' ]; then echo 'true'; else echo 'false'; fi)"
     else
+        echo Configuration skipped.
         export SHOULD_CONFIGURE="$(echo 'false')"
     fi;
 
