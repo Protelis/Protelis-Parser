@@ -73,7 +73,6 @@ class ProtelisScopeProvider extends AbstractProtelisScopeProvider {
 					val init = container.init
                     #[container.init.field] + if (init.local === null) #[] else #[init.local]
 				}
-				VarDef: #[container]
 				Yield: {
 					val parent = container.eContainer
 					var Block body = switch parent {
@@ -84,7 +83,7 @@ class ProtelisScopeProvider extends AbstractProtelisScopeProvider {
 					val result = new ArrayList
 					while (body !== null) {
 						result.addAll(extractReferences(body))
-						body = body.others
+						body = body.next
 					}
 					result
 				}
