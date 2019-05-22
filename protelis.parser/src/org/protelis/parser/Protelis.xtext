@@ -180,13 +180,13 @@ ProtelisCallElement: ':' ID;
 
 ProtelisQualifiedName: ID (':' ID)* ;
 
-AID: =>ID | 'random' | 'PlusSelf' | 'self' | 'env' | 'pi' | 'e';
+AID: =>ID | 'random' | 'PlusSelf' | 'self' | 'env';
 
 @Override QualifiedNameInStaticImport:
   (AID '.')+
 ;
 
 terminal INT returns ecore::EInt: ('0'..'9')+;
-DOUBLE returns ecore::EDouble: INT('.'INT)?('e'|'E''-'?INT)? | 'Infinity' | 'NaN';
+DOUBLE returns ecore::EDouble: INT('.'INT)?('e'|'E''-'?INT)?;
 BOOLEAN returns ecore::EBoolean: "true" | "false";
 
