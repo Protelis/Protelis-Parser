@@ -16,14 +16,23 @@ class ProtelisParsingTest {
 	@Inject	extension ParseHelper<ProtelisModule> parseHelper
 	@Inject	extension ValidationTestHelper validationHelper
 	
-	def ProtelisModule shouldParseCorrectly(CharSequence program) {
+	def ProtelisModule tryToParse(CharSequence program) {
 		assertNotNull(program)
 		val result = program.parse
 		assertNotNull(result, [ '''Could not initialize «program»''' ])
 		assertNotNull(result.eResource)
 		assertNotNull(result.eResource.errors)
+		result
+	}
+	
+	def ProtelisModule shouldParseCorrectly(CharSequence program) {
+		val result = program.tryToParse
 		assertTrue(result.eResource.errors.isEmpty, [ '''Unexpected Parsing errors:\n«result.eResource.errors.join("\n")»''' ])
 		result
+	}
+
+	def shouldNotParse(CharSequence program) {
+		assertFalse(tryToParse(program).eResource.errors.isEmpty, [ "Parsing errors expected, none found"])
 	}
 
 	def validate(CharSequence program) {
@@ -136,6 +145,41 @@ class ProtelisParsingTest {
 		java::lang::Math::sin(0)
 		'''
 		.shouldNotBeValid
+	}
+
+	@Test
+	def void testIfWithoutParentheses() {
+		'''
+		let x = if (1 < 3) { 1 };
+		1
+		'''.shouldNotParse
+		'''
+		let foo = true;
+		if (foo) { 1 }
+		'''.shouldNotParse
+		'''
+		if (1 < 3) { 1 }
+		'''.shouldNotParse
+		''' // Jake's example from https://github.com/Protelis/Protelis/issues/65
+		let y = if (false) { 3 };
+		y+1;
+		'''.shouldNotParse
+		'''
+		if (1 < 3) { 1 } else { 2 }
+		'''.shouldBeValid
+		'''
+		if (1 < 3) { 1 };
+		if (1 < 3) { 1 } else { 2 }
+		'''.shouldBeValid
+		'''
+		let x = if (1 < 3) { 1 } else { 2 };
+		1
+		'''.shouldBeValid
+		'''
+		let foo = true;
+		if (foo) { 1 };
+		2
+		'''.shouldBeValid
 	}
 
 }

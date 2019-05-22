@@ -1,4 +1,14 @@
 language: java 
+os:
+  - linux
+  - osx
+jdk:
+  - openjdk8
+  - openjdk9
+  - openjdk10
+  - openjdk11
+  - oraclejdk11
+#  - openjdk12
 
 env:
   global:
@@ -8,34 +18,53 @@ env:
     - secure: "aZPFA04ZitXoX4U9kjs3TRlOwlwN7F/1QAxrRRQq1NXZnq9Lm1DAKMz05weSXdU2yW+OHLFqQyRGSPBgCEWZBTfrFPM0/VlH6XGA0Hf9HLM+gW8hNP4TKzSKfmWae15G8986N0Iwy9dUS2sGJkK1wTl2f8dqTqULjIWXWbhL52qHvgDN5LRN1GmmE8ZJlKDk1w9a5xqS4eNvb85qWMF1NXk5LlBeS01SLSrJ/ZFl8KSdFZvCg/Sw9L2JbNM/YOd7Ba1LFXLxul2B96RYCU2z5eb3Hxuim3F/UyrbpFQ5s00azvPMDnfkheIONrjwQsR8ShiDYQ5g79opaF0iGaYJuVYMs6SG8lN8y5B/szK7tLjhF4fRruRMqHjH0A5ahcXIDcGLhs5+iBK1fl4TijC6JO/NthWEk8PaRJEi4MxB4zDo02ve64Q8aO25rU+glwmp9NfNwn0OrYHrsCb1m6upzE0m1PvTY0eYSW1DZ0SzPRfPo3JzRkEjthL2SSqQG4D5FhjuQXiME6m1cBzjsb5j2++sloVaEJbT8bwOErhK7Ley0Ro8gtMvmI1c6pQ9Dxnh/N8P0MmQ+7X4DMkyH/HqZOuckQ2qk1McRL4fmWyG03OiXmlJwi6m/fXSO4O1uDkW9cchYQviKcvU1KmCkChseR7QJpbRNFZAdpaw/YXNrTc="
     - secure: "B2aR/ybMLoliMnA5Gt3+Vqq7xONq1W/7t6KI3Fpre/i3yQt0w3Eplydm/ygTUdSHWccwU/OQZpgDtnSChjJBk0uhFnX16HXgwVRyDB7WRSjzvgJ3Z2gDNYj4gpXq/UWHISDhJbdFA/SzQGXjkacJsWm5oSLkje9zy2H+G5BzET1JBA6SQJlzs1FuELsdwV6TDa2qFS3p3nJswScE5IN2EI9A3Suo6W+r5EzY30aN+dsb6C7JuXjbdw96L93tQU3dG/sI0xEl1ePkkPfwj5kYjz0WCYrTjUCIcwCouS3WVr5WrOhWiK16QeRCkcXKUhwJa/vLXiDWCzsXlfH8WJRFAJie1zd/vCQFdMQyx0S3qKpcJ9yUFct6eFJBT5JvPlRbGv82+PK/1BIzyeEDuZmZJDtC+8bi7pl7/MEUycbe2odoQZuJh0J3OhDnJ1OiloDZWm5G025/Uo8JacocKMfD7Nbd9IkFbMhElHmm4087zHmfJD0pXDDDzjWMBe7gcTiHCR78o4Bryc87JrXqwd+6dG6G49qqPzp8NzA+YUk4o61idUKgrxfUHf1gELNzbUz9skvwl0yNTVPZTzNw0x7AxvGyy6Rg5H7K+35lYtljKcGZbtXqg1L221JVJvN92jbgqEitSaXk0FGPd/ifklIqcuTY2K5UMkHCNlAQbgixMC4="
     - secure: "Z7Z9WEudQq0cchuvcpUEFaDgf1ZmNSbw0lb7c2063Qu6VaytMrDoEYyXALcvmCBSjhYyb4n3F7mtFIZXqJL8xGKmU37S43HfE1j+MGjqRPCx6c6JIx7rJ/9xnJ65L8yVcfuXw1m89O2AqYdaWX+eTCuzvhhp8r34Znc7F91FTbKMKPePH+qOuNT6zTR7JBt6+0rAXYCt7h+jM0LPti2DlQrFJD1fyvsVA546YngXIRKaaS13Hzf1zRtMpCspYesqBmCmMY9THGvl5vnJeVp5ptTJWo/os6ev7pazqaiFAEy98HDy1aY0jepuS0sURv8hDSEWyKhQ+g+v3HhiUEXn5dDnsGT8Tca2IuLdcL+r7IeD34pDI4qZ90QXrH3CgJKqJGOZyqw37SpeECzHBH91P12p5FgUBKfzaTj0A5YF+aMYFb5245Byz8xVLeacQoz7B0KrHVTNotZy/U2tMm1rIvrPSemYHuhWYvqbh29IlWQAXe7WDy/NZcwxPbWYPFPi9kA4EDhri81wBMzB42JbmkSoo/+0wprGpwt6yykUky2XrHGP0v27tcnzfvy1J09+2qbbU+XlFo492frr/1IXDcP+5HFXf1VukAHvBWnWJ2yawNipI77lJCAt8FiLg1432q5gCSvXbC7DYCNrSAH4aGua/rZyVkGwdk3x/ChhTjg="
+  matrix:
+    - PUBLISH=false
 
-jdk:
-  - openjdk8
-  - oraclejdk8
-  - openjdk9
-  - openjdk10
-  - openjdk11
-  - oraclejdk11
-#  - openjdk12
-
-before_install:
-  - openssl aes-256-cbc -K $encrypted_c2ba7c32533d_key -iv $encrypted_c2ba7c32533d_iv -in secrets.tar.enc -out secrets.tar -d
-  - tar xvf secrets.tar
-  - bash prepare_environment.sh
-  
-install: true
-
-script:
-  - export OPENJDK_VERSION=$(java -version 2>&1 | grep openjdk | awk -F '"' '/version/ {print $2}')
-  - if [[ $OPENJDK_VERSION == "1.8.0"* ]]; then
-      echo "Detected OpenJDK ${OPENJDK_VERSION}, enabling deployment on Central";
-      mvn clean deploy > >(egrep -v 'Download(ing|ed) ');
+matrix:
+  include:
+    - jdk: openjdk8
+    - env: PUBLISH=true
+  exclude:
+    - jdk: openjdk8
+    - jdk: oraclejdk11
+      os: osx
+    - jdk: openjdk11
+      os: osx
+    
+before_install: >-
+    echo Is pull request? $TRAVIS_PULL_REQUEST;
+    echo Repo slug: $TRAVIS_REPO_SLUG;
+    if [ $TRAVIS_OS_NAME = 'linux' ]; then
+        export SHOULD_CONFIGURE="$(if [ $TRAVIS_PULL_REQUEST == "false" ] && [ $TRAVIS_REPO_SLUG = 'Protelis/Protelis-Parser' ]; then echo 'true'; else echo 'false'; fi)"
     else
-      mvn clean install > >(egrep -v 'Download(ing|ed) ');
+        export SHOULD_CONFIGURE="$(echo 'false')"
+    fi;
+    echo Should configure? $SHOULD_CONFIGURE;
+
+install:  >-
+    if $SHOULD_CONFIGURE; then
+        echo Configuring...;
+        openssl aes-256-cbc -K $encrypted_c2ba7c32533d_key -iv $encrypted_c2ba7c32533d_iv -in secrets.tar.enc -out secrets.tar -d;
+        tar xvf secrets.tar;
+        bash prepare_environment.sh
+    fi
+
+script: >-
+    echo Should publish? $PUBLISH;
+    echo Should configure? $SHOULD_CONFIGURE;
+    if $SHOULD_CONFIGURE && $PUBLISH; then
+        echo Building and deploying;
+        mvn clean deploy > >(egrep -v 'Download(ing|ed) ');
+    else
+        echo Building as pull request;
+        mvn clean install -Dgpg.skip=true > >(egrep -v 'Download(ing|ed) ');
     fi
 
 after_failure:
   # Print the maven log for more information
+  - cat */target/work/data/.metadata/.log
+  - mvn install -Dgpg.skip=true -e -X
   - cat */target/work/data/.metadata/.log
 
 deploy:
@@ -44,29 +73,19 @@ deploy:
     domain: protelis-eclipse.surge.sh
     skip_cleanup: true
     on:
+        os: linux
         jdk: openjdk8
-        tags: true
-  - provider: surge
-    project: protelis.parser.repository/target/repository/
-    domain: protelis-eclipse-java7legacy.surge.sh
-    skip_cleanup: true
-    on:
-        jdk: openjdk7
+        repo: Protelis/Protelis-Parser
         tags: true
   - provider: surge
     project: protelis.parser.repository/target/repository/
     domain: protelis-eclipse-development.surge.sh
     skip_cleanup: true
     on:
+        os: linux
         jdk: openjdk8
+        repo: Protelis/Protelis-Parser
         branch: develop
-  - provider: surge
-    project: protelis.parser.repository/target/repository/
-    domain: protelis-eclipse-java7legacy-development.surge.sh
-    skip_cleanup: true
-    on:
-        jdk: openjdk7
-        branch: legacy-java7
 
 
         
