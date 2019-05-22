@@ -38,7 +38,7 @@ Statement: (=>Expression | SideEffect);
 SideEffect: Declaration | Assignment | IfWithoutElse;
 
 IfWithoutElse:
-	name='if' '(' cond=Expression ')' '{' then=Block '}'
+	name='if' '(' cond=Expression ')' '{' (then+=Statement (';' then+=Statement)*)? '}'
 ;
 
 Declaration returns VarDef:
@@ -77,7 +77,7 @@ Share:
 Yield: name='yield' '{' body = Block '}';
 
 If:
-	if=IfWithoutElse name='else' '{' else=Block '}'
+	name='if' '(' cond=Expression ')' '{' then=Block '}' 'else' '{' else=Block '}'
 ;
 
 NBR:
