@@ -67,7 +67,8 @@ class ProtelisParsingTest {
 	def void testParseTupleReduce01() {
 		'''
 		// EXPECTED_RESULT: 1
-		[5, 4, 3, 2, 1].reduce(self, Infinity, (a, b) -> {
+		import java.lang.Double.POSITIVE_INFINITY
+		[5, 4, 3, 2, 1].reduce(self, POSITIVE_INFINITY, (a, b) -> {
 			if(a < b) {
 				a
 			} else {
