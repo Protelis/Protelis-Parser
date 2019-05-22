@@ -181,6 +181,11 @@ class ProtelisParsingTest {
 		if (foo) { 1 };
 		2
 		'''.shouldBeValid
+		'''
+		let a = 0;
+		if (true) { a = a + 1 }; // Pure side effect
+		a
+		'''.shouldBeValid
 	}
 
 }
