@@ -186,6 +186,14 @@ class ProtelisParsingTest {
 		if (true) { a = a + 1 }; // Pure side effect
 		a
 		'''.shouldBeValid
+		'''
+		def myfun() {
+			let a = 0;
+			if (true) { a = a + 1 }; // Pure side effect
+			a
+		}
+		myfun()
+		'''.shouldBeValid
 	}
 
 }
