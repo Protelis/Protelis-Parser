@@ -67,7 +67,8 @@ class ProtelisParsingTest {
 	def void testParseTupleReduce01() {
 		'''
 		// EXPECTED_RESULT: 1
-		[5, 4, 3, 2, 1].reduce(self, Infinity, (a, b) -> {
+		import java.lang.Double.POSITIVE_INFINITY
+		[5, 4, 3, 2, 1].reduce(self, POSITIVE_INFINITY, (a, b) -> {
 			if(a < b) {
 				a
 			} else {
@@ -179,6 +180,11 @@ class ProtelisParsingTest {
 		let foo = true;
 		if (foo) { 1 };
 		2
+		'''.shouldBeValid
+		'''
+		let a = 0;
+		if (true) { a = a + 1 }; // Pure side effect
+		a
 		'''.shouldBeValid
 	}
 
