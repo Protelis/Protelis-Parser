@@ -194,6 +194,23 @@ class ProtelisParsingTest {
 		}
 		myfun()
 		'''.shouldBeValid
+		'''
+		// EXPECTED_RESULT: 256
+		let x = 2; // 2
+		x = x * x; // 4 
+		x = x ^ x; // 256
+		x
+		'''.shouldBeValid
+		'''
+		// EXPECTED_RESULT: 2
+		let x = 0;
+		if(false) {
+			x = 1;
+			x
+		} else {
+			x = 2;
+			x
+		}'''.shouldBeValid
 	}
 
 }
