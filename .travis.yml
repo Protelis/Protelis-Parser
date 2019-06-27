@@ -23,7 +23,7 @@ env:
 matrix:
   include:
     - jdk: openjdk8
-    - env: PUBLISH=true
+      env: PUBLISH=true
   exclude:
     - jdk: openjdk8
     - jdk: openjdk11
