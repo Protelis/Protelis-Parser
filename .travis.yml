@@ -7,7 +7,6 @@ jdk:
   - openjdk9
   - openjdk10
   - openjdk11
-  - oraclejdk11
 #  - openjdk12
 
 env:
@@ -27,8 +26,6 @@ matrix:
     - env: PUBLISH=true
   exclude:
     - jdk: openjdk8
-    - jdk: oraclejdk11
-      os: osx
     - jdk: openjdk11
       os: osx
     
