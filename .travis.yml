@@ -5,7 +5,6 @@ os:
 os:
   - osx
   - linux
-  - windows
 env:
   global:
     - MAVEN_OPTS: "'-Dorg.slf4j.simpleLogger.defaultLogLevel=warn -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'"
@@ -37,12 +36,14 @@ matrix:
       env: JDK="adopt@1.9.181-0"
     - os: windows
       env: JDK="adopt@1.10.0-2"
-    
+addons:
+  apt:
+    packages: maven
+  homebrew:
+    packages: maven
 before_install:
   - curl "${GRAVIS}.install-jdk-travis.sh" --output .install-jdk-travis.sh
   - bash .install-jdk-travis.sh && source ~/.jdk_config
-  - curl "${GRAVIS}.install-maven-travis.sh" --output .install-mvn.sh
-  - bash .install-mvn.sh
   - |-
     echo Is pull request? $TRAVIS_PULL_REQUEST
     echo Repo slug: $TRAVIS_REPO_SLUG
