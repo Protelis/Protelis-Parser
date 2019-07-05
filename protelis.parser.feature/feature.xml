@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature id="protelis.parser.feature"
 	label="Protelis Feature "
-	version="9.1.0">
+	version="9.1.1">
 	<plugin
 			id="protelis.parser"
 			download-size="0"
