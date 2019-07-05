@@ -41,6 +41,8 @@ matrix:
 before_install:
   - curl "${GRAVIS}.install-jdk-travis.sh" --output .install-jdk-travis.sh
   - bash .install-jdk-travis.sh && source ~/.jdk_config
+  - sudo apt-get -qq update
+  - sudo apt-get install maven
   - |-
     echo Is pull request? $TRAVIS_PULL_REQUEST
     echo Repo slug: $TRAVIS_REPO_SLUG
