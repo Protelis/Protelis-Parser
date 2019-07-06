@@ -73,6 +73,7 @@ script: |-
         mvn clean install -Dgpg.skip=true > >(egrep -v 'Download(ing|ed) ')
     fi
 before_cache:
+  - rm -rf /home/travis/.m2/repository/.meta
   - rm -rf $HOME/.m2/repository/org/protelis/
   - rm -f $HOME/.m2/settings.xml
   - find $HOME/.m2/repository/ -name resolver-status.properties -type f -delete -print
