@@ -72,6 +72,8 @@ script: |-
         echo Building as pull request
         mvn clean install -Dgpg.skip=true > >(egrep -v 'Download(ing|ed) ')
     fi
+before_cache:
+  - rm -f $HOME/.m2/settings.xml
 cache:
   directories:
     - $HOME/.m2/
