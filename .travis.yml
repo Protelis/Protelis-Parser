@@ -73,6 +73,7 @@ script: |-
         mvn clean install -Dgpg.skip=true > >(egrep -v 'Download(ing|ed) ')
     fi
 before_cache:
+  - find $HOME/.m2/repository/ -name resolver-status.properties -type f -delete -print
   - find $HOME/.m2/repository/ -name _*.repositories -type f -delete -print
   - rm -f $HOME/.m2/settings.xml
 cache:
