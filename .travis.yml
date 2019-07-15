@@ -43,7 +43,9 @@ addons:
     packages: maven
 before_install:
   - curl "${GRAVIS}.install-jdk-travis.sh" --output .install-jdk-travis.sh
-  - bash .install-jdk-travis.sh && source ~/.jdk_config
+  - source .install-jdk-travis.sh
+  - curl "${GRAVIS}.install-maven.sh" --output .install-maven.sh
+  - source .install-maven.sh
   - |-
     echo Is pull request? $TRAVIS_PULL_REQUEST
     echo Repo slug: $TRAVIS_REPO_SLUG
