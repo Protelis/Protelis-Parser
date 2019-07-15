@@ -63,6 +63,7 @@ install:  |-
         bash prepare_environment.sh
     fi
 script: |-
+    mvn -v
     echo Should publish? $PUBLISH
     echo Should configure? $SHOULD_CONFIGURE
     if $SHOULD_CONFIGURE && $PUBLISH; then
