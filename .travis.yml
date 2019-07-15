@@ -17,6 +17,7 @@ addons:
     packages:
     - graphviz
 stages:
+  - reference_testing
   - deploy
   - test
 env:
@@ -41,6 +42,15 @@ matrix:
       env: *reference_jdk
 jobs:
   include:
+    - stage: reference_testing
+      name: "Verify with reference OS and JDK"
+      if: repo != env(OFFICIAL_REPO_SLUG) OR type == pull_request
+      os: *reference_os
+      env:
+        - *reference_jdk
+      script:
+        - mvn -v
+        - mvn clean install -Dgpg.skip=true 
     - stage: deploy
       name: "Verify and deploy with reference OS and JDK"
       if: repo = env(OFFICIAL_REPO_SLUG) AND type != pull_request
