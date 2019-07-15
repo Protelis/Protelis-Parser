@@ -8,6 +8,7 @@
 	</parent>
 	<artifactId>protelis.parser.repository</artifactId>
 	<packaging>eclipse-repository</packaging>
+
 	<build>
 		<pluginManagement>
 			<plugins>
@@ -44,6 +45,7 @@
 			</plugins>
 		</pluginManagement>
 	</build>
+
 	<dependencies>
 	</dependencies>
 </project>

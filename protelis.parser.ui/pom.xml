@@ -8,6 +8,7 @@
 	</parent>
 	<artifactId>protelis.parser.ui</artifactId>
 	<packaging>eclipse-plugin</packaging>
+
 	<build>
 		<plugins>
 			<plugin>
@@ -16,4 +17,5 @@
 			</plugin>
 		</plugins>
 	</build>
+
 </project>

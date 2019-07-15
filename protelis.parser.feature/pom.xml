@@ -8,6 +8,8 @@
 	</parent>
 	<artifactId>protelis.parser.feature</artifactId>
 	<packaging>eclipse-feature</packaging>
+
+
 	<dependencies>
 	</dependencies>
 </project>
