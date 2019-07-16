@@ -2,8 +2,8 @@
 .metadata/*
 .directory
 */target/*
-*/src-gen/*
-*/xtend-gen/*
+*/src-gen/
+*/xtend-gen/
 **/generated/*
 *.xml_gen
 **/.recommenders/*
