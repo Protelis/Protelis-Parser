@@ -3,6 +3,7 @@
  */
 package org.protelis.parser.scoping
 
+import com.google.inject.Inject
 import java.util.ArrayList
 import java.util.Collection
 import java.util.Collections
@@ -10,9 +11,7 @@ import java.util.List
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.xtext.common.types.JvmFeature
-import org.eclipse.xtext.common.types.JvmField
-import org.eclipse.xtext.common.types.JvmOperation
-import org.eclipse.xtext.common.types.JvmVisibility
+import org.eclipse.xtext.common.types.util.TypeReferences
 import org.eclipse.xtext.naming.QualifiedName
 import org.eclipse.xtext.resource.EObjectDescription
 import org.eclipse.xtext.resource.IEObjectDescription
@@ -34,6 +33,9 @@ import org.protelis.parser.protelis.VarDefList
 import org.protelis.parser.protelis.VarUse
 import org.protelis.parser.protelis.Yield
 
+import static extension org.protelis.parser.ProtelisExtensions.callableEntities
+import static extension org.protelis.parser.ProtelisExtensions.callableEntitiesNamed
+
 /**
  * This class contains custom scoping description.
  * 
@@ -41,6 +43,16 @@ import org.protelis.parser.protelis.Yield
  * on how and when to use it.
  */
 class ProtelisScopeProvider extends AbstractProtelisScopeProvider {
+	
+	@Inject 
+	TypeReferences references;
+
+	val automaticallyImported = #[
+			typeof(Math),
+			typeof(Double)
+		]
+		.filter[it !== null]
+		.toList
 
 	override IScope getScope(EObject context, EReference reference) {
 		if (context instanceof VarUse) {
@@ -112,27 +124,44 @@ class ProtelisScopeProvider extends AbstractProtelisScopeProvider {
 	}
 
 	def IScope scope_Call_reference(ProtelisModule model, EReference ref) {
-		val List<EObject> internal = new ArrayList(model.definitions)
-		val List<IEObjectDescription> externalProtelis = new ArrayList
-		val List<IEObjectDescription> executables = new ArrayList
-		model?.imports?.importDeclarations?.forEach [ import |
-			if (import instanceof ProtelisImport) {
-				val moduleName = import.module.name
-				import.module.definitions.filter[public].forEach [
-					externalProtelis.add(generateDescription(it.name, it))
-					externalProtelis.add(generateDescription(moduleName + ":" + it.name, it))
+		val List<FunctionDef> internal = new ArrayList(model.definitions)
+		val importDeclarations = model?.imports?.importDeclarations
+		val Iterable<IEObjectDescription> externalProtelis = importDeclarations
+			?.filter[it instanceof ProtelisImport]
+			?.map[it as ProtelisImport]
+			?.map[it.module]
+			?.flatMap[ module |
+				module.definitions.filter[public]
+					.flatMap[#[
+						generateDescription(it.name, it),
+						generateDescription(module.name + ":" + it.name, it)
+					]]
+			]
+			?.toList
+			?: emptyList
+		val Iterable<JvmFeature> autoImportedTypes = (
+				#[references.findDeclaredType("org.protelis.Builtins", model)].filter[it !== null]
+				+ automaticallyImported.map[references.findDeclaredType(it, model)]
+			)
+			.flatMap[callableEntities]
+		val Iterable<JvmFeature> externalJava = importDeclarations
+				?.filter[it instanceof JavaImport]
+				?.map[it as JavaImport]
+				?.flatMap[
+					if (it.wildcard) {
+						it.importedType.callableEntities
+					} else {
+						it.importedType.callableEntitiesNamed(it.importedMemberName)
+					}
 				]
-			} else if (import instanceof JavaImport) {
-				val type = import.importedType;
-				type.eContents.filter[it instanceof JvmField || it instanceof JvmOperation].map[it as JvmFeature].filter [
-					it.isStatic
-				].filter[it.visibility == JvmVisibility.PUBLIC].filter [
-					import.wildcard || it.simpleName == import.importedMemberName
-				].populateMethodReferences(executables)
-			}
-		]
+				?: emptyList
+		val callableJava = (externalJava + autoImportedTypes)
+			.flatMap[#[
+				generateDescription(it.simpleName, it),
+				generateDescription(it.qualifiedName.replace(".", "::"), it)
+			]]
 		val plainProtelis = Scopes.scopeFor(internal)
-		val refJava = new SimpleScope(executables)
+		val refJava = new SimpleScope(callableJava)
 		/*
 		 * Search locally => search Protelis imports => search Java imports
 		 */
@@ -140,7 +169,7 @@ class ProtelisScopeProvider extends AbstractProtelisScopeProvider {
 		val final = MapBasedScope.createScope(outer, plainProtelis.allElements)
 		final
 	}
-
+		
 	def static populateMethodReferences(Iterable<JvmFeature> source, Collection<IEObjectDescription> destination) {
 		source.forEach [
 			destination.add(generateDescription(it.simpleName, it))

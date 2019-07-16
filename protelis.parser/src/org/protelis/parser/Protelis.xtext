@@ -19,14 +19,16 @@ ImportSection:
 	importDeclarations+=ImportDeclaration+;
 
 ImportDeclaration: 
-	'import' (=>(ProtelisImport) | JavaImport)
+	 =>(ProtelisImport) | JavaImport
 ;
 
 JavaImport:
-	(importedType=[jvmTypes::JvmDeclaredType|QualifiedNameInStaticImport] (wildcard?='*' | importedMemberName=AID))
+	name='import' (importedType=[jvmTypes::JvmDeclaredType|QualifiedNameInStaticImport] (wildcard?='*' | importedMemberName=AID))
 ;
 
-ProtelisImport: module=[ProtelisModule|ProtelisQualifiedName];
+ProtelisImport:
+	name='import' module=[ProtelisModule|ProtelisQualifiedName]
+;
 
 Block:
 	=> (Statement ';' ({ Block.first=current } next=Block))

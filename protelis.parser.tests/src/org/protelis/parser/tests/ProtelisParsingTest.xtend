@@ -9,6 +9,11 @@ import org.junit.jupiter.api.Test
 import static org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.^extension.ExtendWith
 import org.protelis.parser.protelis.ProtelisModule
+import java.util.List
+import org.eclipse.emf.mwe.core.issues.Issues
+import org.eclipse.xtext.validation.Issue
+import org.eclipse.xtext.diagnostics.Severity
+import static org.eclipse.xtext.diagnostics.Severity.*
 
 @ExtendWith(InjectionExtension)
 @InjectWith(ProtelisInjectorProvider)
@@ -25,30 +30,37 @@ class ProtelisParsingTest {
 		result
 	}
 	
-	def ProtelisModule shouldParseCorrectly(CharSequence program) {
-		val result = program.tryToParse
-		assertTrue(result.eResource.errors.isEmpty, [ '''Unexpected Parsing errors:\n«result.eResource.errors.join("\n")»''' ])
-		result
+	def shouldParseCorrectly(ProtelisModule program) {
+		assertTrue(program.eResource.errors.isEmpty, [ '''Unexpected Parsing errors:\n«program.eResource.errors.join("\n")»''' ])
 	}
 
-	def shouldNotParse(CharSequence program) {
-		assertFalse(tryToParse(program).eResource.errors.isEmpty, [ "Parsing errors expected, none found"])
+	def hasInvalidSyntax(ProtelisModule program) {
+		assertFalse(program.eResource.errors.isEmpty, [ "Parsing errors expected, none found"])
 	}
 
-	def validate(CharSequence program) {
-		val result = program.shouldParseCorrectly.validate
-		assertNotNull(result)
-		result
+	def void mustRaise(ProtelisModule program, Severity issueType) {
+		assertFalse(program.raised(issueType).isEmpty) [
+			'''Errors expected, but parsing and validation competed successfully for\n«program»'''
+		]
 	}
 
-	def void shouldBeValid(CharSequence program) {
-		val result = program.validate
-		assertTrue(result.isEmpty, ['''Unexpected validation errors:\n«result.join("\n")»'''])
+	def void mustNotRaise(ProtelisModule program, Severity issueType) {
+		val errors = program.raised(issueType)
+		assertTrue(errors.isEmpty) [
+			'''Unexpected validation errors:\n«errors.join("\n")»'''
+		]
 	}
 
-	def void shouldNotBeValid(CharSequence program) {
-		val result = program.validate
-		assertFalse(result.isEmpty, [ '''Errors expected, but parsing and validation competed successfully for\n«program»''' ])
+	def Iterable<Issue> raised(ProtelisModule program, Severity issueType) {
+		program.validate.filter[it.severity == issueType]
+	}
+
+	def Iterable<Issue> errors(ProtelisModule program) { program.raised(ERROR) }
+
+	def Iterable<Issue> warnings(ProtelisModule program) { program.raised(WARNING) }
+
+	def void whenParsed(CharSequence prog, (ProtelisModule)=>void todos) {
+		todos.apply(prog.tryToParse)
 	}
 
 	@Test
@@ -60,7 +72,11 @@ class ProtelisParsingTest {
 		*/
 		module test
 		minHood(nbr(1))
-		'''.shouldBeValid
+		'''.whenParsed [
+			shouldParseCorrectly
+			mustNotRaise(ERROR)
+			mustRaise(WARNING)
+		]
 	}
 
 	@Test
@@ -75,7 +91,10 @@ class ProtelisParsingTest {
 				b
 			}
 		})
-		'''.shouldBeValid
+		'''.whenParsed [
+			mustNotRaise(ERROR)
+			mustNotRaise(WARNING)
+		]
 	}
 
 	@Test
@@ -84,7 +103,9 @@ class ProtelisParsingTest {
 		// EXPECTED_RESULT: 0
 		import java.lang.Math.sin
 		java::lang::Math::sin(0)
-		'''.shouldBeValid
+		'''.whenParsed [
+			mustNotRaise(ERROR)
+		]
 	}
 
 	@Test
@@ -92,14 +113,16 @@ class ProtelisParsingTest {
 		'''
 		import java.lang.Math.*
 		java::lang::Math::sin(0)
-		'''.shouldBeValid
+		'''.whenParsed [ 
+			mustNotRaise(ERROR)
+		]
 	}
 
 	@Test
 	def void testParseShare() {
 		'''
 		share (x, y <- 0) { x + 1 }
-		'''.shouldBeValid
+		'''.whenParsed [ mustNotRaise(ERROR)]
 	}
 
 	@Test
@@ -111,7 +134,9 @@ class ProtelisParsingTest {
 		import java.lang.Math.cos
 		import protelis:lang:meta
 		1
-		'''.shouldParseCorrectly
+		'''.whenParsed [
+			shouldParseCorrectly
+		]
 	}
 
 	@Test
@@ -119,7 +144,7 @@ class ProtelisParsingTest {
 		'''
 		import java.lang.Math.PI
 		PI
-		'''.shouldBeValid
+		'''.whenParsed [ mustNotRaise(ERROR) ]
 	}
 
 	@Test
@@ -127,7 +152,7 @@ class ProtelisParsingTest {
 		'''
 		import java.lang.Integer.*
 		MAX_VALUE
-		'''.shouldBeValid
+		'''.whenParsed [ mustNotRaise(ERROR) ]
 	}
 
 	@Test
@@ -135,7 +160,7 @@ class ProtelisParsingTest {
 		'''
 		import java.lang.Integer.*
 		POSITIVE_INFINITY
-		'''.shouldNotBeValid
+		'''.whenParsed [ mustNotRaise(ERROR) ]
 	}
 
 	@Test
@@ -144,8 +169,20 @@ class ProtelisParsingTest {
 		// EXPECTED_RESULT: 0
 		import java.lang.Math.sinsdsadasdsa
 		java::lang::Math::sin(0)
+		'''.whenParsed [
+			shouldParseCorrectly
+			mustRaise(ERROR)
+		]
+	}
+
+	@Test
+	def void testAutoImport() {
 		'''
-		.shouldNotBeValid
+		sin(0)
+		'''.whenParsed [
+			mustNotRaise(WARNING)
+			mustNotRaise(ERROR)
+		]
 	}
 
 	@Test
@@ -153,39 +190,39 @@ class ProtelisParsingTest {
 		'''
 		let x = if (1 < 3) { 1 };
 		1
-		'''.shouldNotParse
+		'''.whenParsed [ hasInvalidSyntax ]
 		'''
 		let foo = true;
 		if (foo) { 1 }
-		'''.shouldNotParse
+		'''.whenParsed [ hasInvalidSyntax ]
 		'''
 		if (1 < 3) { 1 }
-		'''.shouldNotParse
+		'''.whenParsed [ hasInvalidSyntax ]
 		''' // Jake's example from https://github.com/Protelis/Protelis/issues/65
 		let y = if (false) { 3 };
 		y+1;
-		'''.shouldNotParse
+		'''.whenParsed [ hasInvalidSyntax ]
 		'''
 		if (1 < 3) { 1 } else { 2 }
-		'''.shouldBeValid
+		'''.whenParsed [ mustNotRaise(ERROR) ]
 		'''
 		if (1 < 3) { 1 };
 		if (1 < 3) { 1 } else { 2 }
-		'''.shouldBeValid
+		'''.whenParsed [ mustNotRaise(ERROR) ]
 		'''
 		let x = if (1 < 3) { 1 } else { 2 };
 		1
-		'''.shouldBeValid
+		'''.whenParsed [ mustNotRaise(ERROR) ]
 		'''
 		let foo = true;
 		if (foo) { 1 };
 		2
-		'''.shouldBeValid
+		'''.whenParsed [ mustNotRaise(ERROR) ]
 		'''
 		let a = 0;
 		if (true) { a = a + 1 }; // Pure side effect
 		a
-		'''.shouldBeValid
+		'''.whenParsed [ mustNotRaise(ERROR) ]
 		'''
 		def myfun() {
 			let a = 0;
@@ -193,14 +230,14 @@ class ProtelisParsingTest {
 			a
 		}
 		myfun()
-		'''.shouldBeValid
+		'''.whenParsed [ mustNotRaise(ERROR) ]
 		'''
 		// EXPECTED_RESULT: 256
 		let x = 2; // 2
 		x = x * x; // 4 
 		x = x ^ x; // 256
 		x
-		'''.shouldBeValid
+		'''.whenParsed [ mustNotRaise(ERROR) ]
 		'''
 		// EXPECTED_RESULT: 2
 		let x = 0;
@@ -210,7 +247,7 @@ class ProtelisParsingTest {
 		} else {
 			x = 2;
 			x
-		}'''.shouldBeValid
+		}'''.whenParsed [ mustNotRaise(ERROR) ]
 	}
 
 }
