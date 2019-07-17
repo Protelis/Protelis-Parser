@@ -2,11 +2,12 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.protelis</groupId>
-	<version>9.1.2</version>
+	<version>9.2.0</version>
 	<artifactId>protelis.parser.parent</artifactId>
 	<packaging>pom</packaging>
+
 	<properties>
-		<xtextVersion>2.16.0</xtextVersion>
+		<xtextVersion>2.18.0</xtextVersion>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
@@ -16,7 +17,7 @@
 		<platformSystemProperties></platformSystemProperties>
 		<moduleProperties></moduleProperties>
 		<systemProperties></systemProperties>
-		<tycho.testArgLine></tycho.testArgLine>
+		<additionalTestArguments></additionalTestArguments>
 	</properties>
 	<modules>
 		<module>protelis.parser</module>
@@ -29,6 +30,17 @@
 		<module>protelis.parser.tests</module>
 		<module>protelis.parser.ui.tests</module>
 	</modules>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.eclipse.xtext</groupId>
+				<artifactId>xtext-dev-bom</artifactId>
+				<version>${xtextVersion}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 	<distributionManagement>
 		<snapshotRepository>
 			<id>ossrh</id>
@@ -344,7 +356,7 @@
 					<version>${tycho-version}</version>
 					<configuration>
 						<!-- THE FOLLOWING LINE MUST NOT BE BROKEN BY AUTOFORMATTING -->
-						<argLine>${tycho.testArgLine} ${platformSystemProperties} ${systemProperties} ${moduleProperties}</argLine>
+						<argLine>${platformSystemProperties} ${systemProperties} ${moduleProperties} ${additionalTestArguments}</argLine>
 						<failIfNoTests>false</failIfNoTests>
 						<useUIHarness>false</useUIHarness>
 					</configuration>
@@ -401,6 +413,7 @@
 			</properties>
 		</profile>
 	</profiles>
+
 	<dependencies>
 	</dependencies>
 </project>

@@ -4,10 +4,12 @@
 	<parent>
 		<groupId>org.protelis</groupId>
 		<artifactId>protelis.parser.parent</artifactId>
-		<version>9.1.2</version>
+		<version>9.2.0</version>
 	</parent>
 	<artifactId>protelis.parser.feature</artifactId>
 	<packaging>eclipse-feature</packaging>
+
+
 	<dependencies>
 	</dependencies>
 </project>

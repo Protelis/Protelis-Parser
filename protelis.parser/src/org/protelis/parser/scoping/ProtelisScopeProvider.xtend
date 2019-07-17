@@ -3,6 +3,7 @@
  */
 package org.protelis.parser.scoping
 
+import com.google.inject.Inject
 import java.util.ArrayList
 import java.util.Collection
 import java.util.Collections
@@ -10,9 +11,7 @@ import java.util.List
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.xtext.common.types.JvmFeature
-import org.eclipse.xtext.common.types.JvmField
-import org.eclipse.xtext.common.types.JvmOperation
-import org.eclipse.xtext.common.types.JvmVisibility
+import org.eclipse.xtext.common.types.util.TypeReferences
 import org.eclipse.xtext.naming.QualifiedName
 import org.eclipse.xtext.resource.EObjectDescription
 import org.eclipse.xtext.resource.IEObjectDescription
@@ -34,6 +33,9 @@ import org.protelis.parser.protelis.VarDefList
 import org.protelis.parser.protelis.VarUse
 import org.protelis.parser.protelis.Yield
 
+import static extension org.protelis.parser.ProtelisExtensions.callableEntities
+import static extension org.protelis.parser.ProtelisExtensions.callableEntitiesNamed
+
 /**
  * This class contains custom scoping description.
  * 
@@ -42,6 +44,16 @@ import org.protelis.parser.protelis.Yield
  */
 class ProtelisScopeProvider extends AbstractProtelisScopeProvider {
 	
+	@Inject 
+	TypeReferences references;
+
+	val automaticallyImported = #[
+			typeof(Math),
+			typeof(Double)
+		]
+		.filter[it !== null]
+		.toList
+
 	override IScope getScope(EObject context, EReference reference) {
 		if (context instanceof VarUse) {
 			scope_VarUse_reference(context, reference)
@@ -55,80 +67,101 @@ class ProtelisScopeProvider extends AbstractProtelisScopeProvider {
 			super.getScope(context, reference)
 		}
 	}
-	
+
 	private def Iterable<VarDef> extractReferences(EObject container) {
 		switch container {
-				Block: if (container.first instanceof VarDef) #[container.first as VarDef] else emptyList
-				FunctionDef: container.args?.args ?: emptyList
-				Lambda: {
-					val lambdaArgs = container.args
-					switch lambdaArgs {
-						VarDef: #[lambdaArgs]
-						VarDefList: lambdaArgs.args
-						default: emptyList
-					}
+			Block:
+				if(container.first instanceof VarDef) #[container.first as VarDef] else emptyList
+			FunctionDef:
+				container.args?.args ?: emptyList
+			Lambda: {
+				val lambdaArgs = container.args
+				switch lambdaArgs {
+					VarDef: #[lambdaArgs]
+					VarDefList: lambdaArgs.args
+					default: emptyList
 				}
-				Rep: #[container.init.x]
-				Share: {
-					val init = container.init
-                    #[container.init.field] + if (init.local === null) #[] else #[init.local]
+			}
+			Rep:
+				#[container.init.x]
+			Share: {
+				val init = container.init
+				#[container.init.field] + if(init.local === null) #[] else #[init.local]
+			}
+			Yield: {
+				val parent = container.eContainer
+				var Block body = switch parent {
+					Rep: parent.body
+					Share: parent.body
 				}
-				Yield: {
-					val parent = container.eContainer
-					var Block body = switch parent {
-						Rep: parent.body
-						Share: parent.body
-					}
-					// Get to the last instruction and scan the whole block
-					val result = new ArrayList
-					while (body !== null) {
-						result.addAll(extractReferences(body))
-						body = body.next
-					}
-					result
+				// Get to the last instruction and scan the whole block
+				val result = new ArrayList
+				while (body !== null) {
+					result.addAll(extractReferences(body))
+					body = body.next
 				}
-				default: emptyList
+				result
+			}
+			default:
+				emptyList
 		}
 	}
 
 	def IScope scope_VarUse_reference(VarUse expression, EReference ref) {
 		val list = new ArrayList<VarDef>
 		var container = expression.eContainer
-	 	while (container !== null) {
+		while (container !== null) {
 			switch container {
 				ProtelisModule:
-					return MapBasedScope.createScope(scope_Call_reference(container, ref), Scopes.scopeFor(list).allElements)
-				default: list.addAll(extractReferences(container))
+					return MapBasedScope.createScope(scope_Call_reference(container, ref),
+						Scopes.scopeFor(list).allElements)
+				default:
+					list.addAll(extractReferences(container))
 			}
 			container = container.eContainer
 		}
 		Scopes.scopeFor(Collections.emptyList)
 	}
-	
+
 	def IScope scope_Call_reference(ProtelisModule model, EReference ref) {
-		val List<EObject> internal = new ArrayList(model.definitions)
-		val List<IEObjectDescription> externalProtelis = new ArrayList
-		val List<IEObjectDescription> executables = new ArrayList
-		model?.imports?.importDeclarations?.forEach[ import |
-			if (import instanceof ProtelisImport) {
-				val moduleName = import.module.name
-				import.module.definitions.filter[public].forEach[
-					externalProtelis.add(generateDescription(it.name, it))
-					externalProtelis.add(generateDescription(moduleName + ":" + it.name, it))
+		val List<FunctionDef> internal = new ArrayList(model.definitions)
+		val importDeclarations = model?.imports?.importDeclarations
+		val Iterable<IEObjectDescription> externalProtelis = importDeclarations
+			?.filter[it instanceof ProtelisImport]
+			?.map[it as ProtelisImport]
+			?.map[it.module]
+			?.flatMap[ module |
+				module.definitions.filter[public]
+					.flatMap[#[
+						generateDescription(it.name, it),
+						generateDescription(module.name + ":" + it.name, it)
+					]]
+			]
+			?.toList
+			?: emptyList
+		val Iterable<JvmFeature> autoImportedTypes = (
+				#[references.findDeclaredType("org.protelis.Builtins", model)].filter[it !== null]
+				+ automaticallyImported.map[references.findDeclaredType(it, model)]
+			)
+			.flatMap[callableEntities]
+		val Iterable<JvmFeature> externalJava = importDeclarations
+				?.filter[it instanceof JavaImport]
+				?.map[it as JavaImport]
+				?.flatMap[
+					if (it.wildcard) {
+						it.importedType.callableEntities
+					} else {
+						it.importedType.callableEntitiesNamed(it.importedMemberName)
+					}
 				]
-			} else if (import instanceof JavaImport) {
-				val type = import.importedType;
-				type.eContents
-					.filter[it instanceof JvmField || it instanceof JvmOperation]
-					.map[it as JvmFeature]
-					.filter[it.isStatic]
-					.filter[it.visibility == JvmVisibility.PUBLIC]
-					.filter[import.wildcard || it.simpleName == import.importedMemberName]
-					.populateMethodReferences(executables)
-			}
-		]
+				?: emptyList
+		val callableJava = (externalJava + autoImportedTypes)
+			.flatMap[#[
+				generateDescription(it.simpleName, it),
+				generateDescription(it.qualifiedName.replace(".", "::"), it)
+			]]
 		val plainProtelis = Scopes.scopeFor(internal)
-		val refJava = new SimpleScope(executables)
+		val refJava = new SimpleScope(callableJava)
 		/*
 		 * Search locally => search Protelis imports => search Java imports
 		 */
@@ -136,14 +169,14 @@ class ProtelisScopeProvider extends AbstractProtelisScopeProvider {
 		val final = MapBasedScope.createScope(outer, plainProtelis.allElements)
 		final
 	}
-	
+		
 	def static populateMethodReferences(Iterable<JvmFeature> source, Collection<IEObjectDescription> destination) {
-		source.forEach[
+		source.forEach [
 			destination.add(generateDescription(it.simpleName, it))
 			destination.add(generateDescription(it.qualifiedName.replace(".", "::"), it))
 		]
 	}
-	
+
 	def static generateDescription(String name, EObject obj) {
 		val ref = QualifiedName.create(name)
 		EObjectDescription.create(ref, obj)
