@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature id="protelis.parser.feature"
-	label="Protelis Feature "
+	label="Protelis Editor for the Eclipse IDE "
 	version="9.2.1">
 	<plugin
 			id="protelis.parser"
