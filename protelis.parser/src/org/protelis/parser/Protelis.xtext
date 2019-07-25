@@ -31,7 +31,7 @@ ProtelisImport:
 ;
 
 Block:
-	=> (Statement ';' ({ Block.first=current } next=Block))
+	=> (first = Statement ';' next=Block)
 	| first = Expression
 ;
 
