@@ -71,10 +71,15 @@ InvocationArguments:
 ;
 
 Lambda:
-  => name='{' args=VarDefList '->' body=Block '}'
-  | name='{' body=Block '}'
-  | '(' args=VarDefList? ')' name='->' '{' body=Block '}'
-  | arg=VarDef name='->' '{' body=Block '}'
+  (
+  	=> '{' args=VarDefList name='->'
+  	| name='{'
+  )
+  body=Block '}'
+;
+
+OldLambda:
+	('(' (args=VarDefList)? ')' | args = VarDef) name='->' '{' body=Block '}'
 ;
 
 Rep: 
@@ -168,6 +173,7 @@ Primary returns Expression:
 	| =>Share
 	| =>NBR
 	| =>If
+	| =>OldLambda
 	| VarUse
 	| Scalar
 	| '(' Expression ')'
