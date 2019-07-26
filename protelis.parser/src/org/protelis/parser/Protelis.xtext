@@ -31,8 +31,7 @@ ProtelisImport:
 ;
 
 Block:
-	=> (first = Statement ';' next=Block)
-	| first = Expression
+	(statements+=Statement ';'*)+
 ;
 
 Statement: (=>Expression | SideEffect);
@@ -62,7 +61,7 @@ Call:
 	/*
 	 * Use manual scoping to solve this
 	 */
-	reference = [ecore::EObject|CallRule] '('args=ExprList?')'
+	reference=[ecore::EObject|CallRule] '('args=ExprList?')'
 ;
 
 Lambda:
@@ -101,11 +100,11 @@ Hood:
 ;
 
 GenericHood:
-		(name = 'hood' | name = 'hoodPlusSelf') '('
-			(reference = VarUse | op = Lambda ) ','
-			default = Expression ','
-			arg = Expression
-		')'
+	(name = 'hood' | name = 'hoodPlusSelf') '('
+		(reference = VarUse | op = Lambda ) ','
+		default = Expression ','
+		arg = Expression
+	')'
 ;
 	
 BuiltinHoodOp:
@@ -143,7 +142,7 @@ Power returns Expression:
  Prefix ({Expression.left=current} name=('^') right=Prefix)*;
 
 Prefix returns Expression:
-    Postfix | ({Prefix} name=('-'|'!') right=Postfix);
+    Postfix | ({Prefix} name=('!') right=Postfix);
 
 Postfix returns Expression:
     Primary
@@ -151,10 +150,8 @@ Postfix returns Expression:
 ;
 
 Primary returns Expression:
- (v = (VarUse | Local | Call | Rep | Share | NBR | If) | '(' Expression ')')
+	=>Call | =>Builtin | VarUse | Scalar | =>Lambda | Rep | Share | NBR | If | '(' Expression ')'
 ;
-
-Local: Scalar | Builtin | Lambda;
 
 VarDef: name = ID;
 
@@ -180,7 +177,7 @@ ProtelisCallElement: ':' ID;
 
 ProtelisQualifiedName: ID (':' ID)* ;
 
-AID: =>ID | 'random' | 'PlusSelf' | 'self' | 'env';
+AID: =>ID | 'PlusSelf' | 'self' | 'env';
 
 @Override QualifiedNameInStaticImport:
   (AID '.')+
