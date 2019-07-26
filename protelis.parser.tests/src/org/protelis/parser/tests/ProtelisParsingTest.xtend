@@ -208,6 +208,17 @@ class ProtelisParsingTest {
 	}
 
 	@Test
+	def void testKotlinItRename() {
+		'''
+		{ a -> a + 1 }
+		'''.whenParsed [
+			mustNotRaise(ERROR)
+			mustNotRaise(WARNING)
+		]
+
+	}
+
+	@Test
 	def void testKotlinStyleLambda() {
 		'''
 		{ it + 1 }
@@ -221,16 +232,10 @@ class ProtelisParsingTest {
 			mustRaise(ERROR)
 		]
 		'''
-		{ a -> a + 1 }
-		'''.whenParsed [
-			mustNotRaise(ERROR)
-			mustNotRaise(WARNING)
-		]
-		'''
 		def f(a) {
 			a
 		}
-		a({ it + 1 })
+		f({ it + 1 })
 		'''.whenParsed [
 			mustNotRaise(ERROR)
 			mustNotRaise(WARNING)
