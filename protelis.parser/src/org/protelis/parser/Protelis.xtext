@@ -95,8 +95,8 @@ MethodCall:
 ;
 
 Primary returns Expression:
-//	=>Call
-	=>Builtin
+	=>Call
+	| =>Builtin
 	| =>AnyLambda
 	| =>Rep
 	| =>Share
