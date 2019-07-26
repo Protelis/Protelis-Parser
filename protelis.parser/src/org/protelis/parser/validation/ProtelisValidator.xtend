@@ -23,6 +23,7 @@ import org.protelis.parser.protelis.VarDefList
 import static extension org.protelis.parser.ProtelisExtensions.*
 import org.protelis.parser.protelis.Expression
 import java.util.Optional
+import org.protelis.parser.protelis.OldLambda
 
 /**
  * Custom validation rules. 
@@ -67,7 +68,7 @@ class ProtelisValidator extends AbstractProtelisValidator {
 					}
 				}
 			}
-			if (parent instanceof Lambda) {
+			if (parent instanceof OldLambda) {
 				if(parent.args !== null) {
 					val args = parent.args;
 					if(args instanceof VarDef){
