@@ -80,7 +80,6 @@ class ProtelisScopeProvider extends AbstractProtelisScopeProvider {
 			AnyLambda: {
 				val lambdaArgs = container.args
 				switch lambdaArgs {
-					VarDef: #[lambdaArgs]
 					VarDefList: lambdaArgs.args
 					default: emptyList
 				}
