@@ -79,7 +79,7 @@ Lambda:
 ;
 
 OldLambda:
-	('(' (args=VarDefList)? ')' | args = VarDef) name='->' '{' body=Block '}'
+	'(' (args=VarDefList)? ')' name='->' '{' body=Block '}'
 ;
 
 Rep: 
