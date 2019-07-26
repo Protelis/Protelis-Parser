@@ -24,6 +24,8 @@ import static extension org.protelis.parser.ProtelisExtensions.*
 import org.protelis.parser.protelis.Expression
 import java.util.Optional
 import org.protelis.parser.protelis.OldLambda
+import org.protelis.parser.protelis.Declaration
+import org.protelis.parser.protelis.AnyLambda
 
 /**
  * Custom validation rules. 
@@ -49,7 +51,7 @@ class ProtelisValidator extends AbstractProtelisValidator {
 	 * containing rep
 	 */
 	@Check
-	def letNameDoesNotShadowArguments(VarDef exp) {
+	def letNameDoesNotShadowArguments(Declaration exp) {
 		var parent = exp.eContainer
 		while (parent !== null) {
 			if (parent instanceof Block) {
@@ -68,7 +70,7 @@ class ProtelisValidator extends AbstractProtelisValidator {
 					}
 				}
 			}
-			if (parent instanceof OldLambda) {
+			if (parent instanceof AnyLambda) {
 				if(parent.args !== null) {
 					val args = parent.args;
 					if(args instanceof VarDef){
@@ -86,7 +88,7 @@ class ProtelisValidator extends AbstractProtelisValidator {
 		}
 	}
 	
-	def error(VarDef exp)  {
+	def error(Declaration exp)  {
 		val error = "Variable " + exp.name + " has already been defined in this context. Pick another name."
 		error(error, exp, null)
 	}
