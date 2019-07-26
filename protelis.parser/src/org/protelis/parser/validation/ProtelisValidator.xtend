@@ -21,6 +21,8 @@ import org.protelis.parser.protelis.VarDef
 import org.protelis.parser.protelis.VarDefList
 
 import static extension org.protelis.parser.ProtelisExtensions.*
+import org.protelis.parser.protelis.Expression
+import java.util.Optional
 
 /**
  * Custom validation rules. 
@@ -50,12 +52,13 @@ class ProtelisValidator extends AbstractProtelisValidator {
 		var parent = exp.eContainer
 		while (parent !== null) {
 			if (parent instanceof Block) {
-				if (parent.first instanceof VarDef && parent.first != exp) {
-					val otherLet = parent.first as VarDef
-					if (otherLet.name.equals(exp.name)) {
-						error(exp)
-					}
-				}
+				Optional.of(parent.statements
+						.takeWhile[it != exp]
+						.filter[it instanceof VarDef]
+						.map[it as VarDef]
+						.filter[it.name == exp.name]
+						.head)
+					.ifPresent[error(exp)]
 			}
 			if (parent instanceof FunctionDef) {
 				if(parent.args !== null){
@@ -83,9 +86,16 @@ class ProtelisValidator extends AbstractProtelisValidator {
 	}
 	
 	def error(VarDef exp)  {
-		val error = "The variable has already been defined in this context. Pick another name."
-		if (exp.eContainer instanceof Block) {
-			error(error, exp.eContainer, ProtelisPackage.Literals.BLOCK__FIRST)
+		val error = "Variable " + exp.name + " has already been defined in this context. Pick another name."
+		error(error, exp, null)
+	}
+
+	@Check
+	def lastElementOfBlockIsExpression(Block block) {
+		if (!(block.statements.last instanceof Expression)) {
+			error("The last statement in a returning block must be an expression",
+				block.statements.last, null
+			)
 		}
 	}
 
