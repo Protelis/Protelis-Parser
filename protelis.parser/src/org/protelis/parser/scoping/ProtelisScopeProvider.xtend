@@ -35,6 +35,7 @@ import org.protelis.parser.protelis.Yield
 
 import static extension org.protelis.parser.ProtelisExtensions.callableEntities
 import static extension org.protelis.parser.ProtelisExtensions.callableEntitiesNamed
+import org.protelis.parser.protelis.AnyLambda
 
 /**
  * This class contains custom scoping description.
@@ -74,10 +75,9 @@ class ProtelisScopeProvider extends AbstractProtelisScopeProvider {
 				#[container]
 			Block:
 				container.statements.flatMap[extractReferences]
-//				if(container.first instanceof VarDef) #[container.first as VarDef] else emptyList
 			FunctionDef:
 				container.args?.args ?: emptyList
-			Lambda: {
+			AnyLambda: {
 				val lambdaArgs = container.args
 				switch lambdaArgs {
 					VarDef: #[lambdaArgs]
@@ -97,13 +97,6 @@ class ProtelisScopeProvider extends AbstractProtelisScopeProvider {
 					Rep: parent.body
 					Share: parent.body
 				}
-				// Get to the last instruction and scan the whole block
-//				val result = new ArrayList
-//				while (body !== null) {
-//					result.addAll(extractReferences(body))
-//					body = body.next
-//				}
-//				result
 				body.extractReferences
 			}
 			default:
