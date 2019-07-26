@@ -70,6 +70,8 @@ InvocationArguments:
 	| lastArg = Lambda
 ;
 
+AnyLambda: Lambda | OldLambda;
+
 Lambda:
   (
   	=> '{' args=VarDefList name='->'
@@ -168,12 +170,11 @@ Postfix returns Expression:
 Primary returns Expression:
 	=>Call
 	| =>Builtin
-	| =>Lambda
+	| =>AnyLambda
 	| =>Rep
 	| =>Share
 	| =>NBR
 	| =>If
-	| =>OldLambda
 	| VarUse
 	| Scalar
 	| '(' Expression ')'
