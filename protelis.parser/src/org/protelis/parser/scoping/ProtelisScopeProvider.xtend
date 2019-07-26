@@ -56,13 +56,13 @@ class ProtelisScopeProvider extends AbstractProtelisScopeProvider {
 
 	override IScope getScope(EObject context, EReference reference) {
 		if (context instanceof VarUse) {
-			scope_VarUse_reference(context, reference)
+			scopeVar(context, reference)
 		} else if (context instanceof Call) {
 			var global = context.eContainer
 			while (!(global instanceof ProtelisModule)) {
 				global = global.eContainer
 			}
-			scope_Call_reference(global as ProtelisModule, reference)
+			scopeCall(global as ProtelisModule, reference)
 		} else {
 			super.getScope(context, reference)
 		}
@@ -70,8 +70,11 @@ class ProtelisScopeProvider extends AbstractProtelisScopeProvider {
 
 	private def Iterable<VarDef> extractReferences(EObject container) {
 		switch container {
+			VarDef:
+				#[container]
 			Block:
-				if(container.first instanceof VarDef) #[container.first as VarDef] else emptyList
+				container.statements.flatMap[extractReferences]
+//				if(container.first instanceof VarDef) #[container.first as VarDef] else emptyList
 			FunctionDef:
 				container.args?.args ?: emptyList
 			Lambda: {
@@ -95,25 +98,26 @@ class ProtelisScopeProvider extends AbstractProtelisScopeProvider {
 					Share: parent.body
 				}
 				// Get to the last instruction and scan the whole block
-				val result = new ArrayList
-				while (body !== null) {
-					result.addAll(extractReferences(body))
-					body = body.next
-				}
-				result
+//				val result = new ArrayList
+//				while (body !== null) {
+//					result.addAll(extractReferences(body))
+//					body = body.next
+//				}
+//				result
+				body.extractReferences
 			}
 			default:
 				emptyList
 		}
 	}
 
-	def IScope scope_VarUse_reference(VarUse expression, EReference ref) {
+	def IScope scopeVar(VarUse expression, EReference ref) {
 		val list = new ArrayList<VarDef>
 		var container = expression.eContainer
 		while (container !== null) {
 			switch container {
 				ProtelisModule:
-					return MapBasedScope.createScope(scope_Call_reference(container, ref),
+					return MapBasedScope.createScope(scopeCall(container, ref),
 						Scopes.scopeFor(list).allElements)
 				default:
 					list.addAll(extractReferences(container))
@@ -123,7 +127,7 @@ class ProtelisScopeProvider extends AbstractProtelisScopeProvider {
 		Scopes.scopeFor(Collections.emptyList)
 	}
 
-	def IScope scope_Call_reference(ProtelisModule model, EReference ref) {
+	def IScope scopeCall(ProtelisModule model, EReference ref) {
 		val List<FunctionDef> internal = new ArrayList(model.definitions)
 		val importDeclarations = model?.imports?.importDeclarations
 		val Iterable<IEObjectDescription> externalProtelis = importDeclarations
