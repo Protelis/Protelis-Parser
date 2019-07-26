@@ -9,12 +9,6 @@ ProtelisModule: ('module' name=ProtelisQualifiedName)?
 	(definitions+=FunctionDef)* program=Block?
 ;
 
-VarDefList: args += VarDef (',' args += VarDef)* ;
-
-ExprList: args+=Expression (',' args+=Expression)*;
-RepInitialize: x=VarDef '<-' w=Expression;
-ShareInitialize: (local=VarDef ',')? field=VarDef '<-' w=Expression;
-
 ImportSection:
 	importDeclarations+=ImportDeclaration+;
 
@@ -30,6 +24,14 @@ ProtelisImport:
 	name='import' module=[ProtelisModule|ProtelisQualifiedName]
 ;
 
+ProtelisQualifiedName: ID (':' ID)* ;
+
+FunctionDef: public?="public"? 'def' name=ID '(' (args=VarDefList)? ')' '{' body=Block '}';
+
+VarDefList: args += VarDef (',' args += VarDef)* ;
+
+VarDef: name = ID;
+
 Block:
 	(statements+=Statement ';'*)+
 ;
@@ -37,10 +39,6 @@ Block:
 Statement: (=>Expression | SideEffect);
 
 SideEffect: Declaration | Assignment | IfWithoutElse;
-
-IfWithoutElse:
-	name='if' '(' cond=Expression ')' '{' (then+=Statement (';' then+=Statement)*)? '}'
-;
 
 Declaration returns VarDef:
 	'let' VarDef '=' right=Expression
@@ -50,92 +48,12 @@ Assignment:
 	refVar=[VarDef] name='=' right = Expression
 ;
 
+IfWithoutElse:
+	name='if' '(' cond=Expression ')' '{' (then+=Statement (';' then+=Statement)*)? '}'
+;
+
 Expression:
  	LogicalOr
-;
-
-FunctionDef: public?="public"? 'def' name=ID '(' (args=VarDefList)? ')' '{' body=Block '}';
-
-
-Call:
-	/*
-	 * Use manual scoping to solve this
-	 */
-	reference=[ecore::EObject|CallRule] arguments=InvocationArguments
-;
-
-InvocationArguments:
-	=> name='(' args=ExprList? ')' lastArg = Lambda
-	| => name='(' args=ExprList? ')'
-	| lastArg = Lambda
-;
-
-AnyLambda: Lambda | OldLambda;
-
-Lambda:
-  (
-  	=> '{' args=VarDefList name='->'
-  	| name='{'
-  )
-  body=Block '}'
-;
-
-OldLambda:
-	'(' (args=VarDefList)? ')' name='->' '{' body=Block '}'
-;
-
-Rep: 
-	name='rep' '(' init=RepInitialize ')' '{' body=Block '}' (yields = Yield)?
-;
-
-Share: 
-	name='share' '(' init=ShareInitialize ')' '{' body=Block '}' (yields = Yield)?
-;
-
-Yield: name='yield' '{' body = Block '}';
-
-If:
-	name='if' '(' cond=Expression ')' '{' then=Block '}' 'else' '{' else=Block '}'
-;
-
-NBR:
-	name='nbr' '(' arg=Expression ')' 
-;
-
-Builtin:
-	Self | Env | It | Eval | AlignedMap | Mux | Hood
-;
-
-It: name = 'it';
-Self: name = 'self';
-Env: name = 'env';
-Eval: name='eval' '(' arg = Expression ')';
-AlignedMap: name='alignedMap' '(' arg=Expression ',' cond=Expression ',' op=Expression ',' default=Expression ')';
-Mux: name='mux' '(' cond=Expression ')' '{' then=Block '}' 'else' '{'  else=Block '}';
-
-Hood:
-	BuiltinHoodOp |	GenericHood  
-;
-
-GenericHood:
-	(name = 'hood' | name = 'hoodPlusSelf') '('
-		(reference = VarUse | op = Lambda ) ','
-		default = Expression ','
-		arg = Expression
-	')'
-;
-	
-BuiltinHoodOp:
-	(
-	name='minHood' |
-	name='maxHood' |
-	name='localHood' |
-	name='anyHood' |
-	name='allHood' |
-	name='sumHood' |
-	name='meanHood' |
-	name='unionHood'
-) inclusive?='PlusSelf'? '(' arg=Expression ')'
 ;
 
 LogicalOr returns Expression:
@@ -180,36 +98,102 @@ Primary returns Expression:
 	| '(' Expression ')'
 ;
 
-VarDef: name = ID;
+Call:
+	/*
+	 * Use manual scoping to solve this
+	 */
+	reference=[ecore::EObject|CallRule] arguments=InvocationArguments
+;
+CallRule: AID (JCallElement+ | ProtelisCallElement+)?;
+CallRuleNoConflict: AID (JCallElement+ | ProtelisCallElement+) | ID;
+JCallElement: '::' AID;
+ProtelisCallElement: ':' ID;
+
+InvocationArguments:
+	=> name='(' args=ExpressionList? ')' lastArg = Lambda
+	| => name='(' args=ExpressionList? ')'
+	| lastArg = Lambda
+;
+
+ExpressionList: args+=Expression (',' args+=Expression)*;
+
+AnyLambda: Lambda | OldLambda;
+Lambda:
+  (
+  	=> '{' args=VarDefList name='->'
+  	| name='{'
+  )
+  body=Block '}'
+;
+OldLambda:
+	'(' (args=VarDefList)? ')' name='->' '{' body=Block '}'
+;
+
+Rep: 
+	name='rep' '(' init=RepInitialize ')' '{' body=Block '}' (yields = Yield)?
+;
+RepInitialize: x=VarDef '<-' w=Expression;
+Share: 
+	name='share' '(' init=ShareInitialize ')' '{' body=Block '}' (yields = Yield)?
+;
+ShareInitialize: (local=VarDef ',')? field=VarDef '<-' w=Expression;
+Yield: name='yield' '{' body = Block '}';
+
+NBR:
+	name='nbr' '(' arg=Expression ')' 
+;
+
+If:
+	name='if' '(' cond=Expression ')' '{' then=Block '}' 'else' '{' else=Block '}'
+;
 
 VarUse: reference=[ecore::EObject|CallRuleNoConflict];
 
 Scalar: DoubleVal | StringVal | BooleanVal | TupleVal;
 
+Builtin:
+	Self | Env | It | Eval | AlignedMap | Mux | Hood
+;
+Self: name = 'self';
+Env: name = 'env';
+It: name = 'it';
+Eval: name='eval' '(' arg = Expression ')';
+AlignedMap: name='alignedMap' '(' arg=Expression ',' cond=Expression ',' op=Expression ',' default=Expression ')';
+Mux: name='mux' '(' cond=Expression ')' '{' then=Block '}' 'else' '{'  else=Block '}';
+
+Hood:
+	BuiltinHoodOp |	GenericHood  
+;
+GenericHood:
+	(name = 'hood' | name = 'hoodPlusSelf') '('
+		(reference = VarUse | op = Lambda ) ','
+		default = Expression ','
+		arg = Expression
+	')'
+;
+BuiltinHoodOp:
+	(
+	name='minHood' |
+	name='maxHood' |
+	name='localHood' |
+	name='anyHood' |
+	name='allHood' |
+	name='sumHood' |
+	name='meanHood' |
+	name='unionHood'
+) inclusive?='PlusSelf'? '(' arg=Expression ')'
+;
+
 DoubleVal: val=DOUBLE;
-
 StringVal: val=STRING;
-
 BooleanVal: val=BOOLEAN;
-
-TupleVal: name='[' args = ExprList? ']';
-
-CallRule: AID (JCallElement+ | ProtelisCallElement+)?;
-
-CallRuleNoConflict: AID (JCallElement+ | ProtelisCallElement+) | ID;
-
-JCallElement: '::' AID;
-
-ProtelisCallElement: ':' ID;
-
-ProtelisQualifiedName: ID (':' ID)* ;
+TupleVal: name='[' args = ExpressionList? ']';
 
 AID: =>ID | 'PlusSelf' | 'self' | 'env' | 'it' | 'rep' | 'share' | 'nbr' | 'hood' | 'mux' | 'eval';
 
 @Override QualifiedNameInStaticImport:
   (AID '.')+
 ;
-
 terminal INT returns ecore::EInt: ('0'..'9')+;
 DOUBLE returns ecore::EDouble: INT('.'INT)?('e'|'E''-'?INT)?;
 BOOLEAN returns ecore::EBoolean: "true" | "false";
