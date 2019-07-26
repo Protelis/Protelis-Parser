@@ -55,16 +55,16 @@ class ProtelisScopeProvider extends AbstractProtelisScopeProvider {
 		.toList
 
 	override IScope getScope(EObject context, EReference reference) {
-		if (context instanceof VarUse) {
-			scopeVar(context, reference)
-		} else if (context instanceof Call) {
-			var global = context.eContainer
-			while (!(global instanceof ProtelisModule)) {
-				global = global.eContainer
+		switch(context) {
+			VarUse: scopeVar(context, reference)
+			Call: {
+				var global = context.eContainer
+				while (!(global instanceof ProtelisModule)) {
+					global = global.eContainer
+				}
+				scopeCall(global as ProtelisModule, reference)
 			}
-			scopeCall(global as ProtelisModule, reference)
-		} else {
-			super.getScope(context, reference)
+			default: super.getScope(context, reference)
 		}
 	}
 
