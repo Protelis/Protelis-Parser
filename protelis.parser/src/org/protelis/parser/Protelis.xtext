@@ -78,11 +78,15 @@ Power returns Expression:
  Prefix ({Expression.elements+=current} name=('^') elements+=Prefix)*;
 
 Prefix returns Expression:
-    Postfix | ({Prefix} name=('!') elements+=Postfix);
+    MethodInvocation | ({Prefix} name=('!') elements+=MethodInvocation);
 
-Postfix returns Expression:
+MethodInvocation returns Expression:
     Primary
-    ({Expression.elements+=current}(name='.' methodName=AID arguments=InvocationArguments))*
+    ({Expression.elements+=current} name='.' elements+=MethodCall)?
+;
+
+MethodCall:
+	'.' name=AID arguments=InvocationArguments
 ;
 
 Primary returns Expression:
