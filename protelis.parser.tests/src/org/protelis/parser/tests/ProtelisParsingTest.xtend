@@ -219,6 +219,19 @@ class ProtelisParsingTest {
 	}
 
 	@Test
+	def void parameterAccessShouldBeAllowed() {
+		'''
+		public def identity(a) {
+			a
+		}
+		'''.whenParsed [
+			mustNotRaise(ERROR)
+			mustNotRaise(WARNING)
+		]
+
+	}
+
+	@Test
 	def void testKotlinStyleLambda() {
 		'''
 		{ it + 1 }
