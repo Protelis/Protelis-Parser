@@ -61,11 +61,21 @@ Call:
 	/*
 	 * Use manual scoping to solve this
 	 */
-	reference=[ecore::EObject|CallRule] '('args=ExprList?')'
+	reference=[ecore::EObject|CallRule] arguments=InvocationArguments
+;
+
+InvocationArguments:
+	=> name='(' args=ExprList? ')' lastArg = Lambda
+	| => name='(' args=ExprList? ')'
+	| lastArg = Lambda
 ;
 
 Lambda:
-	('(' (args=VarDefList)? ')' | args = VarDef) name='->' '{' body=Block '}';
+  => name='{' args=VarDefList '->' body=Block '}'
+  | name='{' body=Block '}'
+  | '(' args=VarDefList? ')' name='->' '{' body=Block '}'
+  | arg=VarDef name='->' '{' body=Block '}'
+;
 
 Rep: 
 	name='rep' '(' init=RepInitialize ')' '{' body=Block '}' (yields = Yield)?
@@ -86,9 +96,10 @@ NBR:
 ;
 
 Builtin:
-	Self | Env | Eval | AlignedMap | Mux | Hood
+	Self | Env | It | Eval | AlignedMap | Mux | Hood
 ;
 
+It: name = 'it';
 Self: name = 'self';
 Env: name = 'env';
 Eval: name='eval' '(' arg = Expression ')';
@@ -146,11 +157,20 @@ Prefix returns Expression:
 
 Postfix returns Expression:
     Primary
-    ({Expression.left=current}(name='.' methodName=AID '(' (args=ExprList)? ')'))*
+    ({Expression.left=current}(name='.' methodName=AID arguments=InvocationArguments))*
 ;
 
 Primary returns Expression:
-	=>Call | =>Builtin | VarUse | Scalar | =>Lambda | Rep | Share | NBR | If | '(' Expression ')'
+	=>Call
+	| =>Builtin
+	| =>Lambda
+	| =>Rep
+	| =>Share
+	| =>NBR
+	| =>If
+	| VarUse
+	| Scalar
+	| '(' Expression ')'
 ;
 
 VarDef: name = ID;
@@ -177,7 +197,7 @@ ProtelisCallElement: ':' ID;
 
 ProtelisQualifiedName: ID (':' ID)* ;
 
-AID: =>ID | 'PlusSelf' | 'self' | 'env';
+AID: =>ID | 'PlusSelf' | 'self' | 'env' | 'it' | 'rep' | 'share' | 'nbr' | 'hood' | 'mux' | 'eval';
 
 @Override QualifiedNameInStaticImport:
   (AID '.')+
