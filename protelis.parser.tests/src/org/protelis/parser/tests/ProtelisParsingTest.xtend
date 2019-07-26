@@ -219,6 +219,27 @@ class ProtelisParsingTest {
 	}
 
 	@Test
+	def void lambdaShouldBeInvokable() {
+		'''
+		{ a -> a + 1 }(1)
+		'''.whenParsed [
+			mustNotRaise(ERROR)
+			mustNotRaise(WARNING)
+		]
+
+	}
+
+	@Test
+	def void lambdaInvocationWithBadArgumentsShouldFail() {
+		'''
+		{ a -> a + 1 }()
+		'''.whenParsed [
+			mustRaise(ERROR)
+		]
+
+	}
+
+	@Test
 	def void parameterAccessShouldBeAllowed() {
 		'''
 		public def identity(a) {
@@ -284,6 +305,15 @@ class ProtelisParsingTest {
 	}
 
 	@Test
+	def void ifWithoutParenthesisShouldResolveVariables() {
+		'''
+		let foo = true;
+		if (foo) { 1 };
+		2
+		'''.whenParsed [ mustNotRaise(ERROR) ]
+	}
+
+	@Test
 	def void testIfWithoutParentheses() {
 		'''
 		let x = if (1 < 3) { 1 };
@@ -310,11 +340,6 @@ class ProtelisParsingTest {
 		'''
 		let x = if (1 < 3) { 1 } else { 2 };
 		1
-		'''.whenParsed [ mustNotRaise(ERROR) ]
-		'''
-		let foo = true;
-		if (foo) { 1 };
-		2
 		'''.whenParsed [ mustNotRaise(ERROR) ]
 		'''
 		let a = 0;

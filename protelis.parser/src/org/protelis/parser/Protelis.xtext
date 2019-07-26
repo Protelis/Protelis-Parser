@@ -81,8 +81,8 @@ Prefix returns Expression:
     Invoke | ({Prefix} name=('!') elements+=Invoke);
 
 Invoke returns Expression:
-    MethodInvocation
-//    ({Expression.elements+=current} elements+=InvocationArguments)?
+    =>(MethodInvocation elements+=InvocationArguments)
+    | MethodInvocation
 ;
 
 MethodInvocation returns Expression:
@@ -95,13 +95,13 @@ MethodCall:
 ;
 
 Primary returns Expression:
-	=>Call
-	| =>Builtin
-	| =>AnyLambda
-	| =>Rep
+//	=>Call
+	=>Rep
 	| =>Share
 	| =>NBR
 	| =>If
+	| =>AnyLambda
+	| =>Builtin
 	| VarUse
 	| Scalar
 	| '(' Expression ')'
@@ -125,12 +125,10 @@ ExpressionList: args+=Expression (',' args+=Expression)*;
 
 AnyLambda: Lambda | OldLambda;
 Lambda:
-  (
-  	=> '{' args=VarDefList name='->'
-  	| name='{'
-  )
-  body=Block '}'
+  FullLambda | ShortLambda
 ;
+FullLambda: '{' args=VarDefList name='->' body=Block '}';
+ShortLambda: name='{' body=Block '}';
 OldLambda:
 	'(' (args=VarDefList)? ')' name='->' '{' body=Block '}'
 ;
@@ -153,7 +151,7 @@ If:
 	name='if' '(' cond=Expression ')' '{' then=Block '}' 'else' '{' else=Block '}'
 ;
 
-VarUse: reference=[ecore::EObject|CallRuleNoConflict];
+VarUse: reference=[ecore::EObject|CallRule];
 
 Scalar: DoubleVal | StringVal | BooleanVal | TupleVal;
 
