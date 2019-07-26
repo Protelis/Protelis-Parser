@@ -40,8 +40,8 @@ Statement: (=>Expression | SideEffect);
 
 SideEffect: Declaration | Assignment | IfWithoutElse;
 
-Declaration returns VarDef:
-	'let' VarDef '=' right=Expression
+Declaration:
+	'let' name=VarDef '=' right=Expression
 ;
 
 Assignment:
