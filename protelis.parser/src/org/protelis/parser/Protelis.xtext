@@ -124,7 +124,7 @@ JCallElement: '::' AID;
 ProtelisCallElement: ':' ID;
 
 InvocationArguments:
-	=> name='(' args=ExpressionList? ')' lastArg = Lambda
+	=> (name='(' args=ExpressionList? ')' lastArg = Lambda)
 	| => name='(' args=ExpressionList? ')'
 	| lastArg = Lambda
 ;
