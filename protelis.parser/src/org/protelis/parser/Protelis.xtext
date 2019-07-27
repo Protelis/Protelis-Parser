@@ -4,7 +4,8 @@ import "http://www.eclipse.org/xtext/common/JavaVMTypes" as jvmTypes
 
 generate protelis "http://protelis.org"
 
-ProtelisModule: ('module' name=ProtelisQualifiedName)?
+ProtelisModule:
+	(=> 'module' name=ProtelisQualifiedName)?
 	(imports=ImportSection)?
 	(definitions+=FunctionDef)* program=Block?
 ;
@@ -196,7 +197,10 @@ StringVal: val=STRING;
 BooleanVal: val=BOOLEAN;
 TupleVal: name='[' args = ExpressionList? ']';
 
-AID: =>ID | 'PlusSelf' | 'self' | 'env' | 'it' | 'rep' | 'share' | 'nbr' | 'hood' | 'mux' | 'eval';
+AID: =>ID
+	| 'module'
+	| 'PlusSelf' | 'self' | 'env' | 'it' | 'rep' | 'share' | 'nbr' | 'hood' | 'mux' | 'eval'
+;
 
 @Override QualifiedNameInStaticImport:
   (AID '.')+
