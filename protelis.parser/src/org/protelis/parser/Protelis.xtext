@@ -41,9 +41,12 @@ Block:
 	(statements+=Statement ';'*)+
 ;
 
-Statement: (=>Expression | SideEffect);
-
-SideEffect: Declaration | Assignment | IfWithoutElse;
+Statement:
+	=> Declaration
+	| => Assignment
+	| => Expression
+	| IfWithoutElse
+;
 
 Declaration:
 	'let' name=VarDef '=' right=Expression
@@ -105,18 +108,18 @@ Primary returns Expression:
 	| =>Share
 	| =>NBR
 	| =>If
-	| =>AnyLambda
+	| =>Lambda
 	| =>Builtin
 	| VarUse
 	| Scalar
 	| '(' Expression ')'
 ;
 
-Call:
-	reference=[ecore::EObject|CallRule] arguments=InvocationArguments
-;
+//Call:
+//	reference=[ecore::EObject|CallRule] arguments=InvocationArguments
+//;
 CallRule: AID (JCallElement+ | ProtelisCallElement+)?;
-CallRuleNoConflict: AID (JCallElement+ | ProtelisCallElement+) | ID;
+//CallRuleNoConflict: AID (JCallElement+ | ProtelisCallElement+) | ID;
 JCallElement: '::' AID;
 ProtelisCallElement: ':' ID;
 
@@ -128,11 +131,11 @@ InvocationArguments:
 
 ExpressionList: args+=Expression (',' args+=Expression)*;
 
-AnyLambda: Lambda | OldLambda;
 Lambda:
-  FullLambda | ShortLambda
+  '{' args=VarDefList name='->' body=Block '}'
+  | ShortLambda
+  | OldLambda
 ;
-FullLambda: '{' args=VarDefList name='->' body=Block '}';
 ShortLambda: name='{' body=Block '}';
 OldLambda:
 	'(' (args=VarDefList)? ')' name='->' '{' body=Block '}'
@@ -182,15 +185,11 @@ GenericHood:
 ;
 BuiltinHoodOp:
 	(
-	name='minHood' |
-	name='maxHood' |
-	name='localHood' |
-	name='anyHood' |
-	name='allHood' |
-	name='sumHood' |
-	name='meanHood' |
-	name='unionHood'
+	name=BuiltinHood
 ) inclusive?='PlusSelf'? '(' arg=Expression ')'
+;
+BuiltinHood:
+	'minHood' | 'maxHood' | 'localHood' | 'anyHood' | 'allHood' | 'sumHood' | 'meanHood' | 'unionHood'
 ;
 
 DoubleVal: val=DOUBLE;
@@ -199,10 +198,17 @@ BooleanVal: val=BOOLEAN;
 TupleVal: name='[' args = ExpressionList? ']';
 
 AID: =>ID
-	| 'module'
-	| 'import'
-	| 'public' | 'def'
-	| 'PlusSelf' | 'self' | 'env' | 'it' | 'rep' | 'share' | 'nbr' | 'hood' | 'mux' | 'eval'
+	| PROTELIS_KEYWORD
+;
+
+PROTELIS_KEYWORD:
+	'module' | 'def' | 'let'
+	| 'rep' | 'share' | 'nbr'
+	| BuiltinHood
+	| 'PlusSelf'
+	| 'hood' | 'hoodPlusSelf'
+	| 'self' | 'env' | 'it'
+	| 'mux' | 'eval'
 ;
 
 @Override QualifiedNameInStaticImport:

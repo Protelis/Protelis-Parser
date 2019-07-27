@@ -25,7 +25,6 @@ import org.protelis.parser.protelis.Expression
 import java.util.Optional
 import org.protelis.parser.protelis.OldLambda
 import org.protelis.parser.protelis.Declaration
-import org.protelis.parser.protelis.AnyLambda
 
 /**
  * Custom validation rules. 
@@ -70,7 +69,7 @@ class ProtelisValidator extends AbstractProtelisValidator {
 					}
 				}
 			}
-			if (parent instanceof AnyLambda) {
+			if (parent instanceof Lambda) {
 				if(parent.args !== null) {
 					val args = parent.args;
 					if(args instanceof VarDef){
@@ -110,6 +109,13 @@ class ProtelisValidator extends AbstractProtelisValidator {
 				ProtelisPackage.Literals.PROTELIS_MODULE.getEStructuralFeature(ProtelisPackage.PROTELIS_MODULE__NAME)
 			)
 		}
+	}
+
+	@Check
+	def warnOnOldLambda(OldLambda lambda) {
+		val args = (lambda.args?.args ?: emptyList)
+			.join("", ", ", " -> ")[it.name]
+		warning('''This lambda could be rewritten as { «args»<body> }''', null)
 	}
 
 	@Check

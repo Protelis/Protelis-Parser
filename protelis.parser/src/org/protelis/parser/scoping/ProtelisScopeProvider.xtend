@@ -20,7 +20,6 @@ import org.eclipse.xtext.scoping.Scopes
 import org.eclipse.xtext.scoping.impl.MapBasedScope
 import org.eclipse.xtext.scoping.impl.SimpleScope
 import org.protelis.parser.protelis.Block
-import org.protelis.parser.protelis.Call
 import org.protelis.parser.protelis.FunctionDef
 import org.protelis.parser.protelis.JavaImport
 import org.protelis.parser.protelis.Lambda
@@ -35,7 +34,6 @@ import org.protelis.parser.protelis.Yield
 
 import static extension org.protelis.parser.ProtelisExtensions.callableEntities
 import static extension org.protelis.parser.ProtelisExtensions.callableEntitiesNamed
-import org.protelis.parser.protelis.AnyLambda
 
 /**
  * This class contains custom scoping description.
@@ -58,13 +56,13 @@ class ProtelisScopeProvider extends AbstractProtelisScopeProvider {
 	override IScope getScope(EObject context, EReference reference) {
 		switch(context) {
 			VarUse: scopeVar(context, reference)
-			Call: {
-				var global = context.eContainer
-				while (!(global instanceof ProtelisModule)) {
-					global = global.eContainer
-				}
-				scopeCall(global as ProtelisModule, reference)
-			}
+//			Call: {
+//				var global = context.eContainer
+//				while (!(global instanceof ProtelisModule)) {
+//					global = global.eContainer
+//				}
+//				scopeCall(global as ProtelisModule, reference)
+//			}
 			default: super.getScope(context, reference)
 		}
 	}
@@ -77,7 +75,7 @@ class ProtelisScopeProvider extends AbstractProtelisScopeProvider {
 				container.statements.flatMap[extractReferences]
 			FunctionDef:
 				container.args?.args ?: emptyList
-			AnyLambda: {
+			Lambda: {
 				val lambdaArgs = container.args
 				switch lambdaArgs {
 					VarDefList: lambdaArgs.args

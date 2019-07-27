@@ -98,6 +98,26 @@ class ProtelisParsingTest {
 	}
 
 	@Test
+	def void simpleTuplesCanBeParsed() {
+		'''
+		[5, 4, 3, 2, 1]
+		'''.whenParsed [
+			mustNotRaise(ERROR)
+			mustNotRaise(WARNING)
+		]
+	}
+
+	@Test
+	def void methodsCanBeInvokedOnTuple() {
+		'''
+		[5, 4, 3, 2, 1].reduce()
+		'''.whenParsed [
+			mustNotRaise(ERROR)
+			mustNotRaise(WARNING)
+		]
+	}
+
+	@Test
 	def void testJavaParse() {
 		'''
 		// EXPECTED_RESULT: 0
@@ -153,6 +173,17 @@ class ProtelisParsingTest {
 		import java.lang.Integer.*
 		MAX_VALUE
 		'''.whenParsed [ mustNotRaise(ERROR) ]
+	}
+
+	@Test
+	def void letCanBeParsed() {
+		'''
+		let x = 1
+		1
+		'''.whenParsed [
+			mustNotRaise(WARNING)
+			mustNotRaise(ERROR)
+		]
 	}
 
 	@Test
