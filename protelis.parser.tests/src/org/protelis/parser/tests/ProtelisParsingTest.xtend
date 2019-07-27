@@ -309,7 +309,7 @@ class ProtelisParsingTest {
 		def f(a) {
 			a
 		}
-		a{ it + 1 }
+		f{ it + 1 }
 		'''.whenParsed [
 			mustNotRaise(ERROR)
 			mustNotRaise(WARNING)
@@ -318,7 +318,7 @@ class ProtelisParsingTest {
 		def f(a) {
 			a
 		}
-		a(){ it + 1 }
+		f(){ it + 1 }
 		'''.whenParsed [
 			mustNotRaise(ERROR)
 			mustNotRaise(WARNING)
