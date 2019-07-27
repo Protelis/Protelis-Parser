@@ -6,12 +6,13 @@ generate protelis "http://protelis.org"
 
 ProtelisModule:
 	(=> 'module' name=ProtelisQualifiedName)?
-	(imports=ImportSection)?
-	(definitions+=FunctionDef)* program=Block?
+	(=> imports=ImportSection)?
+	(=> definitions+=FunctionDef)*
+	program=Block?
 ;
 
 ImportSection:
-	importDeclarations+=ImportDeclaration+;
+	=>importDeclarations+=ImportDeclaration+;
 
 ImportDeclaration: 
 	 =>(ProtelisImport) | JavaImport
@@ -199,6 +200,8 @@ TupleVal: name='[' args = ExpressionList? ']';
 
 AID: =>ID
 	| 'module'
+	| 'import'
+	| 'public' | 'def'
 	| 'PlusSelf' | 'self' | 'env' | 'it' | 'rep' | 'share' | 'nbr' | 'hood' | 'mux' | 'eval'
 ;
 
