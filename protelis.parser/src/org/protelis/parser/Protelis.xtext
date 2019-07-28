@@ -89,7 +89,8 @@ Prefix returns Expression:
     Invoke | ({Prefix} name=('!') elements+=Invoke);
 
 Invoke returns Expression:
-    MethodInvocation ({Expression.elements+=current} elements+=InvocationArguments)
+    => (elements+=MethodInvocation elements+=InvocationArguments)
+    | MethodInvocation
 ;
 
 MethodInvocation returns Expression:
