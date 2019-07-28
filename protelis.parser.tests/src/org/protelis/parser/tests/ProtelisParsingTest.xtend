@@ -224,7 +224,7 @@ class ProtelisParsingTest {
 	}
 
 	@Test
-	def void testMultInstructionWithoutSemicolonBlock() {
+	def void testMultiInstructionWithoutSemicolonBlock() {
 		'''
 		1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
 		1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
