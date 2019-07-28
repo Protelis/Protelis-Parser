@@ -89,8 +89,7 @@ Prefix returns Expression:
     Invoke | ({Prefix} name=('!') elements+=Invoke);
 
 Invoke returns Expression:
-    =>(MethodInvocation elements+=InvocationArguments)
-    | MethodInvocation
+    MethodInvocation ({Expression.elements+=current} elements+=InvocationArguments)
 ;
 
 MethodInvocation returns Expression:
@@ -136,13 +135,17 @@ Lambda:
   | OldLambda
 ;
 KotlinStyleLambda:
-  => ('{' args=VarDefList name='->' body=Block '}')
-  | name='{' body=Block '}'
+  => LongLambda
+  | ShortLambda
 ;
+LongLambda: ('{' args=VarDefList name='->' body=Block '}');
+ShortLambda: name='{' body=Block '}';
 OldLambda:
-	=> (singleArg=VarDef name='->' '{' body=Block '}')
-	| '(' (args=VarDefList)? ')' name='->' '{' body=Block '}'
+	=> OldLongLambda
+	| OldShortLambda
 ;
+OldShortLambda: (singleArg=VarDef name='->' '{' body=Block '}');
+OldLongLambda: '(' (args=VarDefList)? ')' name='->' '{' body=Block '}';
 
 Rep: 
 	name='rep' '(' init=RepInitialize ')' '{' body=Block '}' (yields = Yield)?
