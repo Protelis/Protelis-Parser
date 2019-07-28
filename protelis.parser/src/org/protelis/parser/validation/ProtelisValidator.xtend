@@ -2,6 +2,7 @@ package org.protelis.parser.validation
 
 import com.google.inject.Inject
 import java.util.Map
+import java.util.Optional
 import org.eclipse.emf.common.notify.Notifier
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.xtext.common.types.JvmDeclaredType
@@ -10,27 +11,24 @@ import org.eclipse.xtext.common.types.util.TypeReferences
 import org.eclipse.xtext.validation.Check
 import org.protelis.parser.protelis.Block
 import org.protelis.parser.protelis.BuiltinHoodOp
+import org.protelis.parser.protelis.Declaration
+import org.protelis.parser.protelis.Expression
 import org.protelis.parser.protelis.FunctionDef
 import org.protelis.parser.protelis.GenericHood
 import org.protelis.parser.protelis.Hood
+import org.protelis.parser.protelis.InvocationArguments
 import org.protelis.parser.protelis.JavaImport
 import org.protelis.parser.protelis.Lambda
+import org.protelis.parser.protelis.LongLambda
+import org.protelis.parser.protelis.OldLambda
+import org.protelis.parser.protelis.OldLongLambda
+import org.protelis.parser.protelis.OldShortLambda
 import org.protelis.parser.protelis.ProtelisModule
 import org.protelis.parser.protelis.ProtelisPackage
+import org.protelis.parser.protelis.ShortLambda
 import org.protelis.parser.protelis.VarDef
-import org.protelis.parser.protelis.VarDefList
 
 import static extension org.protelis.parser.ProtelisExtensions.*
-import org.protelis.parser.protelis.Expression
-import java.util.Optional
-import org.protelis.parser.protelis.OldLambda
-import org.protelis.parser.protelis.Declaration
-import org.protelis.parser.protelis.InvocationArguments
-import org.protelis.parser.protelis.KotlinStyleLambda
-import org.protelis.parser.protelis.OldShortLambda
-import org.protelis.parser.protelis.OldLongLambda
-import org.protelis.parser.protelis.ShortLambda
-import org.protelis.parser.protelis.LongLambda
 
 /**
  * Custom validation rules. 
