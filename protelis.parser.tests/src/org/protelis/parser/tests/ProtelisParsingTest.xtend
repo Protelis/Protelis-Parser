@@ -93,7 +93,7 @@ class ProtelisParsingTest {
 		})
 		'''.whenParsed [
 			mustNotRaise(ERROR)
-			mustNotRaise(WARNING)
+			mustRaise(WARNING)
 		]
 	}
 
