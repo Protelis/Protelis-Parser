@@ -25,6 +25,12 @@ import org.protelis.parser.protelis.Expression
 import java.util.Optional
 import org.protelis.parser.protelis.OldLambda
 import org.protelis.parser.protelis.Declaration
+import org.protelis.parser.protelis.InvocationArguments
+import org.protelis.parser.protelis.KotlinStyleLambda
+import org.protelis.parser.protelis.OldShortLambda
+import org.protelis.parser.protelis.OldLongLambda
+import org.protelis.parser.protelis.ShortLambda
+import org.protelis.parser.protelis.LongLambda
 
 /**
  * Custom validation rules. 
@@ -70,24 +76,21 @@ class ProtelisValidator extends AbstractProtelisValidator {
 				}
 			}
 			if (parent instanceof Lambda) {
-				if(parent.args !== null) {
-					val args = parent.args;
-					if(args instanceof VarDef){
-						if (args.name.equals(exp.name)) {
-							error(exp)
-						}
-					} else if (args instanceof VarDefList) {
-						if (args.args.map[it.name].contains(exp.name)) {
-							error(exp)
-						}
-					}
+				val Iterable<VarDef> args = switch parent {
+					OldLongLambda: parent.args?.args ?: emptyList
+					OldShortLambda: #[parent.singleArg]
+					ShortLambda: emptyList
+					LongLambda: parent.args.args
+				}
+				if (args.exists[it.name.equals(exp.name)]) {
+					error(exp)
 				}
 			}
 			parent = parent.eContainer
 		}
 	}
 	
-	def error(Declaration exp)  {
+	def private error(Declaration exp)  {
 		val error = "Variable " + exp.name + " has already been defined in this context. Pick another name."
 		error(error, exp, null)
 	}
@@ -113,8 +116,15 @@ class ProtelisValidator extends AbstractProtelisValidator {
 
 	@Check
 	def warnOnOldLambda(OldLambda lambda) {
-		val args = (lambda.args?.args ?: emptyList)
-			.join("", ", ", " -> ")[it.name]
+		val args = switch (lambda) {
+			OldShortLambda: lambda.singleArg.name + " -> "
+			OldLongLambda:
+				if (lambda.args === null) {
+					""
+				} else {
+					lambda.args.args.join("", ", ", " -> ")[it.name]
+				}
+		}
 		warning('''This lambda could be rewritten as { «args»<body> }''', null)
 	}
 
@@ -152,7 +162,7 @@ class ProtelisValidator extends AbstractProtelisValidator {
 		}
 	}
 
-	def autoImports(Notifier context) {
+	def private autoImports(Notifier context) {
 		AUTO_IMPORT
 			.map[references.findDeclaredType(it, context) as JvmDeclaredType]
 			.flatMap[allFeatures]
@@ -170,7 +180,7 @@ class ProtelisValidator extends AbstractProtelisValidator {
 		}
 	}
 
-	def Map<JvmFeature, JvmFeature> shadows(JavaImport javaImport) {
+	def private Map<JvmFeature, JvmFeature> shadows(JavaImport javaImport) {
 		val automaticallyImported = autoImports(javaImport)
 		val shade = newLinkedHashMap
 		javaImport.importedEntities.forEach[ manual |
@@ -180,6 +190,29 @@ class ProtelisValidator extends AbstractProtelisValidator {
 			}
 		]
 		shade
+	}
+
+	@Check
+	def private invokeLambdaWithCorrectNumberOfArguments(Expression invoke) {
+		if (invoke.name === null
+			&& invoke.elements.size == 2
+			&& invoke.elements.get(0) instanceof Lambda
+			&& invoke.elements.get(1) instanceof InvocationArguments
+		) {
+			val Lambda left = invoke.elements.get(0) as Lambda
+			val InvocationArguments args = invoke.elements.get(1) as InvocationArguments
+			val provided = (if (args === null) 0 else args.args.args.size) + 
+				if (args.lastArg === null) 0 else 1
+			val matches = switch (left) {
+				OldShortLambda: provided == 1
+				OldLongLambda: if (left.args === null ) provided == 0 else left.args.args.size == provided
+				ShortLambda: provided == 0 || provided == 1
+				LongLambda: left.args.args.size == provided
+			}
+			if (!matches) {
+				error("Arguments provided for invocation do not match lambda parameters", invoke, null)
+			}
+		} 
 	}
 
 }
