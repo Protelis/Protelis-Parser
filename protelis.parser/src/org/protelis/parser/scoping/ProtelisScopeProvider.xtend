@@ -36,6 +36,9 @@ import org.protelis.parser.protelis.Yield
 import static extension org.protelis.parser.ProtelisExtensions.callableEntities
 import static extension org.protelis.parser.ProtelisExtensions.callableEntitiesNamed
 import org.protelis.parser.protelis.ImportDeclaration
+import org.protelis.parser.protelis.LongLambda
+import org.protelis.parser.protelis.OldLongLambda
+import org.protelis.parser.protelis.OldShortLambda
 
 /**
  * This class contains custom scoping description.
@@ -64,7 +67,9 @@ class ProtelisScopeProvider extends AbstractProtelisScopeProvider {
 
 	private def IScope scope(EObject source) {
 		switch (source) {
-			Lambda: source.makeScope(source.args)
+			LongLambda: source.makeScope(source.args)
+			OldLongLambda: source.makeScope(source.args)
+			OldShortLambda: source.makeScope(#[source.singleArg])
 			FunctionDef: source.makeScope(source.args)
 			Block: source.makeScope(source.allDefinitions)
 			ProtelisModule: source.scopeCall
