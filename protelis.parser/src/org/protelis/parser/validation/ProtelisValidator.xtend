@@ -191,7 +191,7 @@ class ProtelisValidator extends AbstractProtelisValidator {
 	}
 
 	@Check
-	def private invokeLambdaWithCorrectNumberOfArguments(Expression invoke) {
+	def invokeLambdaWithCorrectNumberOfArguments(Expression invoke) {
 		if (invoke.name === null
 			&& invoke.elements.size == 2
 			&& invoke.elements.get(0) instanceof Lambda
@@ -199,7 +199,7 @@ class ProtelisValidator extends AbstractProtelisValidator {
 		) {
 			val Lambda left = invoke.elements.get(0) as Lambda
 			val InvocationArguments args = invoke.elements.get(1) as InvocationArguments
-			val provided = (if (args === null) 0 else args.args.args.size) + 
+			val provided = (if (args === null || args.args === null) 0 else args.args.args.size) + 
 				if (args.lastArg === null) 0 else 1
 			val matches = switch (left) {
 				OldShortLambda: provided == 1
