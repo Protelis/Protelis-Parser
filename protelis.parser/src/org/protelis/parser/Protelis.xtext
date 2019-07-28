@@ -124,21 +124,24 @@ JCallElement: '::' AID;
 ProtelisCallElement: ':' ID;
 
 InvocationArguments:
-	=> (name='(' args=ExpressionList? ')' lastArg = Lambda)
+	=> (name='(' args=ExpressionList? ')' lastArg = KotlinStyleLambda)
 	| => name='(' args=ExpressionList? ')'
-	| lastArg = Lambda
+	| lastArg = KotlinStyleLambda
 ;
 
 ExpressionList: args+=Expression (',' args+=Expression)*;
 
 Lambda:
-  '{' args=VarDefList name='->' body=Block '}'
-  | ShortLambda
+  KotlinStyleLambda
   | OldLambda
 ;
-ShortLambda: name='{' body=Block '}';
+KotlinStyleLambda:
+  => ('{' args=VarDefList name='->' body=Block '}')
+  | name='{' body=Block '}'
+;
 OldLambda:
-	'(' (args=VarDefList)? ')' name='->' '{' body=Block '}'
+	=> (singleArg=VarDef name='->' '{' body=Block '}')
+	| '(' (args=VarDefList)? ')' name='->' '{' body=Block '}'
 ;
 
 Rep: 
