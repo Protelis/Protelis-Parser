@@ -43,11 +43,13 @@ class ProtelisParsingTest {
 		]
 	}
 
-	def void mustNotRaise(ProtelisModule program, Severity issueType) {
-		val errors = program.raised(issueType)
-		assertTrue(errors.isEmpty) [
-			'''Unexpected validation errors:\n«errors.join("\n")»'''
-		]
+	def void mustNotRaise(ProtelisModule program, Severity... issueTypes) {
+		for (issueType: issueTypes) {
+			val errors = program.raised(issueType)
+			assertTrue(errors.isEmpty) [
+				'''Unexpected validation errors:\n«errors.join("\n")»'''
+			]
+		}
 	}
 
 	def Iterable<Issue> raised(ProtelisModule program, Severity issueType) {
@@ -416,6 +418,13 @@ class ProtelisParsingTest {
 		if (foo) { 1 };
 		2
 		'''.whenParsed [ mustNotRaise(ERROR) ]
+	}
+
+	@Test
+	def void testUnaryMinus() {
+		'''
+		-1
+		'''.whenParsed [ mustNotRaise(ERROR, WARNING) ]
 	}
 
 	@Test

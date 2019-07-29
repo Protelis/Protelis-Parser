@@ -90,7 +90,7 @@ Power returns Expression:
  Prefix =>({Expression.elements+=current} name=('^') elements+=Prefix)*;
 
 Prefix returns Expression:
-    Invoke | ({Prefix} name=('!') elements+=Invoke);
+    Invoke | ({Prefix} name=('!'|'-') elements+=Invoke);
 
 Invoke returns Expression:
 	MethodInvocation => ({Expression.elements+=current} elements+=InvocationArguments)*
