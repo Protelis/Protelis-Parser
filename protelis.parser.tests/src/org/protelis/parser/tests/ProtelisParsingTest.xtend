@@ -1,19 +1,18 @@
 package org.protelis.parser.tests
 
 import com.google.inject.Inject
+import org.eclipse.xtext.diagnostics.Severity
 import org.eclipse.xtext.testing.InjectWith
 import org.eclipse.xtext.testing.extensions.InjectionExtension
 import org.eclipse.xtext.testing.util.ParseHelper
 import org.eclipse.xtext.testing.validation.ValidationTestHelper
+import org.eclipse.xtext.validation.Issue
 import org.junit.jupiter.api.Test
-import static org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.^extension.ExtendWith
 import org.protelis.parser.protelis.ProtelisModule
-import java.util.List
-import org.eclipse.emf.mwe.core.issues.Issues
-import org.eclipse.xtext.validation.Issue
-import org.eclipse.xtext.diagnostics.Severity
+
 import static org.eclipse.xtext.diagnostics.Severity.*
+import static org.junit.jupiter.api.Assertions.*
 
 @ExtendWith(InjectionExtension)
 @InjectWith(ProtelisInjectorProvider)
