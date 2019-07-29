@@ -420,6 +420,20 @@ class ProtelisParsingTest {
 	}
 
 	@Test
+	def void yieldShouldAccessShareInitVariable() {
+		'''
+		share (x, nx <- 1) {
+			x + nx
+		} yield {
+			x
+		}
+		'''.whenParsed [
+			mustNotRaise(ERROR)
+			mustNotRaise(WARNING)
+		]
+	}
+
+	@Test
 	def void testMethodChainedCall() {
 		'''
 		public def isNewClock(processes, clock) {

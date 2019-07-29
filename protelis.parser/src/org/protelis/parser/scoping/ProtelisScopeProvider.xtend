@@ -81,7 +81,7 @@ class ProtelisScopeProvider extends AbstractProtelisScopeProvider {
 					Rep: parent.body
 					Share: parent.body
 				}
-				Scopes.scopeFor(body.allDefinitions)
+				source.makeScope(body.allDefinitions)
 			}
 			default: source.eContainer?.scope ?: Scopes.scopeFor(emptyList)
 		}
