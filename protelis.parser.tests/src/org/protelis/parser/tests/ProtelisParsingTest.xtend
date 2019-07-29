@@ -187,6 +187,70 @@ class ProtelisParsingTest {
 	}
 
 	@Test
+	def void reassignRaisesWarningParsed() {
+		'''
+		let x = 1
+		x = 2
+		x
+		'''.whenParsed [
+			mustRaise(WARNING)
+			mustNotRaise(ERROR)
+		]
+	}
+
+	@Test
+	def void moduleWithNoProgramNorPublicFunctionsShouldWarn() {
+		'''
+		module pippo
+		def f(x) { x }
+		'''.whenParsed [
+			mustRaise(WARNING)
+		]
+	}
+
+	@Test
+	def void discourageDotApply() {
+		'''
+		let a = { it + 1 }
+		a.apply(2)
+		'''.whenParsed [
+			mustRaise(WARNING)
+		]
+	}
+
+	@Test
+	def void itMustNotGetUsedOutsideLambdas() {
+		'''
+		it
+		'''.whenParsed [
+			mustRaise(ERROR)
+		]
+	}
+
+	@Test
+	def void itMustNotGetUsedWithLongLambdas() {
+		'''
+		{ a, b -> it + a + b }
+		'''.whenParsed [
+			mustRaise(ERROR)
+		]
+		'''
+		{ a -> it + 1 }
+		'''.whenParsed [
+			mustRaise(ERROR)
+		]
+	}
+
+	@Test
+	def void nestedItMustNotBeAllowed() {
+		'''
+		{ it + { it + 1 }(1) }
+		'''.whenParsed [
+			mustRaise(ERROR)
+		]
+	}
+
+	@Test
 	def void testInvalidReferenceWithStarImport() {
 		'''
 		import java.lang.Integer.*
