@@ -32,6 +32,7 @@ import static extension org.protelis.parser.ProtelisExtensions.*
 import org.eclipse.emf.ecore.EObject
 import org.protelis.parser.protelis.MethodCall
 import org.protelis.parser.protelis.Assignment
+import org.protelis.parser.protelis.It
 
 /**
  * Custom validation rules. 
@@ -249,4 +250,16 @@ class ProtelisValidator extends AbstractProtelisValidator {
 		}
 	}
 
+	@Check
+	def appropriateUseOfIt(It it) {
+		// Valid iff exactly one parent is a shortlambda
+		var shortLambdaParents = 0
+		for (var parent = it.eContainer; shortLambdaParents < 2 && parent !== null; parent = parent.eContainer) {
+			shortLambdaParents += parent instanceof ShortLambda ? 1 : 0
+		}
+		switch(shortLambdaParents) {
+			case 0: error("it can only be used inside short lambdas (i.e. { it + 1 })", it)
+			case 2: error("Ambiguous use of it due to nested short lambdas: refactor with explicit names, e.g. rewrite { it + 1 } as { a -> a + 1 }", it)
+		}
+	}
 }
