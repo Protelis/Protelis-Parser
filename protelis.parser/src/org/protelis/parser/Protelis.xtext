@@ -31,7 +31,11 @@ ProtelisImport:
 
 ProtelisQualifiedName: ID (':' ID)* ;
 
-FunctionDef: public?="public"? 'def' name=ID '(' (args=VarDefList)? ')' '{' body=Block '}';
+FunctionDef: public?="public"? 'def' name=ID '(' (args=VarDefList)? ')' (
+	'{' body=Block '}'
+	| '=' singleExpression=Expression
+	)
+;
 
 VarDefList: args += VarDef (',' args += VarDef)* ;
 
