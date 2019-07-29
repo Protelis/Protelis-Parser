@@ -176,7 +176,12 @@ Env: name = 'env';
 It: name = 'it';
 Eval: name='eval' '(' arg = Expression ')';
 AlignedMap: name='alignedMap' '(' arg=Expression ',' cond=Expression ',' op=Expression ',' default=Expression ')';
-Mux: name='mux' '(' cond=Expression ')' '{' then=Block '}' 'else' '{'  else=Block '}';
+Mux:
+	name='mux' '(' cond=Expression ')' (
+		=>(then=Expression 'else' else=Expression)
+		| ('{' then=Block '}' 'else' '{' else=Block '}')
+	)
+;
 
 Hood:
 	BuiltinHoodOp |	GenericHood  
