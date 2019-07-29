@@ -97,8 +97,7 @@ Invoke returns Expression:
 ;
 
 MethodInvocation returns Expression:
-    Primary
-    =>({Expression.elements+=current} name='.' elements+=MethodCall)?
+    Primary =>({Expression.elements+=current} name='.' elements+=MethodCall)*
 ;
 
 MethodCall:

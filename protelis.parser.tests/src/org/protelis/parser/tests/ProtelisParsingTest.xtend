@@ -420,6 +420,20 @@ class ProtelisParsingTest {
 	}
 
 	@Test
+	def void testMethodChainedCall() {
+		'''
+		public def isNewClock(processes, clock) {
+		    processes
+		        .map {it.get(0)}
+		        .filter {clock == it}
+		        .isEmpty()
+		}
+		'''.whenParsed [
+			mustNotRaise(ERROR)
+		]
+	}
+
+	@Test
 	def void testIfWithoutParentheses() {
 		'''
 		let x = if (1 < 3) { 1 };
