@@ -228,6 +228,17 @@ class ProtelisParsingTest {
 	}
 
 	@Test
+	def void testCurriedCall() {
+		'''
+		def f() { { 1 } }
+		f()()
+		'''.whenParsed [
+			mustNotRaise(ERROR)
+			mustNotRaise(WARNING)
+		]
+	}
+
+	@Test
 	def void itMustNotGetUsedWithLongLambdas() {
 		'''
 		{ a, b -> it + a + b }
