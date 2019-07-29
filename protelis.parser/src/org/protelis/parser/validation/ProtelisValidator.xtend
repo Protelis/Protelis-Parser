@@ -239,4 +239,14 @@ class ProtelisValidator extends AbstractProtelisValidator {
 		warning('''Reassigning variables such as «assignment.refVar.name» is discouraged and may be dropped in a future release of Protelis. Prefer a functional approach.''', assignment.refVar)
 	}
 
+	@Check
+	def uselessModule(ProtelisModule module) {
+		if (module.program === null) {
+			if (module.definitions === null
+				|| module.definitions.findFirst[it.public] === null
+			)
+			warning('''Module «module.name ?: "anonymous"» is useless, it does not contain a program nor a public function''', module)
+		}
+	}
+
 }
