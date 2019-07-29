@@ -31,6 +31,7 @@ import org.protelis.parser.protelis.VarDef
 import static extension org.protelis.parser.ProtelisExtensions.*
 import org.eclipse.emf.ecore.EObject
 import org.protelis.parser.protelis.MethodCall
+import org.protelis.parser.protelis.Assignment
 
 /**
  * Custom validation rules. 
@@ -231,6 +232,11 @@ class ProtelisValidator extends AbstractProtelisValidator {
 				warning('''<invokable>.apply(...) is discouraged, prefer direct invocation: <invokable>(...)''', call)
 			}
 		}
+	}
+
+	@Check
+	def reassignIsBadPractice(Assignment assignment) {
+		warning('''Reassigning variables such as «assignment.refVar.name» is discouraged and may be dropped in a future release of Protelis. Prefer a functional approach.''', assignment.refVar)
 	}
 
 }
