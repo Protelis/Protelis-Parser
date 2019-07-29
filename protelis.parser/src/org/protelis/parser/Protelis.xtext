@@ -65,25 +65,25 @@ Expression:
 ;
 
 LogicalOr returns Expression:
- LogicalAnd ({Expression.elements+=current} name='||' elements+=LogicalAnd)*;
+ LogicalAnd =>({Expression.elements+=current} name='||' elements+=LogicalAnd)*;
 
 LogicalAnd returns Expression:
- Equality ({Expression.elements+=current} name='&&' elements+=Equality)*;
+ Equality =>({Expression.elements+=current} name='&&' elements+=Equality)*;
 
 Equality returns Expression:
- Relational ({Expression.elements+=current} name=('=='|'!=') elements+=Relational)*;
+ Relational =>({Expression.elements+=current} name=('=='|'!=') elements+=Relational)*;
 
 Relational returns Expression:
- Addition ({Expression.elements+=current} name=('>'|'>='|'<'|'<=') elements+=Addition)*;
+ Addition =>({Expression.elements+=current} name=('>'|'>='|'<'|'<=') elements+=Addition)*;
 
 Addition returns Expression:
- Multiplication ({Expression.elements+=current} name=('+'|'-') elements+=Multiplication)*;
+ Multiplication =>({Expression.elements+=current} name=('+'|'-') elements+=Multiplication)*;
 
 Multiplication returns Expression:
- Power ({Expression.elements+=current} name=('*'|'/'|'%') elements+=Power)*;
+ Power =>({Expression.elements+=current} name=('*'|'/'|'%') elements+=Power)*;
 
 Power returns Expression:
- Prefix ({Expression.elements+=current} name=('^') elements+=Prefix)*;
+ Prefix =>({Expression.elements+=current} name=('^') elements+=Prefix)*;
 
 Prefix returns Expression:
     Invoke | ({Prefix} name=('!') elements+=Invoke);
@@ -95,7 +95,7 @@ Invoke returns Expression:
 
 MethodInvocation returns Expression:
     Primary
-    ({Expression.elements+=current} name='.' elements+=MethodCall)?
+    =>({Expression.elements+=current} name='.' elements+=MethodCall)?
 ;
 
 MethodCall:
@@ -103,7 +103,6 @@ MethodCall:
 ;
 
 Primary returns Expression:
-//	=>Call
 	=>Rep
 	| =>Share
 	| =>NBR
@@ -115,11 +114,7 @@ Primary returns Expression:
 	| '(' Expression ')'
 ;
 
-//Call:
-//	reference=[ecore::EObject|CallRule] arguments=InvocationArguments
-//;
 CallRule: AID (JCallElement+ | ProtelisCallElement+)?;
-//CallRuleNoConflict: AID (JCallElement+ | ProtelisCallElement+) | ID;
 JCallElement: '::' AID;
 ProtelisCallElement: ':' ID;
 
@@ -163,7 +158,10 @@ NBR:
 ;
 
 If:
-	name='if' '(' cond=Expression ')' '{' then=Block '}' 'else' '{' else=Block '}'
+	name='if' '(' cond=Expression ')' (
+		=>(then=Expression 'else' else=Expression)
+		| ('{' then=Block '}' 'else' '{' else=Block '}')
+	)
 ;
 
 VarUse: reference=[ecore::EObject|CallRule];
