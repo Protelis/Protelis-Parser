@@ -6,7 +6,6 @@ package org.protelis.parser.scoping
 import com.google.inject.Inject
 import java.util.ArrayList
 import java.util.Collection
-import java.util.Collections
 import java.util.List
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
@@ -22,23 +21,21 @@ import org.eclipse.xtext.scoping.impl.SimpleScope
 import org.protelis.parser.protelis.Block
 import org.protelis.parser.protelis.Declaration
 import org.protelis.parser.protelis.FunctionDef
+import org.protelis.parser.protelis.ImportDeclaration
 import org.protelis.parser.protelis.JavaImport
-import org.protelis.parser.protelis.Lambda
+import org.protelis.parser.protelis.LongLambda
+import org.protelis.parser.protelis.OldLongLambda
+import org.protelis.parser.protelis.OldShortLambda
 import org.protelis.parser.protelis.ProtelisImport
 import org.protelis.parser.protelis.ProtelisModule
 import org.protelis.parser.protelis.Rep
 import org.protelis.parser.protelis.Share
 import org.protelis.parser.protelis.VarDef
 import org.protelis.parser.protelis.VarDefList
-import org.protelis.parser.protelis.VarUse
 import org.protelis.parser.protelis.Yield
 
 import static extension org.protelis.parser.ProtelisExtensions.callableEntities
 import static extension org.protelis.parser.ProtelisExtensions.callableEntitiesNamed
-import org.protelis.parser.protelis.ImportDeclaration
-import org.protelis.parser.protelis.LongLambda
-import org.protelis.parser.protelis.OldLongLambda
-import org.protelis.parser.protelis.OldShortLambda
 
 /**
  * This class contains custom scoping description.
