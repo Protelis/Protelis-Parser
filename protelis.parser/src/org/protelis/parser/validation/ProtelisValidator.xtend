@@ -262,4 +262,11 @@ class ProtelisValidator extends AbstractProtelisValidator {
 			case 2: error("Ambiguous use of it due to nested short lambdas: refactor with explicit names, e.g. rewrite { it + 1 } as { a -> a + 1 }", it)
 		}
 	}
+
+	@Check
+	def functionCouldBeRewrittenAsSingleExpression(FunctionDef function) {
+		if (function.body !== null && function.body.statements.size == 1) {
+			info('''This single expression function and could be rewritten as «function.name» (...) = <body>''', function.body.statements.get(0), null)
+		}
+	}	
 }
