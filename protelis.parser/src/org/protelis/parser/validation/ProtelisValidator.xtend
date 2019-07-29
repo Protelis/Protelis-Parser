@@ -237,7 +237,7 @@ class ProtelisValidator extends AbstractProtelisValidator {
 
 	@Check
 	def reassignIsBadPractice(Assignment assignment) {
-		warning('''Reassigning variables such as «assignment.refVar.name» is discouraged and may be dropped in a future release of Protelis. Prefer a functional approach.''', assignment.refVar)
+		warning('''Reassigning variables such as «assignment.refVar.name» is discouraged and may be dropped in a future release of Protelis. Prefer a functional approach.''', assignment)
 	}
 
 	@Check
@@ -266,7 +266,8 @@ class ProtelisValidator extends AbstractProtelisValidator {
 	@Check
 	def functionCouldBeRewrittenAsSingleExpression(FunctionDef function) {
 		if (function.body !== null && function.body.statements.size == 1) {
-			info('''This single expression function and could be rewritten as «function.name» (...) = <body>''', function.body.statements.get(0), null)
+			val name = function.name
+			info('''«name» (<params>) { <body> } has a single expression and could be rewritten as «name» (<params>) = <body>''', function.body.statements.get(0), null)
 		}
 	}	
 }
