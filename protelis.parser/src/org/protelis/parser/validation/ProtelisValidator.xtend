@@ -29,6 +29,8 @@ import org.protelis.parser.protelis.ShortLambda
 import org.protelis.parser.protelis.VarDef
 
 import static extension org.protelis.parser.ProtelisExtensions.*
+import org.eclipse.emf.ecore.EObject
+import org.protelis.parser.protelis.MethodCall
 
 /**
  * Custom validation rules. 
@@ -211,6 +213,24 @@ class ProtelisValidator extends AbstractProtelisValidator {
 				error("Arguments provided for invocation do not match lambda parameters", invoke, null)
 			}
 		} 
+	}
+
+	private def error(String message, EObject target) {
+		error(message, target, null)
+	}
+
+	private def warning(String message, EObject target) {
+		warning(message, target, null)
+	}
+
+	@Check
+	def discourageDotApply(Expression methodCall) {
+		if (methodCall.name == '.') {
+			val call = methodCall.elements.get(1) as MethodCall
+			if(call.name == 'apply') {
+				warning('''<invokable>.apply(...) is discouraged, prefer direct invocation: <invokable>(...)''', call)
+			}
+		}
 	}
 
 }
