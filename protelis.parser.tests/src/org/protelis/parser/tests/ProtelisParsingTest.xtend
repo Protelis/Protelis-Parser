@@ -428,6 +428,13 @@ class ProtelisParsingTest {
 	}
 
 	@Test
+	def void testCallAndChainedMethod() {
+		'''
+		max(1, 2).toString()
+		'''.whenParsed [ mustNotRaise(ERROR, WARNING) ]
+	}
+
+	@Test
 	def void yieldShouldAccessShareInitVariable() {
 		'''
 		share (x, nx <- 1) {

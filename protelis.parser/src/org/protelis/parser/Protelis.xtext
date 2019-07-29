@@ -69,35 +69,34 @@ Expression:
 ;
 
 LogicalOr returns Expression:
- LogicalAnd =>({Expression.elements+=current} name='||' elements+=LogicalAnd)*;
+ LogicalAnd ({Expression.elements+=current} name='||' elements+=LogicalAnd)*;
 
 LogicalAnd returns Expression:
- Equality =>({Expression.elements+=current} name='&&' elements+=Equality)*;
+ Equality ({Expression.elements+=current} name='&&' elements+=Equality)*;
 
 Equality returns Expression:
- Relational =>({Expression.elements+=current} name=('=='|'!=') elements+=Relational)*;
+ Relational ({Expression.elements+=current} name=('=='|'!=') elements+=Relational)*;
 
 Relational returns Expression:
- Addition =>({Expression.elements+=current} name=('>'|'>='|'<'|'<=') elements+=Addition)*;
+ Addition ({Expression.elements+=current} name=('>'|'>='|'<'|'<=') elements+=Addition)*;
 
 Addition returns Expression:
  Multiplication =>({Expression.elements+=current} name=('+'|'-') elements+=Multiplication)*;
 
 Multiplication returns Expression:
- Power =>({Expression.elements+=current} name=('*'|'/'|'%') elements+=Power)*;
+ Power ({Expression.elements+=current} name=('*'|'/'|'%') elements+=Power)*;
 
 Power returns Expression:
- Prefix =>({Expression.elements+=current} name=('^') elements+=Prefix)*;
+ Prefix ({Expression.elements+=current} name=('^') elements+=Prefix)*;
 
 Prefix returns Expression:
-    Invoke | ({Prefix} name=('!'|'-') elements+=Invoke);
+    Postfix | (name=('!'|'-') elements+=Postfix);
 
-Invoke returns Expression:
-	MethodInvocation => ({Expression.elements+=current} elements+=InvocationArguments)*
-;
-
-MethodInvocation returns Expression:
-    Primary =>({Expression.elements+=current} name='.' elements+=MethodCall)*
+Postfix returns Expression:
+    Primary =>(
+    	{Expression.elements+=current}
+    	((name='.' elements+=MethodCall) | elements+=InvocationArguments)
+    )*
 ;
 
 MethodCall:
@@ -122,7 +121,7 @@ ProtelisCallElement: ':' ID;
 
 InvocationArguments:
 	=> (name='(' args=ExpressionList? ')' lastArg = KotlinStyleLambda)
-	| => name='(' args=ExpressionList? ')'
+	| name='(' args=ExpressionList? ')'
 	| lastArg = KotlinStyleLambda
 ;
 
@@ -161,8 +160,9 @@ NBR:
 
 If:
 	name='if' '(' cond=Expression ')' (
-		=>(then=Expression 'else' else=Expression)
-		| ('{' then=Block '}' 'else' '{' else=Block '}')
+		('{' then=Block '}' 'else' '{' else=Block '}')
+//		=> ('{' then=Block '}' 'else' '{' else=Block '}')
+//		| (then=Expression 'else' else=Expression)
 	)
 ;
 
@@ -180,8 +180,9 @@ Eval: name='eval' '(' arg = Expression ')';
 AlignedMap: name='alignedMap' '(' arg=Expression ',' cond=Expression ',' op=Expression ',' default=Expression ')';
 Mux:
 	name='mux' '(' cond=Expression ')' (
-		=>(then=Expression 'else' else=Expression)
-		| ('{' then=Block '}' 'else' '{' else=Block '}')
+//		=>(then=Expression 'else' else=Expression)
+//		|
+		('{' then=Block '}' 'else' '{' else=Block '}')
 	)
 ;
 
