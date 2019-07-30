@@ -1,19 +1,18 @@
 package org.protelis.parser.tests
 
 import com.google.inject.Inject
+import org.eclipse.xtext.diagnostics.Severity
 import org.eclipse.xtext.testing.InjectWith
 import org.eclipse.xtext.testing.extensions.InjectionExtension
 import org.eclipse.xtext.testing.util.ParseHelper
 import org.eclipse.xtext.testing.validation.ValidationTestHelper
+import org.eclipse.xtext.validation.Issue
 import org.junit.jupiter.api.Test
-import static org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.^extension.ExtendWith
 import org.protelis.parser.protelis.ProtelisModule
-import java.util.List
-import org.eclipse.emf.mwe.core.issues.Issues
-import org.eclipse.xtext.validation.Issue
-import org.eclipse.xtext.diagnostics.Severity
+
 import static org.eclipse.xtext.diagnostics.Severity.*
+import static org.junit.jupiter.api.Assertions.*
 
 @ExtendWith(InjectionExtension)
 @InjectWith(ProtelisInjectorProvider)
@@ -44,11 +43,13 @@ class ProtelisParsingTest {
 		]
 	}
 
-	def void mustNotRaise(ProtelisModule program, Severity issueType) {
-		val errors = program.raised(issueType)
-		assertTrue(errors.isEmpty) [
-			'''Unexpected validation errors:\n«errors.join("\n")»'''
-		]
+	def void mustNotRaise(ProtelisModule program, Severity... issueTypes) {
+		for (issueType: issueTypes) {
+			val errors = program.raised(issueType)
+			assertTrue(errors.isEmpty) [
+				'''Unexpected validation errors:\n«errors.join("\n")»'''
+			]
+		}
 	}
 
 	def Iterable<Issue> raised(ProtelisModule program, Severity issueType) {
@@ -91,6 +92,26 @@ class ProtelisParsingTest {
 				b
 			}
 		})
+		'''.whenParsed [
+			mustNotRaise(ERROR)
+			mustRaise(WARNING)
+		]
+	}
+
+	@Test
+	def void simpleTuplesCanBeParsed() {
+		'''
+		[5, 4, 3, 2, 1]
+		'''.whenParsed [
+			mustNotRaise(ERROR)
+			mustNotRaise(WARNING)
+		]
+	}
+
+	@Test
+	def void methodsCanBeInvokedOnTuple() {
+		'''
+		[5, 4, 3, 2, 1].reduce()
 		'''.whenParsed [
 			mustNotRaise(ERROR)
 			mustNotRaise(WARNING)
@@ -156,6 +177,92 @@ class ProtelisParsingTest {
 	}
 
 	@Test
+	def void letCanBeParsed() {
+		'''
+		let x = 1
+		1
+		'''.whenParsed [
+			mustNotRaise(WARNING)
+			mustNotRaise(ERROR)
+		]
+	}
+
+	@Test
+	def void reassignRaisesWarningParsed() {
+		'''
+		let x = 1
+		x = 2
+		x
+		'''.whenParsed [
+			mustRaise(WARNING)
+			mustNotRaise(ERROR)
+		]
+	}
+
+	@Test
+	def void moduleWithNoProgramNorPublicFunctionsShouldWarn() {
+		'''
+		module pippo
+		def f(x) { x }
+		'''.whenParsed [
+			mustRaise(WARNING)
+		]
+	}
+
+	@Test
+	def void discourageDotApply() {
+		'''
+		let a = { it + 1 }
+		a.apply(2)
+		'''.whenParsed [
+			mustRaise(WARNING)
+		]
+	}
+
+	@Test
+	def void itMustNotGetUsedOutsideLambdas() {
+		'''
+		it
+		'''.whenParsed [
+			mustRaise(ERROR)
+		]
+	}
+
+	@Test
+	def void testCurriedCall() {
+		'''
+		def f() { { 1 } }
+		f()()
+		'''.whenParsed [
+			mustNotRaise(ERROR)
+			mustNotRaise(WARNING)
+		]
+	}
+
+	@Test
+	def void itMustNotGetUsedWithLongLambdas() {
+		'''
+		{ a, b -> it + a + b }
+		'''.whenParsed [
+			mustRaise(ERROR)
+		]
+		'''
+		{ a -> it + 1 }
+		'''.whenParsed [
+			mustRaise(ERROR)
+		]
+	}
+
+	@Test
+	def void nestedItMustNotBeAllowed() {
+		'''
+		{ it + { it + 1 }(1) }
+		'''.whenParsed [
+			mustRaise(ERROR)
+		]
+	}
+
+	@Test
 	def void testInvalidReferenceWithStarImport() {
 		'''
 		import java.lang.Integer.*
@@ -176,11 +283,181 @@ class ProtelisParsingTest {
 	}
 
 	@Test
+	def void testMultilineBlock() {
+		'''
+		1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 
+		1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 
+		1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 
+		1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 
+		1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 
+		1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 
+		1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 
+		1
+		'''.whenParsed [
+			mustNotRaise(ERROR)
+			mustNotRaise(WARNING)
+		]
+	}
+
+	@Test
+	def void testMultiInstructionWithoutSemicolonBlock() {
+		'''
+		1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+		1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+		1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+		1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+		1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+		1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+		'''.whenParsed [
+			mustNotRaise(ERROR)
+			mustNotRaise(WARNING)
+		]
+	}
+
+	@Test
+	def void testKotlinItRename() {
+		'''
+		{ a -> a + 1 }
+		'''.whenParsed [
+			mustNotRaise(ERROR)
+			mustNotRaise(WARNING)
+		]
+
+	}
+
+	@Test
+	def void lambdaShouldBeInvokable() {
+		'''
+		{ a -> a + 1 }(1)
+		'''.whenParsed [
+			mustNotRaise(ERROR)
+			mustNotRaise(WARNING)
+		]
+
+	}
+
+	@Test
+	def void lambdaInvocationWithBadArgumentsShouldFail() {
+		'''
+		{ a -> a + 1 }()
+		'''.whenParsed [
+			mustRaise(ERROR)
+		]
+
+	}
+
+	@Test
+	def void parameterAccessShouldBeAllowed() {
+		'''
+		public def identity(a) {
+			a
+		}
+		'''.whenParsed [
+			mustNotRaise(ERROR)
+			mustNotRaise(WARNING)
+		]
+
+	}
+
+	@Test
+	def void testKotlinStyleLambda() {
+		'''
+		{ it + 1 }
+		'''.whenParsed [
+			mustNotRaise(ERROR)
+			mustNotRaise(WARNING)
+		]
+		'''
+		{ it -> it + 1 }
+		'''.whenParsed [
+			mustRaise(ERROR)
+		]
+		'''
+		def f(a) {
+			a
+		}
+		f({ it + 1 })
+		'''.whenParsed [
+			mustNotRaise(ERROR)
+			mustNotRaise(WARNING)
+		]
+		'''
+		def f(a) {
+			a
+		}
+		f{ it + 1 }
+		'''.whenParsed [
+			mustNotRaise(ERROR)
+			mustNotRaise(WARNING)
+		]
+		'''
+		def f(a) {
+			a
+		}
+		f(){ it + 1 }
+		'''.whenParsed [
+			mustNotRaise(ERROR)
+			mustNotRaise(WARNING)
+		]
+	}
+
+	@Test
 	def void testAutoImport() {
 		'''
 		sin(0)
 		'''.whenParsed [
 			mustNotRaise(WARNING)
+			mustNotRaise(ERROR)
+		]
+	}
+
+	@Test
+	def void ifWithoutParenthesisShouldResolveVariables() {
+		'''
+		let foo = true;
+		if (foo) { 1 };
+		2
+		'''.whenParsed [ mustNotRaise(ERROR) ]
+	}
+
+	@Test
+	def void testUnaryMinus() {
+		'''
+		-1
+		'''.whenParsed [ mustNotRaise(ERROR, WARNING) ]
+	}
+
+	@Test
+	def void testCallAndChainedMethod() {
+		'''
+		max(1, 2).toString()
+		'''.whenParsed [ mustNotRaise(ERROR, WARNING) ]
+	}
+
+	@Test
+	def void yieldShouldAccessShareInitVariable() {
+		'''
+		share (x, nx <- 1) {
+			x + nx
+		} yield {
+			x
+		}
+		'''.whenParsed [
+			mustNotRaise(ERROR)
+			mustNotRaise(WARNING)
+		]
+	}
+
+	@Test
+	def void testMethodChainedCall() {
+		'''
+		public def isNewClock(processes, clock) {
+		    processes
+		        .map {it.get(0)}
+		        .filter {clock == it}
+		        .isEmpty()
+		}
+		'''.whenParsed [
 			mustNotRaise(ERROR)
 		]
 	}
@@ -194,10 +471,10 @@ class ProtelisParsingTest {
 		'''
 		let foo = true;
 		if (foo) { 1 }
-		'''.whenParsed [ hasInvalidSyntax ]
+		'''.whenParsed [ mustRaise(ERROR) ]
 		'''
 		if (1 < 3) { 1 }
-		'''.whenParsed [ hasInvalidSyntax ]
+		'''.whenParsed [ mustRaise(ERROR) ]
 		''' // Jake's example from https://github.com/Protelis/Protelis/issues/65
 		let y = if (false) { 3 };
 		y+1;
@@ -212,11 +489,6 @@ class ProtelisParsingTest {
 		'''
 		let x = if (1 < 3) { 1 } else { 2 };
 		1
-		'''.whenParsed [ mustNotRaise(ERROR) ]
-		'''
-		let foo = true;
-		if (foo) { 1 };
-		2
 		'''.whenParsed [ mustNotRaise(ERROR) ]
 		'''
 		let a = 0;
