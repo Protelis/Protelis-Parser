@@ -4,188 +4,229 @@ import "http://www.eclipse.org/xtext/common/JavaVMTypes" as jvmTypes
 
 generate protelis "http://protelis.org"
 
-ProtelisModule: ('module' name=ProtelisQualifiedName)?
-	(imports=ImportSection)?
-	(definitions+=FunctionDef)* program=Block?
+ProtelisModule:
+	(=> 'module' name=ProtelisQualifiedName)?
+	(=> imports=ImportSection)?
+	(=> definitions+=FunctionDef)*
+	program=Block?
 ;
 
-VarDefList: args += VarDef (',' args += VarDef)* ;
-
-ExprList: args+=Expression (',' args+=Expression)*;
-RepInitialize: x=VarDef '<-' w=Expression;
-ShareInitialize: (local=VarDef ',')? field=VarDef '<-' w=Expression;
-
 ImportSection:
-	importDeclarations+=ImportDeclaration+;
+	=>importDeclarations+=ImportDeclaration+;
 
 ImportDeclaration: 
 	 =>(ProtelisImport) | JavaImport
 ;
 
 JavaImport:
-	name='import' (importedType=[jvmTypes::JvmDeclaredType|QualifiedNameInStaticImport] (wildcard?='*' | importedMemberName=AID))
+	name='import' (
+		importedType=[jvmTypes::JvmDeclaredType|QualifiedNameInStaticImport]
+		(wildcard?='*' | importedMemberName=AID)
+	)
 ;
 
 ProtelisImport:
 	name='import' module=[ProtelisModule|ProtelisQualifiedName]
 ;
 
+ProtelisQualifiedName: ID (':' ID)* ;
+
+FunctionDef: public?="public"? 'def' name=ID '(' (args=VarDefList)? ')' (
+	'{' body=Block '}'
+	| '=' singleExpression=Expression
+	)
+;
+
+VarDefList: args += VarDef (',' args += VarDef)* ;
+
+VarDef: name = ID;
+
 Block:
-	=> (Statement ';' ({ Block.first=current } next=Block))
-	| first = Expression
+	(statements+=Statement ';'*)+
 ;
 
-Statement: (=>Expression | SideEffect);
-
-SideEffect: Declaration | Assignment | IfWithoutElse;
-
-IfWithoutElse:
-	name='if' '(' cond=Expression ')' '{' (then+=Statement (';' then+=Statement)*)? '}'
+Statement:
+	=> Declaration
+	| => Assignment
+	| => Expression
+	| IfWithoutElse
 ;
 
-Declaration returns VarDef:
-	'let' VarDef '=' right=Expression
+Declaration:
+	'let' name=VarDef '=' right=Expression
 ;
 
 Assignment:
-	refVar=[VarDef] name='=' right = Expression
+	refVar=[VarDef] name='=' right=Expression
+;
+
+IfWithoutElse:
+	name='if' '(' cond=Expression ')' '{' (then+=Statement (';' then+=Statement)*)? '}'
 ;
 
 Expression:
  	LogicalOr
 ;
 
-FunctionDef: public?="public"? 'def' name=ID '(' (args=VarDefList)? ')' '{' body=Block '}';
+LogicalOr returns Expression:
+ LogicalAnd ({Expression.elements+=current} name='||' elements+=LogicalAnd)*;
 
+LogicalAnd returns Expression:
+ Equality ({Expression.elements+=current} name='&&' elements+=Equality)*;
 
-Call:
-	/*
-	 * Use manual scoping to solve this
-	 */
-	reference = [ecore::EObject|CallRule] '('args=ExprList?')'
+Equality returns Expression:
+ Relational ({Expression.elements+=current} name=('=='|'!=') elements+=Relational)*;
+
+Relational returns Expression:
+ Addition ({Expression.elements+=current} name=('>'|'>='|'<'|'<=') elements+=Addition)*;
+
+Addition returns Expression:
+ Multiplication =>({Expression.elements+=current} name=('+'|'-') elements+=Multiplication)*;
+
+Multiplication returns Expression:
+ Power ({Expression.elements+=current} name=('*'|'/'|'%') elements+=Power)*;
+
+Power returns Expression:
+ Prefix ({Expression.elements+=current} name=('^') elements+=Prefix)*;
+
+Prefix returns Expression:
+    Postfix | (name=('!'|'-') elements+=Postfix);
+
+Postfix returns Expression:
+    Primary =>(
+    	{Expression.elements+=current}
+    	((name='.' elements+=MethodCall) | elements+=InvocationArguments)
+    )*
 ;
 
+MethodCall:
+	name=AID arguments=InvocationArguments
+;
+
+Primary returns Expression:
+	=>Rep
+	| =>Share
+	| =>NBR
+	| =>If
+	| =>Lambda
+	| =>Builtin
+	| VarUse
+	| Scalar
+	| '(' Expression ')'
+;
+
+CallRule: AID (JCallElement+ | ProtelisCallElement+)?;
+JCallElement: '::' AID;
+ProtelisCallElement: ':' ID;
+
+InvocationArguments:
+	=> (name='(' args=ExpressionList? ')' lastArg = KotlinStyleLambda)
+	| name='(' args=ExpressionList? ')'
+	| lastArg = KotlinStyleLambda
+;
+
+ExpressionList: args+=Expression (',' args+=Expression)*;
+
 Lambda:
-	('(' (args=VarDefList)? ')' | args = VarDef) name='->' '{' body=Block '}';
+  KotlinStyleLambda
+  | OldLambda
+;
+KotlinStyleLambda:
+  => LongLambda
+  | ShortLambda
+;
+LongLambda: ('{' args=VarDefList name='->' body=Block '}');
+ShortLambda: name='{' body=Block '}';
+OldLambda:
+	=> OldLongLambda
+	| OldShortLambda
+;
+OldShortLambda: (singleArg=VarDef name='->' '{' body=Block '}');
+OldLongLambda: '(' (args=VarDefList)? ')' name='->' '{' body=Block '}';
 
 Rep: 
 	name='rep' '(' init=RepInitialize ')' '{' body=Block '}' (yields = Yield)?
 ;
-
+RepInitialize: x=VarDef '<-' w=Expression;
 Share: 
 	name='share' '(' init=ShareInitialize ')' '{' body=Block '}' (yields = Yield)?
 ;
-
+ShareInitialize: (local=VarDef ',')? field=VarDef '<-' w=Expression;
 Yield: name='yield' '{' body = Block '}';
-
-If:
-	name='if' '(' cond=Expression ')' '{' then=Block '}' 'else' '{' else=Block '}'
-;
 
 NBR:
 	name='nbr' '(' arg=Expression ')' 
 ;
 
-Builtin:
-	Self | Env | Eval | AlignedMap | Mux | Hood
+If:
+	name='if' '(' cond=Expression ')' (
+		('{' then=Block '}' 'else' '{' else=Block '}')
+//		=> ('{' then=Block '}' 'else' '{' else=Block '}')
+//		| (then=Expression 'else' else=Expression)
+	)
 ;
 
+VarUse: reference=[ecore::EObject|CallRule];
+
+Scalar: DoubleVal | StringVal | BooleanVal | TupleVal;
+
+Builtin:
+	Self | Env | It | Eval | AlignedMap | Mux | Hood
+;
 Self: name = 'self';
 Env: name = 'env';
+It: name = 'it';
 Eval: name='eval' '(' arg = Expression ')';
 AlignedMap: name='alignedMap' '(' arg=Expression ',' cond=Expression ',' op=Expression ',' default=Expression ')';
-Mux: name='mux' '(' cond=Expression ')' '{' then=Block '}' 'else' '{'  else=Block '}';
+Mux:
+	name='mux' '(' cond=Expression ')' (
+//		=>(then=Expression 'else' else=Expression)
+//		|
+		('{' then=Block '}' 'else' '{' else=Block '}')
+	)
+;
 
 Hood:
 	BuiltinHoodOp |	GenericHood  
 ;
-
 GenericHood:
-		(name = 'hood' | name = 'hoodPlusSelf') '('
-			(reference = VarUse | op = Lambda ) ','
-			default = Expression ','
-			arg = Expression
-		')'
+	(name = 'hood' | name = 'hoodPlusSelf') '('
+		(reference = VarUse | op = Lambda ) ','
+		default = Expression ','
+		arg = Expression
+	')'
 ;
-	
 BuiltinHoodOp:
 	(
-	name='minHood' |
-	name='maxHood' |
-	name='localHood' |
-	name='anyHood' |
-	name='allHood' |
-	name='sumHood' |
-	name='meanHood' |
-	name='unionHood'
+	name=BuiltinHood
 ) inclusive?='PlusSelf'? '(' arg=Expression ')'
 ;
-
-LogicalOr returns Expression:
- LogicalAnd ({Expression.left=current} name='||' right=LogicalAnd)*;
-
-LogicalAnd returns Expression:
- Equality ({Expression.left=current} name='&&' right=Equality)*;
-
-Equality returns Expression:
- Relational ({Expression.left=current} name=('=='|'!=') right=Relational)*;
-
-Relational returns Expression:
- Addition ({Expression.left=current} name=('>'|'>='|'<'|'<=') right=Addition)*;
-
-Addition returns Expression:
- Multiplication ({Expression.left=current} name=('+'|'-') right=Multiplication)*;
-
-Multiplication returns Expression:
- Power ({Expression.left=current} name=('*'|'/'|'%') right=Power)*;
-
-Power returns Expression:
- Prefix ({Expression.left=current} name=('^') right=Prefix)*;
-
-Prefix returns Expression:
-    Postfix | ({Prefix} name=('-'|'!') right=Postfix);
-
-Postfix returns Expression:
-    Primary
-    ({Expression.left=current}(name='.' methodName=AID '(' (args=ExprList)? ')'))*
+BuiltinHood:
+	'minHood' | 'maxHood' | 'localHood' | 'anyHood' | 'allHood' | 'sumHood' | 'meanHood' | 'unionHood'
 ;
-
-Primary returns Expression:
- (v = (VarUse | Local | Call | Rep | Share | NBR | If) | '(' Expression ')')
-;
-
-Local: Scalar | Builtin | Lambda;
-
-VarDef: name = ID;
-
-VarUse: reference=[ecore::EObject|CallRuleNoConflict];
-
-Scalar: DoubleVal | StringVal | BooleanVal | TupleVal;
 
 DoubleVal: val=DOUBLE;
-
 StringVal: val=STRING;
-
 BooleanVal: val=BOOLEAN;
+TupleVal: name='[' args = ExpressionList? ']';
 
-TupleVal: name='[' args = ExprList? ']';
+AID: =>ID
+	| PROTELIS_KEYWORD
+;
 
-CallRule: AID (JCallElement+ | ProtelisCallElement+)?;
-
-CallRuleNoConflict: AID (JCallElement+ | ProtelisCallElement+) | ID;
-
-JCallElement: '::' AID;
-
-ProtelisCallElement: ':' ID;
-
-ProtelisQualifiedName: ID (':' ID)* ;
-
-AID: =>ID | 'random' | 'PlusSelf' | 'self' | 'env';
+PROTELIS_KEYWORD:
+	'module' | 'def' | 'let'
+	| 'rep' | 'share' | 'nbr'
+	| BuiltinHood
+	| 'PlusSelf'
+	| 'hood' | 'hoodPlusSelf'
+	| 'self' | 'env' | 'it'
+	| 'mux' | 'eval'
+;
 
 @Override QualifiedNameInStaticImport:
   (AID '.')+
 ;
-
 terminal INT returns ecore::EInt: ('0'..'9')+;
 DOUBLE returns ecore::EDouble: INT('.'INT)?('e'|'E''-'?INT)?;
 BOOLEAN returns ecore::EBoolean: "true" | "false";
