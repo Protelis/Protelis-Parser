@@ -68,7 +68,6 @@ jobs:
       script:
         - mvn -v
         - mvn clean deploy
-#        - surge protelis.parser.repository/target/repository protelis-eclipse-development.surge.sh
 before_install:
   - curl "${GRAVIS}.install-jdk-travis.sh" --output .install-jdk-travis.sh
   - source .install-jdk-travis.sh
