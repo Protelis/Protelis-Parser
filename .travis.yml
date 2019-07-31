@@ -88,7 +88,7 @@ after_failure:
 
 deploy:
   - provider: surge
-    project: protelis.parser.repository/target/repository/
+    project: ./protelis.parser.repository/target/repository/
     domain: protelis-eclipse.surge.sh
     skip_cleanup: true
     on:
@@ -97,7 +97,7 @@ deploy:
       repo: *official_repo
       tags: true
   - provider: surge
-    project: protelis.parser.repository/target/repository/
+    project: ./protelis.parser.repository/target/repository/
     domain: protelis-eclipse-development.surge.sh
     skip_cleanup: true
     on:
