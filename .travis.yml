@@ -92,7 +92,6 @@ after_failure:
   - cat */target/work/data/.metadata/.log
 after_success:
   - ls ./protelis.parser.repository/target/repository/
-  - tree -a
 deploy:
   - provider: surge
     project: ./protelis.parser.repository/target/repository/
