@@ -79,7 +79,7 @@ script:
   - mvn -v
   - mvn clean install -Dgpg.skip=true 
 before_cache:
-  - rm -rf /home/travis/.m2/repository/.meta
+  - rm -rf $HOME/.m2/repository/.meta
   - rm -rf $HOME/.m2/repository/org/protelis/
   - find $HOME/.m2/repository/ -name resolver-status.properties -type f -delete -print
   - find $HOME/.m2/repository/ -name _*.repositories -type f -delete -print
