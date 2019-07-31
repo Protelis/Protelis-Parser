@@ -17,6 +17,7 @@ addons:
     packages:
     - graphviz
     - tree
+    - npm
 stages:
   - reference_testing
   - deploy
@@ -66,7 +67,9 @@ jobs:
       script:
         - mvn -v
         - mvn clean deploy
-        - mvn install
+        - tree -a
+        - npm install --global surge
+        - surge protelis.parser.repository/target/repository protelis-eclipse-development.surge.sh
 before_install:
   - curl "${GRAVIS}.install-jdk-travis.sh" --output .install-jdk-travis.sh
   - source .install-jdk-travis.sh
