@@ -64,7 +64,8 @@ jobs:
         - bash prepare_environment.sh
       script:
         - mvn -v
-        - mvn clean install deploy
+        - mvn clean install
+        - mvn deploy
 before_install:
   - curl "${GRAVIS}.install-jdk-travis.sh" --output .install-jdk-travis.sh
   - source .install-jdk-travis.sh
