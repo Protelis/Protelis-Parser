@@ -16,6 +16,7 @@ addons:
   apt:
     packages:
     - nodejs-legacy
+    - nodejs
     - tree
     - npm
 stages:
