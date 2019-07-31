@@ -16,9 +16,6 @@ addons:
   apt:
     packages:
     - tree
-    - npm
-  sources:
-    - 
 stages:
   - reference_testing
   - deploy
