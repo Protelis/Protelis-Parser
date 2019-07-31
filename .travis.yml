@@ -64,8 +64,8 @@ jobs:
         - bash prepare_environment.sh
       script:
         - mvn -v
-        - mvn clean install
-        - mvn deploy
+        - mvn clean deploy
+        - mvn install
 before_install:
   - curl "${GRAVIS}.install-jdk-travis.sh" --output .install-jdk-travis.sh
   - source .install-jdk-travis.sh
@@ -86,7 +86,9 @@ after_failure:
   # Print the maven log for more information
   - cat */target/work/data/.metadata/.log
   - cat */target/work/data/.metadata/.log
-
+after_success:
+  - ls ./protelis.parser.repository/target/repository/
+  - tree -a
 deploy:
   - provider: surge
     project: ./protelis.parser.repository/target/repository/
