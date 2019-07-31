@@ -16,6 +16,7 @@ addons:
   apt:
     packages:
     - graphviz
+    - tree
 stages:
   - reference_testing
   - deploy
