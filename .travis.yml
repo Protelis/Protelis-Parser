@@ -32,7 +32,7 @@ env:
     - PUBLISH=false
     - OFFICIAL_REPO_SLUG="Protelis/Protelis-Parser"
   matrix:
-    - JDK="adopt@1.8.212-04"
+    - JDK="adopt@1.8.222-10"
     - JDK="adopt-openj9@1.8.212-04"
     - JDK="adopt@1.11.28-0"
     - JDK="adopt-openj9@1.11.0-3"
