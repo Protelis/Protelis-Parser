@@ -75,11 +75,12 @@ class ProtelisValidator extends AbstractProtelisValidator {
 		var parent = exp.eContainer
 		while (parent !== null) {
 			if (parent instanceof Block) {
-				Optional.of(parent.statements
+				Optional.ofNullable(parent.statements
 						.takeWhile[it != exp]
+						.map[it instanceof Declaration ? it.name : it]
 						.filter[it instanceof VarDef]
 						.map[it as VarDef]
-						.filter[it.name == exp.name]
+						.filter[it.name == exp.name.name]
 						.head)
 					.ifPresent[error(exp)]
 			}
