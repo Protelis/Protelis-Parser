@@ -33,6 +33,11 @@ import org.eclipse.emf.ecore.EObject
 import org.protelis.parser.protelis.MethodCall
 import org.protelis.parser.protelis.Assignment
 import org.protelis.parser.protelis.It
+import com.google.common.collect.ImmutableList
+import org.eclipse.xtext.common.types.JvmVisibility
+import java.lang.reflect.Modifier
+import java.util.List
+import java.lang.reflect.Field
 
 /**
  * Custom validation rules. 
@@ -40,6 +45,9 @@ import org.protelis.parser.protelis.It
  * see http://www.eclipse.org/Xtext/documentation.html#validation
  */
 class ProtelisValidator extends AbstractProtelisValidator {
+
+	public static val MY_VERSION = ImmutableList.of(10, 0, 0)
+	static val FIRST_LINE = ProtelisPackage.Literals.PROTELIS_MODULE.getEStructuralFeature(ProtelisPackage.PROTELIS_MODULE__NAME)
 
 	@Inject 
 	TypeReferences references;
@@ -269,5 +277,64 @@ class ProtelisValidator extends AbstractProtelisValidator {
 			val name = function.name
 			info('''«name» (<params>) { <body> } has a single expression and could be rewritten as «name» (<params>) = <body>''', function.body.statements.get(0), null)
 		}
-	}	
+	}
+
+	/**
+	 * See https://github.com/Protelis/Protelis/issues/245
+	 */
+	@Check
+	def builtinVersionShouldBeCompatible(ProtelisModule module) {
+		val type = references.findDeclaredType("org.protelis.Builtins", module)
+		if (type instanceof JvmDeclaredType) {
+//			val candidateFields = type.declaredFields
+//				.filter[it.static]
+//				.filter[it.visibility == JvmVisibility.PUBLIC]
+			val candidateFields = Class.forName("org.protelis.Builtins").declaredFields
+//				.filter[it.accessible]
+			val min = candidateFields.findFirst[it.name == "MINIMUM_PARSER_VERSION"]
+			var minVersion = versionFromStaticField(min)
+			if (minVersion === null) {
+				warning(
+					"Builtins do not declare a minimum version, Protelis plugin / parser and interpreter versions may be mismatched",
+					module, FIRST_LINE
+				)
+			}
+			minVersion = minVersion ?: #[0, 0, 0]
+			val max = candidateFields.findFirst[it.name == "MAXIMUM_PARSER_VERSION"]
+			var maxVersion = versionFromStaticField(max)
+			if (maxVersion === null) {
+				warning("Builtins do not declare a maximum version", module, FIRST_LINE)
+			}
+			maxVersion = maxVersion ?: #[Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE]
+			if (!(versionMinorEqual(MY_VERSION, maxVersion) && versionMinorEqual(minVersion, MY_VERSION))) {
+				warning(
+					'''Protelis plugin / parser and interpreter versions mismatch. Expected parser in range «minVersion» to «maxVersion», found version «MY_VERSION»'''
+					, module, FIRST_LINE
+				)
+			}
+		}
+	}
+
+	private def List<Integer> versionFromStaticField(Field field) {
+		if (field === null) {
+			return null
+		} else {
+			if (Modifier.isStatic(field.modifiers)
+				&& typeof(List).isAssignableFrom(field.type)
+			) {
+				val fieldValue = field.get(null) as List<?>
+				if (fieldValue.size == 3 && fieldValue.forall[Integer.isAssignableFrom(it.class)]) {
+					return fieldValue as List<Integer>
+				}
+			}
+		}
+		return null
+	}
+
+	private def boolean versionMinorEqual(Iterable<Integer> a, Iterable<Integer> b) {
+		a.empty && b.empty
+		|| a.head < b.head
+		|| a.head == b.head && versionMinorEqual(a.drop(1), b.drop(1))
+	}
+
 }
