@@ -3,7 +3,7 @@ Automatic-Module-Name: protelis.parser.ide
 Bundle-ManifestVersion: 2
 Bundle-Name: protelis.parser.ide
 Bundle-Vendor: Alma Mater Studiorum Università di Bologna
-Bundle-Version: 10.0.0
+Bundle-Version: 10.0.1
 Bundle-SymbolicName: protelis.parser.ide; singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: protelis.parser,

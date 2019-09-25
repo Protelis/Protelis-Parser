@@ -47,7 +47,7 @@ import org.eclipse.xtext.naming.IQualifiedNameConverter
  */
 class ProtelisValidator extends AbstractProtelisValidator {
 
-	public static val MY_VERSION = ImmutableList.of(10, 0, 0)
+	public static val MY_VERSION = ImmutableList.of(10, 0, 1)
 	static val FIRST_LINE = ProtelisPackage.Literals.PROTELIS_MODULE.getEStructuralFeature(ProtelisPackage.PROTELIS_MODULE__NAME)
 
 	@Inject 
