@@ -1,14 +1,20 @@
 package org.protelis.parser.validation
 
+import com.google.common.collect.ImmutableList
 import com.google.inject.Inject
+import java.lang.reflect.Field
+import java.lang.reflect.Modifier
+import java.util.List
 import java.util.Map
 import java.util.Optional
 import org.eclipse.emf.common.notify.Notifier
+import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.xtext.common.types.JvmDeclaredType
 import org.eclipse.xtext.common.types.JvmFeature
 import org.eclipse.xtext.common.types.util.TypeReferences
 import org.eclipse.xtext.validation.Check
+import org.protelis.parser.protelis.Assignment
 import org.protelis.parser.protelis.Block
 import org.protelis.parser.protelis.BuiltinHoodOp
 import org.protelis.parser.protelis.Declaration
@@ -17,9 +23,11 @@ import org.protelis.parser.protelis.FunctionDef
 import org.protelis.parser.protelis.GenericHood
 import org.protelis.parser.protelis.Hood
 import org.protelis.parser.protelis.InvocationArguments
+import org.protelis.parser.protelis.It
 import org.protelis.parser.protelis.JavaImport
 import org.protelis.parser.protelis.Lambda
 import org.protelis.parser.protelis.LongLambda
+import org.protelis.parser.protelis.MethodCall
 import org.protelis.parser.protelis.OldLambda
 import org.protelis.parser.protelis.OldLongLambda
 import org.protelis.parser.protelis.OldShortLambda
@@ -29,15 +37,8 @@ import org.protelis.parser.protelis.ShortLambda
 import org.protelis.parser.protelis.VarDef
 
 import static extension org.protelis.parser.ProtelisExtensions.*
-import org.eclipse.emf.ecore.EObject
-import org.protelis.parser.protelis.MethodCall
-import org.protelis.parser.protelis.Assignment
-import org.protelis.parser.protelis.It
-import com.google.common.collect.ImmutableList
-import org.eclipse.xtext.common.types.JvmVisibility
-import java.lang.reflect.Modifier
-import java.util.List
-import java.lang.reflect.Field
+import org.eclipse.xtext.xbase.interpreter.IEvaluationContext
+import org.eclipse.xtext.naming.IQualifiedNameConverter
 
 /**
  * Custom validation rules. 
@@ -50,7 +51,11 @@ class ProtelisValidator extends AbstractProtelisValidator {
 	static val FIRST_LINE = ProtelisPackage.Literals.PROTELIS_MODULE.getEStructuralFeature(ProtelisPackage.PROTELIS_MODULE__NAME)
 
 	@Inject 
-	TypeReferences references;
+	TypeReferences references
+	@Inject
+	IEvaluationContext context
+	@Inject
+	IQualifiedNameConverter qualifiedNameConverter
 
 	static val Iterable<String> AUTO_IMPORT = #{ "java.lang.Math", "java.lang.Double", "org.protelis.Builtins" }
 
@@ -286,7 +291,8 @@ class ProtelisValidator extends AbstractProtelisValidator {
 	def builtinVersionShouldBeCompatible(ProtelisModule module) {
 		val type = references.findDeclaredType("org.protelis.Builtins", module)
 		if (type instanceof JvmDeclaredType) {
-			val candidateFields = Class.forName("org.protelis.Builtins").declaredFields
+			val builtinsResolvedClass = context.getValue(qualifiedNameConverter.toQualifiedName("org.protelis.Builtins")) as Class<?>
+			val candidateFields = builtinsResolvedClass.declaredFields
 			val min = candidateFields.findFirst[it.name == "MINIMUM_PARSER_VERSION"]
 			var minVersion = versionFromStaticField(min)
 			if (minVersion === null) {
