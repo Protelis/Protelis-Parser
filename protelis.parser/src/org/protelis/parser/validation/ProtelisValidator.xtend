@@ -286,11 +286,7 @@ class ProtelisValidator extends AbstractProtelisValidator {
 	def builtinVersionShouldBeCompatible(ProtelisModule module) {
 		val type = references.findDeclaredType("org.protelis.Builtins", module)
 		if (type instanceof JvmDeclaredType) {
-//			val candidateFields = type.declaredFields
-//				.filter[it.static]
-//				.filter[it.visibility == JvmVisibility.PUBLIC]
 			val candidateFields = Class.forName("org.protelis.Builtins").declaredFields
-//				.filter[it.accessible]
 			val min = candidateFields.findFirst[it.name == "MINIMUM_PARSER_VERSION"]
 			var minVersion = versionFromStaticField(min)
 			if (minVersion === null) {
