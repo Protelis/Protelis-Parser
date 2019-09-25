@@ -522,4 +522,16 @@ class ProtelisParsingTest {
 		}'''.whenParsed [ mustNotRaise(ERROR) ]
 	}
 
+	@Test
+	def void variablesCannotGetDefinedTwice() {
+		'''
+		let a = 1
+		let a = 0
+		a
+		'''.whenParsed [
+			mustRaise(ERROR)
+		]
+	}
+
+
 }
