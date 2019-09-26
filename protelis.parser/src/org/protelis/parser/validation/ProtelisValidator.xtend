@@ -1,14 +1,20 @@
 package org.protelis.parser.validation
 
+import com.google.common.collect.ImmutableList
 import com.google.inject.Inject
+import java.lang.reflect.Field
+import java.lang.reflect.Modifier
+import java.util.List
 import java.util.Map
 import java.util.Optional
 import org.eclipse.emf.common.notify.Notifier
+import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.xtext.common.types.JvmDeclaredType
 import org.eclipse.xtext.common.types.JvmFeature
 import org.eclipse.xtext.common.types.util.TypeReferences
 import org.eclipse.xtext.validation.Check
+import org.protelis.parser.protelis.Assignment
 import org.protelis.parser.protelis.Block
 import org.protelis.parser.protelis.BuiltinHoodOp
 import org.protelis.parser.protelis.Declaration
@@ -17,9 +23,11 @@ import org.protelis.parser.protelis.FunctionDef
 import org.protelis.parser.protelis.GenericHood
 import org.protelis.parser.protelis.Hood
 import org.protelis.parser.protelis.InvocationArguments
+import org.protelis.parser.protelis.It
 import org.protelis.parser.protelis.JavaImport
 import org.protelis.parser.protelis.Lambda
 import org.protelis.parser.protelis.LongLambda
+import org.protelis.parser.protelis.MethodCall
 import org.protelis.parser.protelis.OldLambda
 import org.protelis.parser.protelis.OldLongLambda
 import org.protelis.parser.protelis.OldShortLambda
@@ -29,10 +37,8 @@ import org.protelis.parser.protelis.ShortLambda
 import org.protelis.parser.protelis.VarDef
 
 import static extension org.protelis.parser.ProtelisExtensions.*
-import org.eclipse.emf.ecore.EObject
-import org.protelis.parser.protelis.MethodCall
-import org.protelis.parser.protelis.Assignment
-import org.protelis.parser.protelis.It
+import org.eclipse.xtext.xbase.interpreter.IEvaluationContext
+import org.eclipse.xtext.naming.IQualifiedNameConverter
 
 /**
  * Custom validation rules. 
@@ -41,8 +47,15 @@ import org.protelis.parser.protelis.It
  */
 class ProtelisValidator extends AbstractProtelisValidator {
 
+	public static val MY_VERSION = ImmutableList.of(10, 0, 1)
+	static val FIRST_LINE = ProtelisPackage.Literals.PROTELIS_MODULE.getEStructuralFeature(ProtelisPackage.PROTELIS_MODULE__NAME)
+
 	@Inject 
-	TypeReferences references;
+	TypeReferences references
+	@Inject
+	IEvaluationContext context
+	@Inject
+	IQualifiedNameConverter qualifiedNameConverter
 
 	static val Iterable<String> AUTO_IMPORT = #{ "java.lang.Math", "java.lang.Double", "org.protelis.Builtins" }
 
@@ -62,11 +75,12 @@ class ProtelisValidator extends AbstractProtelisValidator {
 		var parent = exp.eContainer
 		while (parent !== null) {
 			if (parent instanceof Block) {
-				Optional.of(parent.statements
+				Optional.ofNullable(parent.statements
 						.takeWhile[it != exp]
+						.map[it instanceof Declaration ? it.name : it]
 						.filter[it instanceof VarDef]
 						.map[it as VarDef]
-						.filter[it.name == exp.name]
+						.filter[it.name == exp.name.name]
 						.head)
 					.ifPresent[error(exp)]
 			}
@@ -269,5 +283,61 @@ class ProtelisValidator extends AbstractProtelisValidator {
 			val name = function.name
 			info('''«name» (<params>) { <body> } has a single expression and could be rewritten as «name» (<params>) = <body>''', function.body.statements.get(0), null)
 		}
-	}	
+	}
+
+	/**
+	 * See https://github.com/Protelis/Protelis/issues/245
+	 */
+	@Check
+	def builtinVersionShouldBeCompatible(ProtelisModule module) {
+		val type = references.findDeclaredType("org.protelis.Builtins", module)
+		if (type instanceof JvmDeclaredType) {
+			val builtinsResolvedClass = context.getValue(qualifiedNameConverter.toQualifiedName("org.protelis.Builtins")) as Class<?>
+			val candidateFields = builtinsResolvedClass.declaredFields
+			val min = candidateFields.findFirst[it.name == "MINIMUM_PARSER_VERSION"]
+			var minVersion = versionFromStaticField(min)
+			if (minVersion === null) {
+				warning(
+					"Builtins do not declare a minimum version, Protelis plugin / parser and interpreter versions may be mismatched",
+					module, FIRST_LINE
+				)
+			}
+			minVersion = minVersion ?: #[0, 0, 0]
+			val max = candidateFields.findFirst[it.name == "MAXIMUM_PARSER_VERSION"]
+			var maxVersion = versionFromStaticField(max)
+			if (maxVersion === null) {
+				warning("Builtins do not declare a maximum version", module, FIRST_LINE)
+			}
+			maxVersion = maxVersion ?: #[Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE]
+			if (!(versionMinorEqual(MY_VERSION, maxVersion) && versionMinorEqual(minVersion, MY_VERSION))) {
+				warning(
+					'''Protelis plugin / parser and interpreter versions mismatch. Expected parser in range «minVersion» to «maxVersion», found version «MY_VERSION»'''
+					, module, FIRST_LINE
+				)
+			}
+		}
+	}
+
+	private def List<Integer> versionFromStaticField(Field field) {
+		if (field === null) {
+			return null
+		} else {
+			if (Modifier.isStatic(field.modifiers)
+				&& typeof(List).isAssignableFrom(field.type)
+			) {
+				val fieldValue = field.get(null) as List<?>
+				if (fieldValue.size == 3 && fieldValue.forall[Integer.isAssignableFrom(it.class)]) {
+					return fieldValue as List<Integer>
+				}
+			}
+		}
+		return null
+	}
+
+	private def boolean versionMinorEqual(Iterable<Integer> a, Iterable<Integer> b) {
+		a.empty && b.empty
+		|| a.head < b.head
+		|| a.head == b.head && versionMinorEqual(a.drop(1), b.drop(1))
+	}
+
 }

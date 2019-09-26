@@ -1,5 +1,5 @@
 reference_jdk: &reference_jdk
-  'JDK="adopt@1.8.212-04"'
+  'JDK="adopt@1.8"'
 reference_os: &reference_os
   'linux'
 official_repo: &official_repo
@@ -32,10 +32,10 @@ env:
     - PUBLISH=false
     - OFFICIAL_REPO_SLUG="Protelis/Protelis-Parser"
   matrix:
-    - JDK="adopt@1.8.212-04"
-    - JDK="adopt-openj9@1.8.212-04"
-    - JDK="adopt@1.11.28-0"
-    - JDK="adopt-openj9@1.11.0-3"
+    - JDK="adopt@1.8"
+    - JDK="adopt-openj9@1.8"
+    - JDK="adopt@1.11.0"
+    - JDK="adopt-openj9@1.11.0"
 matrix:
   exclude:
     - os: *reference_os
@@ -89,7 +89,7 @@ after_failure:
   - cat */target/work/data/.metadata/.log
   - cat */target/work/data/.metadata/.log
 after_success:
-  - ls ./protelis.parser.repository/target/repository/
+  - which surge
 deploy:
   - provider: surge
     project: ./protelis.parser.repository/target/repository/
