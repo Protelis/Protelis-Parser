@@ -17,7 +17,7 @@ Parser for Protelis, the practical aggregate programming language
 ![Codacy coverage](https://img.shields.io/codacy/coverage/b27fc7ed29a944e1a17b148e58435d86)
 ![Code Climate coverage](https://img.shields.io/codeclimate/coverage/Protelis/Protelis-parser)
 ![Codecov](https://img.shields.io/codecov/c/github/Protelis/Protelis-parser)
-*[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Protelis_Protelis-parser&metric=coverage)](https://sonarcloud.io/dashboard?id=Protelis_Protelis-parser)*
+*[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Protelis_Protelis-Parser&metric=coverage)](https://sonarcloud.io/dashboard?id=Protelis_Protelis-Parser)*
 
 ### Quality
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/b27fc7ed29a944e1a17b148e58435d86)](https://www.codacy.com/manual/danilo-pianini/Protelis-Parser?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Protelis/Protelis-Parser&amp;utm_campaign=Badge_Grade)
@@ -26,16 +26,16 @@ Parser for Protelis, the practical aggregate programming language
 ![Code Climate maintainability](https://img.shields.io/codeclimate/issues/Protelis/Protelis-parser)
 ![Code Climate maintainability](https://img.shields.io/codeclimate/tech-debt/Protelis/Protelis-parser)
 [![CodeFactor](https://www.codefactor.io/repository/github/Protelis/Protelis-parser/badge)](https://www.codefactor.io/repository/github/Protelis/Protelis-parser)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Protelis_Protelis-parser&metric=alert_status)](https://sonarcloud.io/dashboard?id=Protelis_Protelis-parser)
-[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=Protelis_Protelis-parser&metric=bugs)](https://sonarcloud.io/dashboard?id=Protelis_Protelis-parser)
-[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=Protelis_Protelis-parser&metric=code_smells)](https://sonarcloud.io/dashboard?id=Protelis_Protelis-parser)
-[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=Protelis_Protelis-parser&metric=duplicated_lines_density)](https://sonarcloud.io/dashboard?id=Protelis_Protelis-parser)
-[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=Protelis_Protelis-parser&metric=ncloc)](https://sonarcloud.io/dashboard?id=Protelis_Protelis-parser)
-[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=Protelis_Protelis-parser&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=Protelis_Protelis-parser)
-[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=Protelis_Protelis-parser&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=Protelis_Protelis-parser)
-[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=Protelis_Protelis-parser&metric=security_rating)](https://sonarcloud.io/dashboard?id=Protelis_Protelis-parser)
-[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=Protelis_Protelis-parser&metric=sqale_index)](https://sonarcloud.io/dashboard?id=Protelis_Protelis-parser)
-[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=Protelis_Protelis-parser&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=Protelis_Protelis-parser)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Protelis_Protelis-Parser&metric=alert_status)](https://sonarcloud.io/dashboard?id=Protelis_Protelis-Parser)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=Protelis_Protelis-Parser&metric=bugs)](https://sonarcloud.io/dashboard?id=Protelis_Protelis-Parser)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=Protelis_Protelis-Parser&metric=code_smells)](https://sonarcloud.io/dashboard?id=Protelis_Protelis-Parser)
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=Protelis_Protelis-Parser&metric=duplicated_lines_density)](https://sonarcloud.io/dashboard?id=Protelis_Protelis-Parser)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=Protelis_Protelis-Parser&metric=ncloc)](https://sonarcloud.io/dashboard?id=Protelis_Protelis-Parser)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=Protelis_Protelis-Parser&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=Protelis_Protelis-Parser)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=Protelis_Protelis-Parser&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=Protelis_Protelis-Parser)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=Protelis_Protelis-Parser&metric=security_rating)](https://sonarcloud.io/dashboard?id=Protelis_Protelis-Parser)
+[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=Protelis_Protelis-Parser&metric=sqale_index)](https://sonarcloud.io/dashboard?id=Protelis_Protelis-Parser)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=Protelis_Protelis-Parser&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=Protelis_Protelis-Parser)
 
 ### Progress
 ![GitHub issues](https://img.shields.io/github/issues/Protelis/Protelis-parser)
