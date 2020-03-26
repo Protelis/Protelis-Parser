@@ -58,9 +58,6 @@ jobs:
       os: *reference_os
       env:
         - *reference_jdk
-      script:
-        - mvn -v
-        - mvn clean install -Dgpg.skip=true 
     - stage: deploy
       name: "Verify and deploy with reference OS and JDK"
       if: repo = env(OFFICIAL_REPO_SLUG) AND type != pull_request
