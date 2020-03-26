@@ -5,7 +5,7 @@ _reference_os: &reference_os
 _official_repo: &official_repo
   'Protelis/Protelis-Parser'
 
-language: bash
+language: shell
 
 git:
   depth: false
