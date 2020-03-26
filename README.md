@@ -1,4 +1,7 @@
 # Protelis-Parser
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/b27fc7ed29a944e1a17b148e58435d86)](https://app.codacy.com/manual/danilo-pianini/Protelis-Parser?utm_source=github.com&utm_medium=referral&utm_content=Protelis/Protelis-Parser&utm_campaign=Badge_Grade_Dashboard)
+
 Parser for Protelis, the practical aggregate programming language
 
 ## Required Eclipse plugins
