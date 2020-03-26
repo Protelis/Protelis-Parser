@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.protelis</groupId>
 		<artifactId>protelis.parser.parent</artifactId>
-		<version>10.0.1</version>
+		<version>10.0.2</version>
 	</parent>
 	<artifactId>protelis.parser.ui.tests</artifactId>
 	<packaging>eclipse-test-plugin</packaging>
@@ -20,25 +20,6 @@
 				<artifactId>tycho-surefire-plugin</artifactId>
 				<configuration>
 					<useUIHarness>false</useUIHarness>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>target-platform-configuration</artifactId>
-				<configuration>
-					<dependency-resolution>
-						<extraRequirements>
-							<!-- to get the org.eclipse.osgi.compatibility.state plugin
-							if the target platform is Luna or later.
-							(backward compatible with kepler and previous versions)
-							see https://bugs.eclipse.org/bugs/show_bug.cgi?id=492149 -->
-							<requirement>
-								<type>eclipse-feature</type>
-								<id>org.eclipse.rcp</id>
-								<versionRange>0.0.0</versionRange>
-							</requirement>
-						</extraRequirements>
-					</dependency-resolution>
 				</configuration>
 			</plugin>
 		</plugins>
