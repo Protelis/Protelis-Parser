@@ -1,25 +1,31 @@
-reference_jdk: &reference_jdk
+_reference_jdk: &reference_jdk
   'JDK="adopt@1.8"'
-reference_os: &reference_os
+_reference_os: &reference_os
   'linux'
-official_repo: &official_repo
+_official_repo: &official_repo
   'Protelis/Protelis-Parser'
+
 language: bash
+
 git:
   depth: false
+
 os:
   - osx
   - windows
   - *reference_os
 dist: xenial
+
 addons:
   apt:
     packages:
     - tree
+
 stages:
   - reference_testing
   - deploy
   - test
+
 env:
   global:
     - MAVEN_OPTS: "'-Dorg.slf4j.simpleLogger.defaultLogLevel=warn -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'"
@@ -38,10 +44,12 @@ env:
     - JDK="adopt-openj9@1.11.0"
     - JDK="adopt@"
     - JDK="adopt-openj9@"
+
 matrix:
   exclude:
     - os: *reference_os
       env: *reference_jdk
+
 jobs:
   include:
     - stage: reference_testing
@@ -70,28 +78,35 @@ jobs:
       script:
         - mvn -v
         - mvn clean deploy
+
 before_install:
   - curl "${GRAVIS}.install-jdk-travis.sh" --output .install-jdk-travis.sh
   - source .install-jdk-travis.sh
   - curl "${GRAVIS}.install-maven.sh" --output .install-maven.sh
   - source .install-maven.sh
+
 script:
   - mvn -v
   - mvn clean install -Dgpg.skip=true 
+
 before_cache:
   - rm -rf $HOME/.m2/repository/.meta
   - rm -rf $HOME/.m2/repository/org/protelis/
   - find $HOME/.m2/repository/ -name resolver-status.properties -type f -delete -print
   - find $HOME/.m2/repository/ -name _*.repositories -type f -delete -print
+
 cache:
   directories:
     - $HOME/.m2/repository/
+
 after_failure:
   # Print the maven log for more information
   - cat */target/work/data/.metadata/.log
   - cat */target/work/data/.metadata/.log
+
 after_success:
   - which surge
+
 deploy:
   - provider: surge
     project: ./protelis.parser.repository/target/repository/
