@@ -5,7 +5,7 @@ Parser for Protelis, the practical aggregate programming language
 
 ### Info
 ![Travis (.com)](https://img.shields.io/travis/com/Protelis/Protelis-parser)
-![CII Best Practices Summary](https://img.shields.io/cii/summary/3810)
+[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/3810/badge)](https://bestpractices.coreinfrastructure.org/projects/3810)
 ![GitHub language count](https://img.shields.io/github/languages/count/Protelis/Protelis-parser)
 ![GitHub top language](https://img.shields.io/github/languages/top/Protelis/Protelis-parser)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=Protelis_Protelis-Parser&metric=ncloc)](https://sonarcloud.io/dashboard?id=Protelis_Protelis-Parser)
@@ -45,6 +45,13 @@ Parser for Protelis, the practical aggregate programming language
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/y/Protelis/Protelis-parser)
 ![GitHub commits since latest release (by date)](https://img.shields.io/github/commits-since/Protelis/Protelis-parser/latest/develop)
 ![GitHub last commit](https://img.shields.io/github/last-commit/Protelis/Protelis-parser)
+
+## What is it
+
+This project hosts the parsing infrastructure of the Protelis programming language, as well as its Eclipse plugin.
+It is a plain Xtext project.
+Users interested in using Protelis should most likely refer to [the official Protelis website](www.protelis.org).
+This project is of use for Protelis developers willing to make changes to the language itself.
 
 ## Required Eclipse plugins
 
