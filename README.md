@@ -53,6 +53,22 @@ It is a plain Xtext project.
 Users interested in using Protelis should most likely refer to [the official Protelis website](www.protelis.org).
 This project is of use for Protelis developers willing to make changes to the language itself.
 
+## Contributing
+
+### Bug reports
+
+Issues for this project are tracked together with the [issues of the Protelis interpreter](https://github.com/Protelis/Protelis/issues).
+Please open bug reports and feature requests there.
+
+### Development
+
+Create your own fork of this project,
+make changes, and open a pull request towards the `develop` branch of this project.
+To make sure that changes get accepted,
+please open a discussion first on the [Protelis issue tracker](https://github.com/Protelis/Protelis/issues),
+where the project maintainer may contribute.
+
+
 ## Required Eclipse plugins
 
 * Xtext 2.7.3+
