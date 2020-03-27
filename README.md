@@ -38,10 +38,10 @@ Parser for Protelis, the practical aggregate programming language
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=Protelis_Protelis-Parser&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=Protelis_Protelis-Parser)
 
 ### Progress
-![GitHub issues](https://img.shields.io/github/issues/Protelis/Protelis-parser)
-![GitHub closed issues](https://img.shields.io/github/issues-closed/Protelis/Protelis-parser)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/Protelis/Protelis-parser)
-![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/Protelis/Protelis-parser)
+![GitHub issues](https://img.shields.io/github/issues/Protelis/Protelis)
+![GitHub closed issues](https://img.shields.io/github/issues-closed/Protelis/Protelis)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/Protelis/Protelis)
+![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/Protelis/Protelis)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/y/Protelis/Protelis-parser)
 ![GitHub commits since latest release (by date)](https://img.shields.io/github/commits-since/Protelis/Protelis-parser/latest/develop)
 ![GitHub last commit](https://img.shields.io/github/last-commit/Protelis/Protelis-parser)
