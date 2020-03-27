@@ -60,7 +60,7 @@ This project is of use for Protelis developers willing to make changes to the la
 Issues for this project are tracked together with the [issues of the Protelis interpreter](https://github.com/Protelis/Protelis/issues).
 Please open bug reports and feature requests there.
 
-### Development
+### Development process
 
 Create your own fork of this project,
 make changes, and open a pull request towards the `develop` branch of this project.
@@ -68,81 +68,68 @@ To make sure that changes get accepted,
 please open a discussion first on the [Protelis issue tracker](https://github.com/Protelis/Protelis/issues),
 where the project maintainer may contribute.
 
+### Importing the project
 
-## Required Eclipse plugins
+Eclipse is probably the best IDE to develop this component,
+as it relies on the Xtext infrastructure.
 
-* Xtext 2.7.3+
-* Maven support via m2e
-* git
+* Install Eclipse
+* Install the Xtext plugin from the Eclipse Marketplace
+* Clone the project
+* Import the project in Eclipse.
 
-## Project structure
+#### Troubleshooting issues with the target platform
 
-* *alchemist.protelis.parent*:
-  the build point, which should pull in all of the others
-* *alchemist.protelis*:
-  specifies the Protelis DSL and associated utilities using XText
-* *alchemist.protelis.target*:
-  specifies the Eclipse runtime environment that the DSL plugin should
-  be compatible with.
-* *alchemist.protelis.ui*:
-  Contains the Eclipse plugin to support Protelis editing
-* *alchemist.protelis.repository*:
-  Packages for the automated install website for Eclipse
-* *alchemist.protelis.tests*:
-  Makes sure that you can fire up an instance of Eclipse that can
-  load the plugin
+Even though we provide a target definition that you can use You can use your own Eclipse as a target platform for developing the system,
+the standard target is enforced in continuous integration anyway.
 
-## Develop and test the DSL and plugin using Eclipse
+You can pick the target plaform of your like from within the Eclipse preferences:
 
-Once the repositories are imported, there will likely be a lot of errors.
+![image](https://user-images.githubusercontent.com/1991673/77746024-9803c300-701c-11ea-9e1b-bdfa45908677.png)
 
-* First, if there are "Plugin execution not covered by lifecycle configuration" errors, go to Eclipse Preferences > Maven > Errors/Warnings and switch this error type to warning.  This is OK because Eclipse uses its own build system, and can ignore these Maven problems (which are not due to the Maven configuration, but lack of certain current Eclipse/Maven integrations).
-* Second, go to alchemist.protelis project and run src/it.unibo.alchemist.language.protelis/GenerateProtelis.mwe2 as an MWE2 workflow (ignoring the fact that there are errors).  This generates the DSL using Xtext, and should resolve all of the outstanding errors.
+### Generating the grammar from within Eclipse
 
-When successfully built, this should produce two artifacts:
+If you make a change to the `Protelis.xtext` file describing the language grammar and crossreferences,
+you need to re-generate the parsing and linking infrastructure.
 
-1. The DSL parser, which is needed for running the Protelis VM
-2. The Eclipse plugin, based on the parser, for making it easy to program in Protelis (plus packaging for distributing as an Eclipse plugin)
+To do so, right click on the GenerateProtelis.mw2 file and run as MWE2 Workflow:
 
-In order to test both of these at once (there is no separate test for just the DSL):
+![image](https://user-images.githubusercontent.com/1991673/77746344-152f3800-701d-11ea-81cf-461ea0c96fe2.png)
 
-1. Go to the UI project and run as Eclipse application
+### Launching a custom Eclipse IDE with the in-development plugin installed
+
+If you want to quickly test your changes within an Eclipse environment,
+you can do so by launching the `.ui` project as Eclipse Application:
+
+![image](https://user-images.githubusercontent.com/1991673/77746542-5a536a00-701d-11ea-9b13-746c0530adc1.png)
+
+A new Eclipse IDE will pop up with your changes installed. Now:
 2. In the new Eclipse application that launches and make a new Java project
+125
 3. Right click on the project and select: Configure > Add Xtext Nature
+126
 4. In the src folder, create a new file, named [something].pt (.pt means it is a Protelis file)
+127
 5. Write some Protelis code or hit Ctrl-space for autocompletion: you should be getting Protelis syntax evaluation and coloring
 
-## Co-develop Protelis DSL and Protelis VM
+### Writing tests
 
-In order to co-develop on the Protelis DSL and VM simultaneously, you will need to download the VM (project: Protelis) and link it with this DSL project.  Install following the instructions on that repository.
+All new features or bug fixes should get appropriately tested.
+To do so, there is a testing infrastructure in place.
+New tests can be defined in the `protelis.parser.test` project,
+inside the `ProtelisParsingTest.xtend` file.
 
-Once it has been installed, change the build path by right clicking on the Protelis project and selecting Build Path > Configure Build Path.  On the "Projects" tab, add the alchemist.protelis project.  Finally, in the "Order and Export" tab, move alchemist.protelis to the top, so that it will be loaded first in case of any conflicts.
+The structure should be clear, and support is provided to verify that pieces of code emit warnings, throw errors, or parse correctly.
 
-Finally, still in the Protelis project, edit "build.gradle" and comment out the line
-> compile "it.unibo.alchemist:alchemist.protelis:$protelisVersion"
+### Co-develop Protelis DSL and Protelis VM
 
-by putting a "//" in front of it.  Finally, refresh the Gradle dependencies by right-clicking on the project and running Gradle > Refresh Dependencies.  This should remove the Gradle Dependency on the Protelis .jar file.
+In order to co-develop on the Protelis DSL and VM simultaneously, you will need to leverage the local Maven repository.
+Once the changes in the parser are satisfactory, proceed as follows:
+0. (optional but recommended) customize the project version. To do so, search project-wide in Eclipse for the current version, and replace it in `pom.xml` and `MANIFEST.MF` files with one of your like;
+0. pull up a terminal and run `mvn clean install` (you must have Apache Maven installed)
+0. open the Protelis interpreter project in a separate IDE;
+0. change the `build.gradle.kts` file of the interpreter project by adding, inside the `repositories` block, a call to the `mavenLocal()` method as the first entry of the block;
+0. in the `versions.properties` file of the interpreter project, change the parser version to the one you picked for your modified parser;
+0. tell your IDE of choice for the interpreter to refresh the Gradle project import;
+0. you should now be working with your custom parser!
 
-You can then test that everything is running correctly by running the Protelis JUnit tests.
-
-## Prepare for a release
-
-## How to prepare a working Eclipse environment
-
-A working Eclipse environment is the best way to develop the parser, since it gives immediate feedback about errors.
-
-### Obtaining Eclipse
-
-### Installing required plugins
-
-There are six sub-projects in this repository, all of which should be
-imported into Eclipse.
-
-Then what?
-How do we know if it worked?
-
-## Dealing with build problems
-Maven: plugin lifecycle should be warning, no error
-  Change this in Eclipse Preferences > Maven >
-
-Maven needs to be at least version 3.3.3
