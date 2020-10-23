@@ -39,7 +39,7 @@ env:
     - OFFICIAL_REPO_SLUG="Protelis/Protelis-Parser"
     - MAVEN_VERSION="3.6.3"
   matrix:
-    - JDK="adopt@1.8"
+    - *reference_os
     - JDK="adopt-openj9@1.8"
     - JDK="adopt@1.11.0"
     - JDK="adopt-openj9@1.11.0"
@@ -57,6 +57,10 @@ jobs:
       os: *reference_os
       env:
         - *reference_jdk
+      workspaces:
+        create:
+          name: baseline
+          paths: "$HOME/.m2"
     - stage: deploy
       name: "Deploy with reference OS and JDK"
       if: repo = env(OFFICIAL_REPO_SLUG) AND type != pull_request
@@ -64,6 +68,8 @@ jobs:
       env:
         - PUBLISH="true"
         - *reference_jdk
+      workspaces:
+        use: baseline
       install:
         - openssl aes-256-cbc -K $encrypted_c2ba7c32533d_key -iv $encrypted_c2ba7c32533d_iv -in secrets.tar.enc -out secrets.tar -d
         - tar xvf secrets.tar
@@ -80,19 +86,15 @@ before_install:
   - source $GRAVIS/install-jdk
   - source $GRAVIS/install-maven
 
+before_script:
+  # Horrible workaround to support both Java 15 and Java 8
+  - ./change_tycho_for_latest_javac.rb
+
 script:
   - mvn -v
-  - travis_retry mvn clean install -Dgpg.skip=true 
-
-before_cache:
-  - rm -rf $HOME/.m2/repository/.meta
-  - rm -rf $HOME/.m2/repository/org/protelis/
-  - find $HOME/.m2/repository/ -name resolver-status.properties -type f -delete -print
-  - find $HOME/.m2/repository/ -name _*.repositories -type f -delete -print
-
-cache:
-  directories:
-    - $HOME/.m2/repository/
+  # Warm up multiple times to work around issues under OSX
+  - for i in { 1..10 }; do mvn install -Dgpg.skip=true && break || sleep 1; done
+  - travis_retry mvn clean install -Dgpg.skip=true
 
 after_failure:
   # Print the maven log for more information
