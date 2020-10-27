@@ -38,6 +38,7 @@ env:
     - PUBLISH=false
     - OFFICIAL_REPO_SLUG="Protelis/Protelis-Parser"
     - MAVEN_VERSION="3.6.3"
+    - MAVEN_OPTS="-Xmx1024m"
   matrix:
     - *reference_os
     - JDK="adopt-openj9@1.8"
