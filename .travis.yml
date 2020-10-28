@@ -101,7 +101,7 @@ jobs:
         - sudo npm install --global surge
       script:
         - mvn -v
-        - travis_retry mvn clean deploy
+        - travis_retry mvn clean deploy -DskipTests
 
 workspaces:
   use: baseline
