@@ -24,6 +24,7 @@ addons:
 
 stages:
   - reference
+  - reference-multios
   - test
   - deploy
 
@@ -64,6 +65,19 @@ jobs:
       arch: amd64
       stage: test
   include:
+    # REFERENCE stage
+    - stage: reference
+      name: "Verify with reference OS and JDK"
+      os: *reference_os
+      env:
+        - *reference_jdk
+      before_cache:
+        - mv $HOME/.m2 m2-cache
+      workspaces:
+        create:
+          name: baseline
+          paths: "m2-cache"
+    # REFERENCE on other OSs
     - <<: *arm_build
     - <<: *arm_build
       env:
@@ -71,15 +85,6 @@ jobs:
     - <<: *arm_build
       env:
         - JDK="adopt@"
-    - stage: reference
-      name: "Verify with reference OS and JDK"
-      os: *reference_os
-      env:
-        - *reference_jdk
-      workspaces:
-        create:
-          name: baseline
-          paths: "$HOME/.m2"
     - stage: deploy
       name: "Deploy with reference OS and JDK"
       if: repo = env(OFFICIAL_REPO_SLUG) AND type != pull_request
@@ -87,8 +92,6 @@ jobs:
       env:
         - PUBLISH="true"
         - *reference_jdk
-      workspaces:
-        use: baseline
       install:
         - openssl aes-256-cbc -K $encrypted_c2ba7c32533d_key -iv $encrypted_c2ba7c32533d_iv -in secrets.tar.enc -out secrets.tar -d
         - tar xvf secrets.tar
@@ -100,10 +103,14 @@ jobs:
         - mvn -v
         - travis_retry mvn clean deploy
 
+workspaces:
+  use: baseline
+
 before_install:
   - travis_retry git clone --depth 1 $GRAVIS_REPO $GRAVIS
   - source $GRAVIS/install-jdk
   - source $GRAVIS/install-maven
+  - if [ -e m2-cache ]; then mv m2-cache $HOME/.m2; fi
 
 before_script:
   # Horrible workaround to support both Java 15 and Java 8
@@ -142,3 +149,6 @@ deploy:
       condition: $PUBLISH = "true"
       repo: *official_repo
       branch: develop
+
+cache:
+  branch: paths-relative
