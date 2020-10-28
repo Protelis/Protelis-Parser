@@ -15,6 +15,8 @@ os:
   - windows
   - *reference_os
 
+dist: xenial
+
 addons:
   apt:
     packages:
@@ -22,6 +24,7 @@ addons:
 
 stages:
   - reference
+  - reference-multios
   - test
   - deploy
 
@@ -38,25 +41,51 @@ env:
     - PUBLISH=false
     - OFFICIAL_REPO_SLUG="Protelis/Protelis-Parser"
     - MAVEN_VERSION="3.6.3"
+    - MAVEN_OPTS="-Xmx1024m"
   matrix:
-    - JDK="adopt@1.8"
+    - *reference_os
     - JDK="adopt-openj9@1.8"
     - JDK="adopt@1.11.0"
     - JDK="adopt-openj9@1.11.0"
     - JDK="adopt@"
     - JDK="adopt-openj9@"
 
+_arm_build: &arm_build
+  stage: test
+  arch: arm64-graviton2
+  os: linux
+  virt: lxd
+  group: edge
+  env:
+    - *reference_jdk
 jobs:
   exclude:
     - os: *reference_os
       env: *reference_jdk
+      arch: amd64
       stage: test
   include:
+    # REFERENCE stage
     - stage: reference
       name: "Verify with reference OS and JDK"
       os: *reference_os
       env:
         - *reference_jdk
+      before_cache:
+        - mv $HOME/.m2 m2-cache
+      workspaces:
+        create:
+          name: baseline
+          paths: "m2-cache"
+    # ARM builds
+    - <<: *arm_build
+    - <<: *arm_build
+      env:
+        - JDK="adopt@1.11.0"
+    - <<: *arm_build
+      env:
+        - JDK="adopt@"
+    # DELIVERY stage
     - stage: deploy
       name: "Deploy with reference OS and JDK"
       if: repo = env(OFFICIAL_REPO_SLUG) AND type != pull_request
@@ -73,26 +102,26 @@ jobs:
         - sudo npm install --global surge
       script:
         - mvn -v
-        - travis_retry mvn clean deploy
+        - travis_retry mvn clean deploy -DskipTests
+
+workspaces:
+  use: baseline
 
 before_install:
   - travis_retry git clone --depth 1 $GRAVIS_REPO $GRAVIS
   - source $GRAVIS/install-jdk
   - source $GRAVIS/install-maven
+  - if [ -e m2-cache ]; then mv m2-cache $HOME/.m2; fi
+
+before_script:
+  # Horrible workaround to support both Java 15 and Java 8
+  - ./change_tycho_for_latest_javac.rb
 
 script:
   - mvn -v
-  - travis_retry mvn clean install -Dgpg.skip=true 
-
-before_cache:
-  - rm -rf $HOME/.m2/repository/.meta
-  - rm -rf $HOME/.m2/repository/org/protelis/
-  - find $HOME/.m2/repository/ -name resolver-status.properties -type f -delete -print
-  - find $HOME/.m2/repository/ -name _*.repositories -type f -delete -print
-
-cache:
-  directories:
-    - $HOME/.m2/repository/
+  # Warm up multiple times to work around issues under OSX
+  - for i in { 1..10 }; do mvn clean install -Dgpg.skip=true; RESULT=$?; [ $RESULT -eq 0 ] && break || sleep 1; done
+  - '[ $RESULT -eq 0 ]'
 
 after_failure:
   # Print the maven log for more information
@@ -121,3 +150,6 @@ deploy:
       condition: $PUBLISH = "true"
       repo: *official_repo
       branch: develop
+
+cache:
+  branch: paths-relative
