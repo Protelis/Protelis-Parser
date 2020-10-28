@@ -49,12 +49,28 @@ env:
     - JDK="adopt@"
     - JDK="adopt-openj9@"
 
+_arm_build: &arm_build
+  stage: test
+  arch: arm64-graviton2
+  os: linux
+  virt: lxd
+  group: edge
+  env:
+    - *reference_jdk
 jobs:
   exclude:
     - os: *reference_os
       env: *reference_jdk
+      arch: amd64
       stage: test
   include:
+    - <<: *arm_build
+    - <<: *arm_build
+      env:
+        - JDK="adopt@1.11.0"
+    - <<: *arm_build
+      env:
+        - JDK="adopt@"
     - stage: reference
       name: "Verify with reference OS and JDK"
       os: *reference_os
