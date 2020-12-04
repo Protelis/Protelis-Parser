@@ -1,0 +1,7 @@
+#!/bin/sh
+if [ -n "$SIGNING_KEY" ]
+then
+    echo "$SIGNING_KEY" > key.asc
+    gpg --import key.asc
+    rm key.asc
+fi

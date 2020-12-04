@@ -17,7 +17,7 @@ elif [ -x 'gradlew' ]; then
     fi
 elif [ -f 'pom.xml' ]; then
     echo 'Detected Maven pom.xml, running mvn deploy'
-    mvn deploy -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+    mvn deploy -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -Dgpg.passphrase=$SIGNING_PASSWORD
 else
     echo 'No valid configuration detected, failing'
     echo "To fix, provide an *executable* build script in $CUSTOM_BUILD_SCRIPT"
