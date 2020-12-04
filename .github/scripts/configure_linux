@@ -2,6 +2,9 @@
 if [ -n "$SIGNING_KEY" ]
 then
     echo "$SIGNING_KEY" > key.asc
+    echo 'Importing key'
     gpg --import key.asc
     rm key.asc
+else
+    echo 'No key'
 fi
