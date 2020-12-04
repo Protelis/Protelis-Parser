@@ -51,6 +51,8 @@ jobs:
       - name: Configure Linux
         shell: bash
         if: ${{ env.COMPATIBLE == 'true' && contains(matrix.os, 'ubuntu') }}
+        env:
+          SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
         run: |
           if [ -x .github/scripts/configure_linux ]; then
             .github/scripts/configure_linux
