@@ -3,7 +3,7 @@ Automatic-Module-Name: protelis.parser.ui.tests
 Bundle-ManifestVersion: 2
 Bundle-Name: protelis.parser.ui.tests
 Bundle-Vendor: Alma Mater Studiorum Università di Bologna
-Bundle-Version: 10.1.0
+Bundle-Version: 10.2.0
 Bundle-SymbolicName: protelis.parser.ui.tests; singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: protelis.parser.ui,
