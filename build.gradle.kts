@@ -24,7 +24,7 @@ fun NodeList.toSequence(): Sequence<Node> = object : Sequence<Node> {
     override fun iterator(): Iterator<Node> = object : Iterator<Node> {
         var index = 0
         override fun hasNext() = length > index
-        override fun next() = item(index++)
+        override fun next() = if (hasNext()) item(index++) else throw NoSuchElementException()
     }
 }
 
