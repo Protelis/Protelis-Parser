@@ -1,3 +1,10 @@
+### [10.2.2](https://github.com/Protelis/Protelis-Parser/compare/10.2.1...10.2.2) (2022-02-26)
+
+
+### Bug Fixes
+
+* **deps:** update dependency org.webjars:jquery to v3.6.0 ([37b8ce8](https://github.com/Protelis/Protelis-Parser/commit/37b8ce80ff600dad442a8052ae02e7e6652dcd66))
+
 ### [10.2.1](https://github.com/Protelis/Protelis-Parser/compare/10.2.0...10.2.1) (2022-02-26)
 
 
