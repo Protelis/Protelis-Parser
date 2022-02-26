@@ -1,8 +1,9 @@
 var publishCmd = `
+./gradlew injectVersion -PnewVersion="\${nextRelease.version}" || exit 2
+mvn deploy nexus-staging:release -Dmaven.test.skip=true || exit 3
+git commit -a -m 'chore: update version to \${nextRelease.version}'
 git tag -a -f \${nextRelease.version} \${nextRelease.version} -F CHANGELOG.md
 git push --force origin \${nextRelease.version} || exit 1
-./gradlew injectVersion -PnewVersion=\${nextRelease.version} || exit 2
-mvn deploy nexus-staging:release -Dmaven.test.skip=true || exit 3
 mv update-site/.git protelis.parser.repository/target/.git
 git -C protelis.parser.repository/target/ add . || exit 4
 git -C protelis.parser.repository/target/ commit -m "chore: update update site to version \${nextRelease.version}" || exit 5
