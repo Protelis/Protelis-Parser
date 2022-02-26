@@ -55,6 +55,7 @@ jobs:
           should-run-codecov: false
           should-deploy: ${{ matrix.jvm_version == 8 && matrix.os == 'ubuntu' }}
           should-validate-wrapper: false
+          github-token: ${{ secrets.DEPLOYMENT_TOKEN }}
           maven-central-password: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
           signing-key: ${{ secrets.SIGNING_KEY }}
           signing-password: ${{ secrets.SIGNING_PASSWORD }}
