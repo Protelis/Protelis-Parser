@@ -1,3 +1,10 @@
+### [10.2.4](https://github.com/Protelis/Protelis-Parser/compare/10.2.3...10.2.4) (2022-02-26)
+
+
+### Bug Fixes
+
+* **release:** push changes on GH after release on Central ([baf3824](https://github.com/Protelis/Protelis-Parser/commit/baf3824642c675dad95f5fbe662fa4416f2d21d4))
+
 ### [10.2.3](https://github.com/Protelis/Protelis-Parser/compare/10.2.2...10.2.3) (2022-02-26)
 
 
