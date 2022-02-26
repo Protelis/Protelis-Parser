@@ -1,3 +1,10 @@
+### [10.2.3](https://github.com/Protelis/Protelis-Parser/compare/10.2.2...10.2.3) (2022-02-26)
+
+
+### Bug Fixes
+
+* **release:** inject versions to the MANIFEST.MF ([4e96e8d](https://github.com/Protelis/Protelis-Parser/commit/4e96e8d288fab4eed27003d4404d72a226af1512))
+
 ### [10.2.2](https://github.com/Protelis/Protelis-Parser/compare/10.2.1...10.2.2) (2022-02-26)
 
 
