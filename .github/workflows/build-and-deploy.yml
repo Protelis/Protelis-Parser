@@ -9,12 +9,15 @@ on:
   workflow_dispatch:
 
 jobs:
-  Build:
+  build:
     strategy:
       matrix:
         os: [windows, macos, ubuntu]
         jvm_version: [8, 11, 17]
         distribution: [adopt]
+    concurrency:
+      group: ${{ github.workflow }}-build-${{ matrix.os }}-${{ matrix.jvm_version }}-${{ github.event.number || github.ref }}
+      cancel-in-progress: true
     runs-on: ${{ matrix.os }}-latest
     env:
       JAVA_VERSION: ${{ matrix.jvm_version }}
