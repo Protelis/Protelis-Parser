@@ -5,6 +5,7 @@ on:
     branches-ignore:
       - 'autodelivery**'
       - 'bump-**'
+      - 'renovate/**'
   pull_request:
 
 jobs:
