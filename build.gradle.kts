@@ -19,7 +19,10 @@ tasks.register("injectVersion") {
             transformer.transform(DOMSource(document), StreamResult(xmlFile))
         }
         files.filter { it.name == "MANIFEST.MF" }.forEach {
-            it.writeText(it.readText().replace(Regex("""Bundle-Version:\s*\d+\.\d+\.\d+"""), "Bundle-Version: $newVersion"))
+            it.replace(Regex("""Bundle-Version:\s*\d+\.\d+\.\d+"""), "Bundle-Version: $newVersion")
+        }
+        files.filter { it.name == "feature.xml" }.forEach {
+            it.replace(Regex("version=\"\\d+\\.\\d+\\.\\d+\""), "version=\"$newVersion\"")
         }
     }
 }
@@ -35,3 +38,4 @@ fun NodeList.toSequence(): Sequence<Node> = object : Sequence<Node> {
 operator fun Document.get(name: String) = childNodes[name]
 operator fun Node.get(name: String) = childNodes[name]
 operator fun NodeList.get(name: String) = toSequence().find { it.nodeName == name }
+fun File.replace(regex: Regex, replacement: String) = writeText(readText().replace(regex, replacement))
