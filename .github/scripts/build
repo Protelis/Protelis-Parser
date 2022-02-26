@@ -1,4 +1,0 @@
-#!/bin/sh
-java -version 2>javaversion
-grep '"1.8' <javaversion && rm .mvn/jvm.config
-mvn package -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
