@@ -1,3 +1,10 @@
+### [10.2.5](https://github.com/Protelis/Protelis-Parser/compare/10.2.4...10.2.5) (2022-02-26)
+
+
+### Bug Fixes
+
+* **release:** inject the version into feature.xml ([b04d5e4](https://github.com/Protelis/Protelis-Parser/commit/b04d5e4d4630872902015dcca0ec74400d03c97f))
+
 ### [10.2.4](https://github.com/Protelis/Protelis-Parser/compare/10.2.3...10.2.4) (2022-02-26)
 
 
