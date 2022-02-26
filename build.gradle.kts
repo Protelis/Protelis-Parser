@@ -10,12 +10,16 @@ tasks.register("injectVersion") {
     doLast {
         val transformer = TransformerFactory.newInstance().newTransformer()
         val newVersion = requireNotNull(project.property("newVersion")) { "run with -PnewVersion=..." }.toString()
-        file(".").walkTopDown().filter { it.name == "pom.xml" }.forEach { xmlFile ->
+        val files = file(".").walkTopDown()
+        files.filter { it.name == "pom.xml" }.forEach { xmlFile ->
             val document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(xmlFile)
             val project = document["project"]
             project?.get("version")?.textContent = newVersion
             project?.get("parent")?.get("version")?.textContent = newVersion
             transformer.transform(DOMSource(document), StreamResult(xmlFile))
+        }
+        files.filter { it.name == "MANIFEST.MF" }.forEach {
+            it.writeText(it.readText().replace(Regex("""Bundle-Version:\s*\d+\.\d+\.\d+"""), "Bundle-Version: $newVersion"))
         }
     }
 }
