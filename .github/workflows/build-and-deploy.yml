@@ -22,13 +22,7 @@ jobs:
     steps:
       # Checkout the repository
       - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-          submodules: recursive
-      - name: Fetch tags
-        shell: bash
-        run: git fetch --tags -f
+        uses: danysk/action-checkout@0.2.1
       - name: Populate TAG and BRANCH environment variables
         shell: bash
         run: |
