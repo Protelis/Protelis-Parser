@@ -37,11 +37,9 @@ jobs:
           check-command: |
             mvn test -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
           deploy-command: |
-            if [ -n "$SIGNING_KEY" ]; then
-              echo "$SIGNING_KEY" > key.asc
-              gpg --import key.asc
-              rm key.asc
-            fi
+            echo '${{ secrets.SIGNING_KEY }}' > key.asc
+            gpg --import key.asc
+            rm key.asc
             mvn deploy -B -Dmaven.test.skip=true -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
           java-version: ${{ matrix.jvm_version }}
           should-run-codecov: false
