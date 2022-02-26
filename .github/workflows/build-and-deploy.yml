@@ -17,7 +17,6 @@ jobs:
         distribution: [adopt]
     concurrency:
       group: ${{ github.workflow }}-build-${{ matrix.os }}-${{ matrix.jvm_version }}-${{ github.event.number || github.ref }}
-      cancel-in-progress: true
     runs-on: ${{ matrix.os }}-latest
     env:
       JAVA_VERSION: ${{ matrix.jvm_version }}
