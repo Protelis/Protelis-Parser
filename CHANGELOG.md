@@ -1,3 +1,20 @@
+### [10.2.11](https://github.com/Protelis/Protelis-Parser/compare/10.2.10...10.2.11) (2022-02-27)
+
+
+### Bug Fixes
+
+* **deps:** update dependency org.slf4j:slf4j-simple to v1.7.36 ([0b87351](https://github.com/Protelis/Protelis-Parser/commit/0b8735137e8dd7e94418cd42657a722b17e36418))
+
+
+### General maintenance
+
+* update version to 10.2.10 ([6c5c679](https://github.com/Protelis/Protelis-Parser/commit/6c5c679a590ddc76f5f5fc705d8616fee1af3a86))
+
+
+### Dependency updates
+
+* **deps:** update dependency org.sonatype.plugins:nexus-staging-maven-plugin to v1.6.12 ([e98bff6](https://github.com/Protelis/Protelis-Parser/commit/e98bff6c0c3c453f7c2b59427923b94091a5a67b))
+
 ### [10.2.10](https://github.com/Protelis/Protelis-Parser/compare/10.2.9...10.2.10) (2022-02-27)
 
 
