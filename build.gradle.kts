@@ -22,7 +22,7 @@ tasks.register("injectVersion") {
             it.replace(Regex("""Bundle-Version:\s*\d+\.\d+\.\d+"""), "Bundle-Version: $newVersion")
         }
         files.filter { it.name == "feature.xml" }.forEach {
-            it.replace(Regex("version=\"\\d+\\.\\d+\\.\\d+\""), "version=\"$newVersion\"")
+            it.replace(Regex("version=\"\\d+\\.\\d+\\.\\d+\"\\s*>"), "version=\"$newVersion\">")
         }
     }
 }
