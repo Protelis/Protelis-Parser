@@ -3,6 +3,7 @@ var publishCmd = `
 mvn clean
 mvn deploy nexus-staging:release -Dmaven.test.skip=true || exit 3
 git commit -a -m 'chore: update version to \${nextRelease.version}'
+git push
 git tag -a -f \${nextRelease.version} \${nextRelease.version} -F CHANGELOG.md
 git push --force origin \${nextRelease.version} || exit 1
 mv update-site/.git protelis.parser.repository/target/.git
