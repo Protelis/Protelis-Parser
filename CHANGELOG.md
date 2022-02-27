@@ -1,3 +1,20 @@
+### [10.2.7](https://github.com/Protelis/Protelis-Parser/compare/10.2.6...10.2.7) (2022-02-27)
+
+
+### Bug Fixes
+
+* **deps:** update dependency org.eclipse.jetty:jetty-annotations to v9.4.45.v20220203 ([0c4f95a](https://github.com/Protelis/Protelis-Parser/commit/0c4f95a3d21adf1158c96ae3f20d048b98f1d0c1))
+* **deps:** update dependency org.webjars:ace to v01.08.2014 ([8a44086](https://github.com/Protelis/Protelis-Parser/commit/8a44086d02471d9545be27f3af35bedda969ad22))
+* update version ([0eca3ee](https://github.com/Protelis/Protelis-Parser/commit/0eca3ee531ed8edb2f54a7e0f4a240001f17d40b))
+
+
+### Dependency updates
+
+* **deps:** update dependency com.google.inject:guice to v5.1.0 ([3e74d60](https://github.com/Protelis/Protelis-Parser/commit/3e74d602391c97db7953a1ea9b3b59e892c04015))
+* **deps:** update dependency gradle to v7.4 ([e280ab9](https://github.com/Protelis/Protelis-Parser/commit/e280ab96f6711417f48eb69a050460a0ea5dd051))
+* **deps:** update dependency org.apache.maven.plugins:maven-javadoc-plugin to v3.3.2 ([2b443cb](https://github.com/Protelis/Protelis-Parser/commit/2b443cb842dcd57acb64e92d78bbfc3a96ff7936))
+* **deps:** update dependency org.apache.maven.plugins:maven-war-plugin to v3.3.2 ([b59c946](https://github.com/Protelis/Protelis-Parser/commit/b59c946f194efb4ea6779e84879e39280ec2f5b3))
+
 ### [10.2.6](https://github.com/Protelis/Protelis-Parser/compare/10.2.5...10.2.6) (2022-02-27)
 
 
