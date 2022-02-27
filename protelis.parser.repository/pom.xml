@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>org.protelis</groupId>
 		<artifactId>protelis.parser.parent</artifactId>
-		<version>10.2.10</version>
+		<version>10.2.11</version>
 	</parent>
 	<artifactId>protelis.parser.repository</artifactId>
 	<packaging>eclipse-repository</packaging>
