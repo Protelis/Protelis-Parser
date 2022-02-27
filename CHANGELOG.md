@@ -1,3 +1,15 @@
+### [10.2.9](https://github.com/Protelis/Protelis-Parser/compare/10.2.8...10.2.9) (2022-02-27)
+
+
+### Bug Fixes
+
+* **release:** provide a valid tag message ([9afd864](https://github.com/Protelis/Protelis-Parser/commit/9afd8643b2af9670f5bd78bcc934daed0a91bc11))
+
+
+### General maintenance
+
+* update version to 10.2.8 ([a14ac97](https://github.com/Protelis/Protelis-Parser/commit/a14ac9752e6d8c0aefb93f677ca2e9d7c96c8e38))
+
 ### [10.2.8](https://github.com/Protelis/Protelis-Parser/compare/10.2.7...10.2.8) (2022-02-27)
 
 
