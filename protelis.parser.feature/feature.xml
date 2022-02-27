@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature id="protelis.parser.feature"
 	label="Protelis Editor for the Eclipse IDE "
-	version="10.2.7">
+	version="10.2.8">
 	<plugin
 			id="protelis.parser"
 			download-size="0"

@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>org.protelis</groupId>
 		<artifactId>protelis.parser.parent</artifactId>
-		<version>10.2.7</version>
+		<version>10.2.8</version>
 	</parent>
 	<artifactId>protelis.parser.web</artifactId>
 	<packaging>war</packaging>
