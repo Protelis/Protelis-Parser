@@ -1,3 +1,20 @@
+### [10.2.6](https://github.com/Protelis/Protelis-Parser/compare/10.2.5...10.2.6) (2022-02-27)
+
+
+### Bug Fixes
+
+* generate a release ([f7cc1b5](https://github.com/Protelis/Protelis-Parser/commit/f7cc1b5dbb7d7c0ff74f39eaa6054fecfa59d55b))
+
+
+### Dependency updates
+
+* **deps:** update dependency org.eclipse.jetty:jetty-maven-plugin to v9.4.45.v20220203 ([740c8d0](https://github.com/Protelis/Protelis-Parser/commit/740c8d0241aa3842559c8b5727bbb698850c197a))
+
+
+### Build and continuous integration
+
+* **release:** clean before deploy ([3af79bd](https://github.com/Protelis/Protelis-Parser/commit/3af79bd26a1bad5469a692cc90644036cd9aab03))
+
 ### [10.2.5](https://github.com/Protelis/Protelis-Parser/compare/10.2.4...10.2.5) (2022-02-26)
 
 
