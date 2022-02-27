@@ -1,7 +1,7 @@
 var publishCmd = `
 ./gradlew injectVersion -PnewVersion="\${nextRelease.version}" || exit 2
 mvn clean
-mvn deploy nexus-staging:release -Dmaven.test.skip=true || exit 3
+mvn deploy nexus-staging:release -Dmaven.test.skip=true -q || exit 3
 mkdir -p .mvn
 echo '--illegal-access=permit' > .mvn/jvm.config
 git commit -a -m 'chore: update version to \${nextRelease.version}'
