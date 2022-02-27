@@ -1,3 +1,15 @@
+### [10.2.10](https://github.com/Protelis/Protelis-Parser/compare/10.2.9...10.2.10) (2022-02-27)
+
+
+### Bug Fixes
+
+* **update-site:** point the site to the actual repository ([fed2381](https://github.com/Protelis/Protelis-Parser/commit/fed23811f8ee8369e34537c19932138401d8fa8b))
+
+
+### Build and continuous integration
+
+* make Maven quieter ([f5ef33c](https://github.com/Protelis/Protelis-Parser/commit/f5ef33c41bf6c3841e10bd73b63463b48b06816b))
+
 ### [10.2.9](https://github.com/Protelis/Protelis-Parser/compare/10.2.8...10.2.9) (2022-02-27)
 
 
