@@ -11,8 +11,8 @@ git push --force origin \${nextRelease.version} || exit 1
 mv update-site/.git protelis.parser.repository/target/.git
 git -C protelis.parser.repository/target/ add . || exit 4
 git -C protelis.parser.repository/target/ commit -m "chore: update update site to version \${nextRelease.version}" || exit 5
-git -C protelis.parser.repository/target/ tag -a "\${nextRelease.version}" -F CHANGELOG.md || exit 6
-git -C protelis.parser.repository/target/ push --follow-tags || exit 6
+git -C protelis.parser.repository/target/ tag -a "\${nextRelease.version}" -m "\${nextRelease.version}" || exit 6
+git -C protelis.parser.repository/target/ push --follow-tags || exit 7
 `
 var config = require('semantic-release-preconfigured-conventional-commits');
 config.plugins.push(
