@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>org.protelis</groupId>
 		<artifactId>protelis.parser.parent</artifactId>
-		<version>10.2.6</version>
+		<version>10.2.7</version>
 	</parent>
 	<artifactId>protelis.parser.target</artifactId>
 	<packaging>eclipse-target-definition</packaging>
