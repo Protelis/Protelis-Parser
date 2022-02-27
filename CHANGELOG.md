@@ -1,3 +1,16 @@
+### [10.2.8](https://github.com/Protelis/Protelis-Parser/compare/10.2.7...10.2.8) (2022-02-27)
+
+
+### Bug Fixes
+
+* **release:** restore the maven configuration after release ([ff773b7](https://github.com/Protelis/Protelis-Parser/commit/ff773b786813b5a0a90ebe0a44c6f9322f3a6c7b))
+* restore jvm config file ([55d8690](https://github.com/Protelis/Protelis-Parser/commit/55d86902f3a6fece5bf00b840628d5bbbf09141f))
+
+
+### General maintenance
+
+* update version to 10.2.7 ([e4fa914](https://github.com/Protelis/Protelis-Parser/commit/e4fa9143e99e54787726e4c93098f94715c6a289))
+
 ### [10.2.7](https://github.com/Protelis/Protelis-Parser/compare/10.2.6...10.2.7) (2022-02-27)
 
 
