@@ -1,3 +1,20 @@
+### [10.2.12](https://github.com/Protelis/Protelis-Parser/compare/10.2.11...10.2.12) (2022-02-28)
+
+
+### General maintenance
+
+* update version to 10.2.11 ([4e9ef2d](https://github.com/Protelis/Protelis-Parser/commit/4e9ef2d4d86a4504ac5ffb2f08c8b65f8697879c))
+
+
+### Dependency updates
+
+* **core-deps:** update xtextversion to v2.26.0 ([735d22e](https://github.com/Protelis/Protelis-Parser/commit/735d22e994323a7d860b6e1e0a1ef58708762ff8))
+* **deps:** update dependency org.apache.maven.plugins:maven-gpg-plugin to v3 ([c3c38d1](https://github.com/Protelis/Protelis-Parser/commit/c3c38d185c144aed0f9296bcc0d58183a1305960))
+* **deps:** update dependency org.codehaus.mojo:build-helper-maven-plugin to v3.3.0 ([17ec169](https://github.com/Protelis/Protelis-Parser/commit/17ec169f8ec71c2a708eb8643e6deea5aab2a2e5))
+* **deps:** update dependency org.codehaus.mojo:exec-maven-plugin to v3 ([caa300c](https://github.com/Protelis/Protelis-Parser/commit/caa300cf3ff80468c62c5ac702948d1c9d4f9016))
+* **deps:** update dependency org.eclipse.jetty:jetty-maven-plugin to v10 ([c6daa71](https://github.com/Protelis/Protelis-Parser/commit/c6daa7142d300d1b1cf61d4b7b4cac8696641ecf))
+* **deps:** update dependency org.eclipse.jetty:jetty-maven-plugin to v11 ([2a7d3d3](https://github.com/Protelis/Protelis-Parser/commit/2a7d3d32de61578aafd599068894901f22c7ccc7))
+
 ### [10.2.11](https://github.com/Protelis/Protelis-Parser/compare/10.2.10...10.2.11) (2022-02-27)
 
 
