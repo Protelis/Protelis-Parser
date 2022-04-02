@@ -1,3 +1,31 @@
+### [10.2.13](https://github.com/Protelis/Protelis-Parser/compare/10.2.12...10.2.13) (2022-04-02)
+
+
+### Bug Fixes
+
+* **deps:** update dependency org.eclipse.jetty:jetty-annotations to v9.4.46.v20220331 ([03591b7](https://github.com/Protelis/Protelis-Parser/commit/03591b79e275cb61d99aa334bf6ecd1f7f973cc0))
+
+
+### General maintenance
+
+* update version to 10.2.12 ([7e24a32](https://github.com/Protelis/Protelis-Parser/commit/7e24a32adfaa179d46607308eb969a65df44e5c9))
+
+
+### Build and continuous integration
+
+* **deps:** update actions/checkout action to v3 ([26c828f](https://github.com/Protelis/Protelis-Parser/commit/26c828f12300e3053562410b7db233ef39930198))
+* **deps:** update danysk/build-check-deploy-gradle-action action to v1.2.6 ([0611ef6](https://github.com/Protelis/Protelis-Parser/commit/0611ef6f11ff2f2acfdec029ff917217ca13c621))
+* **deps:** update danysk/build-check-deploy-gradle-action action to v1.2.7 ([7280f48](https://github.com/Protelis/Protelis-Parser/commit/7280f48154cbb15d4fc8a51db2f3e690d9e065fe))
+* **deps:** update danysk/build-check-deploy-gradle-action action to v1.2.8 ([b062a9e](https://github.com/Protelis/Protelis-Parser/commit/b062a9e0c9d425b2462cc02b4f7f6df4fb5a4338))
+* **deps:** update danysk/build-check-deploy-gradle-action action to v1.2.9 ([7321c10](https://github.com/Protelis/Protelis-Parser/commit/7321c10f7f857cd3320574d62813100614efa26c))
+
+
+### Dependency updates
+
+* **deps:** update dependency gradle to v7.4.1 ([4e823ef](https://github.com/Protelis/Protelis-Parser/commit/4e823efe8d85b1998830538d5def25436d0e701a))
+* **deps:** update dependency gradle to v7.4.2 ([95dc749](https://github.com/Protelis/Protelis-Parser/commit/95dc7493f7c419575fe189bbd0bf33bd1daeeaa9))
+* **deps:** update dependency org.eclipse.jetty:jetty-maven-plugin to v11.0.9 ([4c12ac9](https://github.com/Protelis/Protelis-Parser/commit/4c12ac9d0c0531befbc1ad1f3995530e952ee6dc))
+
 ### [10.2.12](https://github.com/Protelis/Protelis-Parser/compare/10.2.11...10.2.12) (2022-02-28)
 
 
