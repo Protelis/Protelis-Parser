@@ -30,7 +30,7 @@ jobs:
           token: ${{ secrets.DEPLOYMENT_TOKEN }}
       - name: Checkout the update site
         if: matrix.jvm_version == 8 && matrix.os == 'ubuntu'
-        uses: actions/checkout@v3.0.0
+        uses: actions/checkout@v3.0.1
         with:
           path: update-site
           fetch-depth: 0
