@@ -1,3 +1,43 @@
+## [10.2.14](https://github.com/Protelis/Protelis-Parser/compare/10.2.13...10.2.14) (2022-06-20)
+
+
+### Bug Fixes
+
+* **deps:** update dependency org.eclipse.jetty:jetty-annotations to v9.4.47.v20220610 ([1d040da](https://github.com/Protelis/Protelis-Parser/commit/1d040da8776357c78214c157bb251e9771b69199))
+
+
+### General maintenance
+
+* update version to 10.2.13 ([4a7dc7a](https://github.com/Protelis/Protelis-Parser/commit/4a7dc7a1675e37c94d64819f7de9e5bb0081421c))
+
+
+### Build and continuous integration
+
+* **deps:** update actions/checkout action to v3.0.1 ([e460c28](https://github.com/Protelis/Protelis-Parser/commit/e460c28eda4313f00610356101e16f7ddc50dec9))
+* **deps:** update actions/checkout action to v3.0.2 ([ce0b0e5](https://github.com/Protelis/Protelis-Parser/commit/ce0b0e5d0e3bf2381a361eae9c773996224b2e9a))
+* **deps:** update danysk/build-check-deploy-gradle-action action to v1.2.10 ([5d05361](https://github.com/Protelis/Protelis-Parser/commit/5d05361ebeb2108755000163fb91d7109ceb50b4))
+* **deps:** update danysk/build-check-deploy-gradle-action action to v1.2.11 ([ee0cfbe](https://github.com/Protelis/Protelis-Parser/commit/ee0cfbe8f26a3f846bcccfe87aad8ffebf77410f))
+* **deps:** update danysk/build-check-deploy-gradle-action action to v1.2.12 ([23e9fba](https://github.com/Protelis/Protelis-Parser/commit/23e9fba9f413c499ed34939188c1344596a23947))
+* **deps:** update danysk/build-check-deploy-gradle-action action to v1.2.13 ([5f255c3](https://github.com/Protelis/Protelis-Parser/commit/5f255c381b7e58b1fb0932c5ba35faa57f936559))
+* **deps:** update danysk/build-check-deploy-gradle-action action to v1.2.14 ([5ed6f9a](https://github.com/Protelis/Protelis-Parser/commit/5ed6f9a287eb8e30a41a5ff8bcbb248abe44f6df))
+* **deps:** update danysk/build-check-deploy-gradle-action action to v1.2.15 ([42c1a80](https://github.com/Protelis/Protelis-Parser/commit/42c1a803d65f86ee8d07e0083dd567112a6a902e))
+* **deps:** update danysk/build-check-deploy-gradle-action action to v1.2.16 ([ba68e0e](https://github.com/Protelis/Protelis-Parser/commit/ba68e0e9b641ec3aaa4cb65c5b454135e0e59bac))
+* **deps:** update danysk/build-check-deploy-gradle-action action to v2 ([f620cbc](https://github.com/Protelis/Protelis-Parser/commit/f620cbc62ecdca22d9eafa93c38d23b64ad2fd4a))
+* **deps:** update danysk/build-check-deploy-gradle-action action to v2.0.1 ([7de8ec3](https://github.com/Protelis/Protelis-Parser/commit/7de8ec321be516a5ebe173dfaa781e08502e0ef7))
+* **deps:** update danysk/build-check-deploy-gradle-action action to v2.0.2 ([17c7775](https://github.com/Protelis/Protelis-Parser/commit/17c7775bc7a23b4f0981a5ce8a237c38d4dbac8a))
+
+
+### Dependency updates
+
+* **deps:** update dependency org.apache.maven.plugins:maven-clean-plugin to v3.2.0 ([c598466](https://github.com/Protelis/Protelis-Parser/commit/c5984667db152b8a062a58bf884b6655df4de5a5))
+* **deps:** update dependency org.apache.maven.plugins:maven-javadoc-plugin to v3.4.0 ([d0ea008](https://github.com/Protelis/Protelis-Parser/commit/d0ea00859ec62a2c045ffcfb0091385ecd9b350d))
+* **deps:** update dependency org.eclipse.jetty:jetty-maven-plugin to v11.0.10 ([69c0a19](https://github.com/Protelis/Protelis-Parser/commit/69c0a193571a42dcd99a37d2e349c35e7b566a53))
+* **deps:** update dependency org.sonatype.plugins:nexus-staging-maven-plugin to v1.6.13 ([53ac032](https://github.com/Protelis/Protelis-Parser/commit/53ac0321335582c58dd2ea657905d718504c1f46))
+* **deps:** update dependency semantic-release-preconfigured-conventional-commits to v1.1.6 ([d53ad0e](https://github.com/Protelis/Protelis-Parser/commit/d53ad0e749628ff3d558313a78b51f223976a770))
+* **deps:** update dependency semantic-release-preconfigured-conventional-commits to v1.1.7 ([0ae20dc](https://github.com/Protelis/Protelis-Parser/commit/0ae20dc87c53abd4810e85d99b388d40428c6386))
+* **deps:** update dependency semantic-release-preconfigured-conventional-commits to v1.1.8 ([0380dc5](https://github.com/Protelis/Protelis-Parser/commit/0380dc5c2f8753e4a62e2ede4649d6c75fb4bf71))
+* **deps:** update node.js to 16.15 ([7e8b8ca](https://github.com/Protelis/Protelis-Parser/commit/7e8b8ca2fe1a380aa7481bd1e8dd58396dbec15c))
+
 ### [10.2.13](https://github.com/Protelis/Protelis-Parser/compare/10.2.12...10.2.13) (2022-04-02)
 
 
