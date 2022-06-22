@@ -1,3 +1,20 @@
+## [10.2.15](https://github.com/Protelis/Protelis-Parser/compare/10.2.14...10.2.15) (2022-06-22)
+
+
+### Bug Fixes
+
+* **deps:** update dependency org.eclipse.jetty:jetty-annotations to v9.4.48.v20220622 ([2941ade](https://github.com/Protelis/Protelis-Parser/commit/2941ade54958ed33ccfb154620e7370437de1e12))
+
+
+### General maintenance
+
+* update version to 10.2.14 ([689447e](https://github.com/Protelis/Protelis-Parser/commit/689447e03888033df872bf6e5ace68dbaa7b743e))
+
+
+### Dependency updates
+
+* **deps:** update dependency org.eclipse.jetty:jetty-maven-plugin to v11.0.11 ([1addefc](https://github.com/Protelis/Protelis-Parser/commit/1addefcbc3693c55869c7ca0e1b8d6c0657619e0))
+
 ## [10.2.14](https://github.com/Protelis/Protelis-Parser/compare/10.2.13...10.2.14) (2022-06-20)
 
 
