@@ -40,7 +40,7 @@ jobs:
       - name: Remove unsupported flag on Java 8
         if: matrix.jvm_version == 8
         run: rm .mvn/jvm.config
-      - uses: DanySK/build-check-deploy-gradle-action@2.1.6
+      - uses: DanySK/build-check-deploy-gradle-action@2.1.7
         with:
           build-command: |
             mvn package -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -q
