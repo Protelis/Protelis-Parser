@@ -16,8 +16,8 @@ Parser for Protelis, the practical aggregate programming language
 
 ### Coverage
 ![Codacy coverage](https://img.shields.io/codacy/coverage/b27fc7ed29a944e1a17b148e58435d86)
-![Code Climate coverage](https://img.shields.io/codeclimate/coverage/Protelis/Protelis-parser)
-![Codecov](https://img.shields.io/codecov/c/github/Protelis/Protelis-parser)
+![Code Climate coverage](https://img.shields.io/codeclimate/coverage/Protelis/Protelis-Parser)
+![Codecov](https://img.shields.io/codecov/c/github/Protelis/Protelis-Parser)
 *[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Protelis_Protelis-Parser&metric=coverage)](https://sonarcloud.io/dashboard?id=Protelis_Protelis-Parser)*
 
 ### Quality
@@ -38,12 +38,12 @@ Parser for Protelis, the practical aggregate programming language
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=Protelis_Protelis-Parser&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=Protelis_Protelis-Parser)
 
 ### Progress
-![GitHub issues](https://img.shields.io/github/issues/Protelis/Protelis)
-![GitHub closed issues](https://img.shields.io/github/issues-closed/Protelis/Protelis)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/Protelis/Protelis)
-![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/Protelis/Protelis)
+![GitHub issues](https://img.shields.io/github/issues/Protelis/Protelis-Parser)
+![GitHub closed issues](https://img.shields.io/github/issues-closed/Protelis/Protelis-Parser)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/Protelis/Protelis-Parser)
+![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/Protelis/Protelis-Parser)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/y/Protelis/Protelis-parser)
-![GitHub commits since latest release (by date)](https://img.shields.io/github/commits-since/Protelis/Protelis-parser/latest/develop)
+![GitHub commits since latest release (by date)](https://img.shields.io/github/commits-since/Protelis/Protelis-Parser/latest/master)
 ![GitHub last commit](https://img.shields.io/github/last-commit/Protelis/Protelis-parser)
 
 ## What is it
