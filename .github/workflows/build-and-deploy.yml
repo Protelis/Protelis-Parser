@@ -10,9 +10,6 @@ jobs:
         os: [windows, macos, ubuntu]
         jvm_version: [8, 11, 17]
         distribution: [temurin]
-        # include:
-        #   - jvm_version: 8
-        #     distribution: 
     concurrency:
       group: ${{ github.workflow }}-build-${{ matrix.os }}-${{ matrix.jvm_version }}-${{ github.event.number || github.ref }}
     runs-on: ${{ matrix.os }}-latest
