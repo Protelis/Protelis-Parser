@@ -16,9 +16,6 @@ jobs:
     concurrency:
       group: ${{ github.workflow }}-build-${{ matrix.os }}-${{ matrix.jvm_version }}-${{ github.event.number || github.ref }}
     runs-on: ${{ matrix.os }}-latest
-    if: >-
-      matrix.jvm_version < 17 && matrix.distribution == 'adopt'
-      ||  matrix.jvm_version >= 17 && matrix.distribution == 'temurin'
     env:
       JAVA_VERSION: ${{ matrix.jvm_version }}
       OS: ${{ matrix.os }}
