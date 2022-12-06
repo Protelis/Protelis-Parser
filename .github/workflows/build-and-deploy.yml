@@ -1,11 +1,6 @@
-name: CI
+name: CI/CD Process
 on:
-  push:
-    branches-ignore:
-      - 'autodelivery**'
-      - 'bump-**'
-      - 'renovate/**'
-  pull_request:
+  workflow_call:
   workflow_dispatch:
 
 jobs:
@@ -13,11 +8,14 @@ jobs:
     strategy:
       matrix:
         os: [windows, macos, ubuntu]
-        jvm_version: [8, 11, 17]
-        distribution: [adopt]
+        jvm_version: [8, 11, 17, 19]
+        distribution: [adopt, temurin]
     concurrency:
       group: ${{ github.workflow }}-build-${{ matrix.os }}-${{ matrix.jvm_version }}-${{ github.event.number || github.ref }}
     runs-on: ${{ matrix.os }}-latest
+    if: >-
+      matrix.jvm_version < 17 && matrix.distribution == 'adopt'
+      ||  matrix.jvm_version >= 17 && matrix.distribution == 'temurin'
     env:
       JAVA_VERSION: ${{ matrix.jvm_version }}
       OS: ${{ matrix.os }}
@@ -28,6 +26,23 @@ jobs:
         uses: danysk/action-checkout@0.2.3
         with:
           token: ${{ secrets.DEPLOYMENT_TOKEN }}
+      - name: Compute the version of Maven
+        id: maven
+        shell: bash
+        run: |
+          # Idea: the regex matcher of Renovate keeps this string up to date automatically
+          # The version is extracted and used to access the correct version of the scripts
+          USES=$(cat <<TRICK_RENOVATE
+          - uses: apache/maven@3.8.6
+          TRICK_RENOVATE
+          )
+          echo "Scripts update line: \"$USES\""
+          echo "Computed version: \"${USES#*@v}\""
+          echo "{version}={${USES#*@v}}" >> $GITHUB_OUTPUT
+      - name: Set up Maven
+        uses: stCarolas/setup-maven@v4.5
+        with:
+          maven-version: ${{ steps.maven.outputs.version }}
       - name: Checkout the update site
         if: matrix.jvm_version == 8 && matrix.os == 'ubuntu'
         uses: actions/checkout@v3.1.0
@@ -53,9 +68,16 @@ jobs:
             mvn deploy nexus-staging:drop -B -Dmaven.test.skip=true -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -q
             npm install
             npx semantic-release
+          java-distribution: ${{ matrix.distribution }}
           java-version: ${{ matrix.jvm_version }}
           should-run-codecov: false
-          should-deploy: ${{ matrix.jvm_version == 8 && matrix.os == 'ubuntu' }}
+          should-deploy: >-
+            ${{
+              matrix.jvm_version == 8
+              && matrix.os == 'ubuntu'
+              && !github.event.repository.fork
+              && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
+            }}
           should-validate-wrapper: false
           github-token: ${{ secrets.DEPLOYMENT_TOKEN }}
           maven-central-password: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
