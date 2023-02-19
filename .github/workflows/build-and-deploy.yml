@@ -50,7 +50,7 @@ jobs:
         with:
           node-version: ${{ steps.node-version.outputs.version }}
       - name: Checkout the update site
-        if: matrix.jvm_version == 8 && matrix.os == 'ubuntu'
+        if: matrix.jvm_version == 11 && contains('Linux', runner.os)
         uses: actions/checkout@v3.3.0
         with:
           path: update-site
