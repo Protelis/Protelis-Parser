@@ -3,7 +3,7 @@
 <plugin>
 	<extension point="org.eclipse.emf.ecore.generated_package">
 		<package 
-			uri = "http://protelis.org"
+			uri = "https://protelis.github.io/"
 			class = "org.protelis.parser.protelis.ProtelisPackage"
 			genModel = "model/generated/Protelis.genmodel" />
 	</extension>
