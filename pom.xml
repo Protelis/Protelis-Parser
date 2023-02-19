@@ -7,7 +7,7 @@
 
 	<properties>
 		<xtextVersion>2.26.0</xtextVersion>
-		<mwe2Version>2.12.2</mwe2Version>
+		<mwe2Version>2.14.0</mwe2Version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
