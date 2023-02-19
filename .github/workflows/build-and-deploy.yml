@@ -40,6 +40,15 @@ jobs:
         uses: stCarolas/setup-maven@v4.5
         with:
           maven-version: ${{ steps.maven.outputs.version }}
+      - name: Find the version of Node from package.json
+        if: matrix.jvm_version == 11 && contains('Linux', runner.os)
+        id: node-version
+        run: echo "version=$(jq -r .engines.node package.json)" >> $GITHUB_OUTPUT
+      - name: Install Node
+        if: matrix.jvm_version == 11 && contains('Linux', runner.os)
+        uses: actions/setup-node@v3.6.0
+        with:
+          node-version: ${{ steps.node-version.outputs.version }}
       - name: Checkout the update site
         if: matrix.jvm_version == 8 && matrix.os == 'ubuntu'
         uses: actions/checkout@v3.3.0
