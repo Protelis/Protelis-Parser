@@ -4,7 +4,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: protelis.parser
 Bundle-Vendor: Alma Mater Studiorum Università di Bologna
 Bundle-Version: 10.2.15
-Bundle-SymbolicName: protelis.parser; singleton:=true
+Bundle-SymbolicName: protelis.parser;singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.xtext,
  org.eclipse.xtext.xbase,
@@ -12,21 +12,21 @@ Require-Bundle: org.eclipse.xtext,
  org.eclipse.emf.ecore,
  org.eclipse.xtext.common.types,
  org.eclipse.xtext.xbase.lib;bundle-version="2.14.0",
+ org.objectweb.asm;bundle-version="[9.4.0,9.5.0)";resolution:=optional,
  org.eclipse.xtext.util,
  org.eclipse.emf.common,
  org.antlr.runtime;bundle-version="[3.2.0,3.2.1)",
- org.objectweb.asm;bundle-version="[7.2.0,10.0.0)";resolution:=optional,
  org.eclipse.xtend.lib;bundle-version="2.14.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: org.protelis.parser,
- org.protelis.parser.protelis,
- org.protelis.parser.services,
- org.protelis.parser.validation,
- org.protelis.parser.generator,
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Export-Package: org.protelis.parser.generator,
  org.protelis.parser.protelis.util,
+ org.protelis.parser.validation,
+ org.protelis.parser,
+ org.protelis.parser.protelis,
  org.protelis.parser.scoping,
  org.protelis.parser.serializer,
  org.protelis.parser.parser.antlr,
  org.protelis.parser.parser.antlr.internal,
+ org.protelis.parser.services,
  org.protelis.parser.protelis.impl
 Import-Package: org.apache.log4j
