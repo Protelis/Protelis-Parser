@@ -1,3 +1,20 @@
+## [11.0.1](https://github.com/Protelis/Protelis-Parser/compare/11.0.0...11.0.1) (2023-02-19)
+
+
+### Bug Fixes
+
+* **release:** checkout the update site before attempting a deployment ([afa7473](https://github.com/Protelis/Protelis-Parser/commit/afa747365ff1791965b0a4cf7929d4866a8267b0))
+
+
+### General maintenance
+
+* update version to 11.0.0 ([6a8f516](https://github.com/Protelis/Protelis-Parser/commit/6a8f51647e324e5a70966e5a65e8fbfd7f967a50))
+
+
+### Documentation
+
+* fix project link in plugin.xml ([579c3a9](https://github.com/Protelis/Protelis-Parser/commit/579c3a9f06deece5e6b8f9c9b550fc3261259e8f))
+
 ## [11.0.0](https://github.com/Protelis/Protelis-Parser/compare/10.2.15...11.0.0) (2023-02-19)
 
 
