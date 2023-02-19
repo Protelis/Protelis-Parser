@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>org.protelis</groupId>
 		<artifactId>protelis.parser.parent</artifactId>
-		<version>10.2.15</version>
+		<version>11.0.0</version>
 	</parent>
 	<artifactId>protelis.parser.ui.tests</artifactId>
 	<packaging>eclipse-test-plugin</packaging>
