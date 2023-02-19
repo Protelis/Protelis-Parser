@@ -3,7 +3,7 @@ Automatic-Module-Name: protelis.parser
 Bundle-ManifestVersion: 2
 Bundle-Name: protelis.parser
 Bundle-Vendor: Alma Mater Studiorum Università di Bologna
-Bundle-Version: 11.0.0
+Bundle-Version: 11.0.1
 Bundle-SymbolicName: protelis.parser;singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.xtext,
