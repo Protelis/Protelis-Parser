@@ -58,7 +58,7 @@ jobs:
           persist-credentials: true
           repository: Protelis/update-site
           token: ${{ secrets.DEPLOYMENT_TOKEN }}
-      - uses: DanySK/build-check-deploy-gradle-action@2.1.25
+      - uses: DanySK/build-check-deploy-gradle-action@2.1.26
         with:
           build-command: |
             COMMAND="mvn package -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -q"
