@@ -51,7 +51,7 @@ jobs:
           node-version: ${{ steps.node-version.outputs.version }}
       - name: Checkout the update site
         if: matrix.jvm_version == 11 && contains('Linux', runner.os)
-        uses: actions/checkout@v3.5.0
+        uses: actions/checkout@v3.5.1
         with:
           path: update-site
           fetch-depth: 0
