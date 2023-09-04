@@ -21,7 +21,7 @@ jobs:
     steps:
       # Checkout the repository
       - name: Checkout
-        uses: danysk/action-checkout@0.2.11
+        uses: danysk/action-checkout@0.2.12
         with:
           token: ${{ secrets.DEPLOYMENT_TOKEN }}
       - name: Compute the version of Maven
