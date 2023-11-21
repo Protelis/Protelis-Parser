@@ -4,13 +4,27 @@ on:
   workflow_dispatch:
 
 jobs:
+  compute-java-range:
+    runs-on: ubuntu-22.04
+    outputs:
+      java-range: ${{ steps.range.outputs.java-range }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.1
+      - name: Compute range
+        id: range
+        run: .github/compute-java-range.rb >> "$GITHUB_OUTPUT"
+      - name: Show result
+        run: echo "java-range=${{ steps.range.outputs.java-range }}"
   build:
+    needs:
+      - compute-java-range
     strategy:
       fail-fast: false
       matrix:
-        os: [windows, macos, ubuntu]
-        jvm_version: [11, 17]
-        distribution: [temurin]
+        os: [windows-2022, macos-12, ubuntu-22.04]
+        jvm_version: ${{ fromJson(needs.compute-java-range.outputs.java-range) }}
+        distribution: [ temurin ]
     concurrency:
       group: ${{ github.workflow }}-build-${{ matrix.os }}-${{ matrix.jvm_version }}-${{ github.event.number || github.ref }}
     runs-on: ${{ matrix.os }}-latest
@@ -90,10 +104,12 @@ jobs:
           maven-central-password: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
           signing-key: ${{ secrets.SIGNING_KEY }}
           signing-password: ${{ secrets.SIGNING_PASSWORD }}
+
   success:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     needs:
       - build
+      - compute-java-range
     if: >-
       always() && (
         contains(join(needs.*.result, ','), 'failure')
