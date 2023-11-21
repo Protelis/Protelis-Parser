@@ -1,3 +1,36 @@
+## [11.0.3](https://github.com/Protelis/Protelis-Parser/compare/11.0.2...11.0.3) (2023-11-21)
+
+
+### Dependency updates
+
+* **core-deps:** update xtextversion to v2.33.0 ([8140731](https://github.com/Protelis/Protelis-Parser/commit/81407310f24307b737851cd86cbce76db77e3a9b))
+* **deps:** update dependency org.apache.maven.plugins:maven-clean-plugin to v3.3.2 ([09d0e4e](https://github.com/Protelis/Protelis-Parser/commit/09d0e4e6ef3890c96967a9a7d65cf393aac36a38))
+* **deps:** update dependency org.apache.maven.plugins:maven-javadoc-plugin to v3.6.2 ([68659ab](https://github.com/Protelis/Protelis-Parser/commit/68659ab52f4823f8e9b1d0867332222c074feaad))
+* **deps:** update dependency org.codehaus.mojo:exec-maven-plugin to v3.1.1 ([cacfee1](https://github.com/Protelis/Protelis-Parser/commit/cacfee1ee9e50781320512ae969c95a58c3d63e1))
+* **deps:** update dependency semantic-release-preconfigured-conventional-commits to v1.1.69 ([c748f75](https://github.com/Protelis/Protelis-Parser/commit/c748f757ababbabe69a4bcfd649e9718225a4d64))
+* **deps:** update dependency semantic-release-preconfigured-conventional-commits to v1.1.70 ([2efda5b](https://github.com/Protelis/Protelis-Parser/commit/2efda5bb296fa7912d791d93736708f6058cc28e))
+* **deps:** update dependency semantic-release-preconfigured-conventional-commits to v1.1.71 ([1867ac7](https://github.com/Protelis/Protelis-Parser/commit/1867ac7574e7c83122161a911dafa61610f0079e))
+* **deps:** update dependency semantic-release-preconfigured-conventional-commits to v1.1.72 ([3740750](https://github.com/Protelis/Protelis-Parser/commit/374075029c31e654566944d38e9f39c5d138ed0b))
+* **deps:** update dependency semantic-release-preconfigured-conventional-commits to v1.1.73 ([e453713](https://github.com/Protelis/Protelis-Parser/commit/e4537135d50d1481f201a3380f85ab9059695b79))
+* **deps:** update dependency semantic-release-preconfigured-conventional-commits to v1.1.74 ([a538aa8](https://github.com/Protelis/Protelis-Parser/commit/a538aa8bd5aa135f96ea54cf234f3cb800b31ad5))
+* **deps:** update dependency semantic-release-preconfigured-conventional-commits to v1.1.75 ([abf97cf](https://github.com/Protelis/Protelis-Parser/commit/abf97cfd2a05321367f26f08a3f7410f1979e81a))
+* **deps:** update dependency semantic-release-preconfigured-conventional-commits to v1.1.76 ([5404b71](https://github.com/Protelis/Protelis-Parser/commit/5404b7188b96a60c7bc028ae62a1aa8c6130e0e5))
+* **deps:** update node.js to 20.9 ([9804cf7](https://github.com/Protelis/Protelis-Parser/commit/9804cf747041d8ea95f5b462f0c67db625785457))
+* **deps:** update node.js to v20 ([69288e9](https://github.com/Protelis/Protelis-Parser/commit/69288e975fac0a870581d0affb7efcb66cdde91a))
+
+
+### Build and continuous integration
+
+* **deps:** update actions/setup-node action to v3.8.2 ([213c958](https://github.com/Protelis/Protelis-Parser/commit/213c958d18c438279c146fb9a4ec3a9a6e3f720c))
+* **deps:** update actions/setup-node action to v4 ([39e2ccb](https://github.com/Protelis/Protelis-Parser/commit/39e2ccb2f69abdfc1a390a6b81674129a2df989d))
+* **deps:** update danysk/build-check-deploy-gradle-action action to v2.2.11 ([17352e6](https://github.com/Protelis/Protelis-Parser/commit/17352e69e8fdae0220d9db93c773ee3486f78d16))
+* **renovate:** try to match the package prefixes ([c4ae103](https://github.com/Protelis/Protelis-Parser/commit/c4ae10399ae8befa9913e5c349c02c88eb41eb7e))
+
+
+### General maintenance
+
+* update version to 11.0.2 ([35a94ba](https://github.com/Protelis/Protelis-Parser/commit/35a94ba98a4de0bf4a155550db7106e4ed8f7e2a))
+
 ## [11.0.2](https://github.com/Protelis/Protelis-Parser/compare/11.0.1...11.0.2) (2023-10-20)
 
 
