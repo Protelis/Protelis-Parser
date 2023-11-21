@@ -6,8 +6,8 @@
   "packageRules": [
     {
       "description": "Trigger a patch update on some dependencies",
-      "matchPackagePatterns": [
-        ".*xtext.*"
+      "matchPackagePrefixes": [
+        "org.eclipse.xte"
       ],
       "semanticCommitScope": "core-deps"
     }
