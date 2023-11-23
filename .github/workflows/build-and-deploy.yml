@@ -30,7 +30,7 @@ jobs:
         shell: bash
     concurrency:
       group: ${{ github.workflow }}-build-${{ matrix }}-${{ github.event.number || github.ref }}
-    runs-on: ${{ matrix.os }}-latest
+    runs-on: ${{ matrix.os }}
     env:
       JAVA_VERSION: ${{ matrix.jvm_version }}
       OS: ${{ matrix.os }}
