@@ -25,8 +25,11 @@ jobs:
         os: [windows-2022, macos-12, ubuntu-22.04]
         jvm_version: ${{ fromJson(needs.compute-java-range.outputs.java-range) }}
         distribution: [ temurin ]
+    defaults:
+      run:
+        shell: bash
     concurrency:
-      group: ${{ github.workflow }}-build-${{ matrix.os }}-${{ matrix.jvm_version }}-${{ github.event.number || github.ref }}
+      group: ${{ github.workflow }}-build-${{ matrix }}-${{ github.event.number || github.ref }}
     runs-on: ${{ matrix.os }}-latest
     env:
       JAVA_VERSION: ${{ matrix.jvm_version }}
@@ -34,6 +37,8 @@ jobs:
       TERM: dumb
     steps:
       # Checkout the repository
+      - name: Debug: print the concurrency group
+        run: echo "${{ github.workflow }}-build-${{ matrix }}-${{ github.event.number || github.ref }}"
       - name: Checkout
         uses: danysk/action-checkout@0.2.14
         with:
