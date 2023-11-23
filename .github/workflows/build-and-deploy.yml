@@ -36,9 +36,6 @@ jobs:
       OS: ${{ matrix.os }}
       TERM: dumb
     steps:
-      # Checkout the repository
-      - name: Debug print the concurrency group
-        run: echo "${{ github.workflow }}-build-${{ toJson(matrix) }}-${{ github.event.number || github.ref }}"
       - name: Checkout
         uses: danysk/action-checkout@0.2.14
         with:
