@@ -29,7 +29,7 @@ jobs:
       run:
         shell: bash
     concurrency:
-      group: ${{ github.workflow }}-build-${{ fromJson(matrix) }}-${{ github.event.number || github.ref }}
+      group: ${{ github.workflow }}-build-${{ toJson(matrix) }}-${{ github.event.number || github.ref }}
     runs-on: ${{ matrix.os }}
     env:
       JAVA_VERSION: ${{ matrix.jvm_version }}
@@ -38,7 +38,7 @@ jobs:
     steps:
       # Checkout the repository
       - name: Debug print the concurrency group
-        run: echo "${{ github.workflow }}-build-${{ fromJson(matrix) }}-${{ github.event.number || github.ref }}"
+        run: echo "${{ github.workflow }}-build-${{ toJson(matrix) }}-${{ github.event.number || github.ref }}"
       - name: Checkout
         uses: danysk/action-checkout@0.2.14
         with:
