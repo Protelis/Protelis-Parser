@@ -8,6 +8,7 @@ jobs:
     runs-on: ubuntu-22.04
     outputs:
       java-range: ${{ steps.range.outputs.java-range }}
+      min-java: ${{ steps.range.outputs.min-java }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4.1.1
@@ -22,7 +23,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-2022, macos-12, ubuntu-22.04]
+        os: [ windows-2022, macos-12, ubuntu-22.04 ]
         jvm_version: ${{ fromJson(needs.compute-java-range.outputs.java-range) }}
         distribution: [ temurin ]
     defaults:
@@ -58,16 +59,16 @@ jobs:
         with:
           maven-version: ${{ steps.maven.outputs.version }}
       - name: Find the version of Node from package.json
-        if: matrix.jvm_version == 11 && contains('Linux', runner.os)
+        if: matrix.jvm_version == ${{ needs.compute-java-range.outputs.min-java }} && contains('Linux', runner.os)
         id: node-version
         run: echo "version=$(jq -r .engines.node package.json)" >> $GITHUB_OUTPUT
       - name: Install Node
-        if: matrix.jvm_version == 11 && contains('Linux', runner.os)
-        uses: actions/setup-node@v4.0.0
+        if: matrix.jvm_version == ${{ needs.compute-java-range.outputs.min-java }} && contains('Linux', runner.os)
+        uses: actions/setup-node@v4.0.1
         with:
           node-version: ${{ steps.node-version.outputs.version }}
       - name: Checkout the update site
-        if: matrix.jvm_version == 11 && contains('Linux', runner.os)
+        if: matrix.jvm_version == ${{ needs.compute-java-range.outputs.min-java }} && contains('Linux', runner.os)
         uses: actions/checkout@v4.1.1
         with:
           path: update-site
@@ -75,7 +76,7 @@ jobs:
           persist-credentials: true
           repository: Protelis/update-site
           token: ${{ secrets.DEPLOYMENT_TOKEN }}
-      - uses: DanySK/build-check-deploy-gradle-action@2.2.11
+      - uses: DanySK/build-check-deploy-gradle-action@2.2.14
         with:
           build-command: |
             COMMAND="mvn package -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -q"
