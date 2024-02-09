@@ -76,20 +76,18 @@ jobs:
           persist-credentials: true
           repository: Protelis/update-site
           token: ${{ secrets.DEPLOYMENT_TOKEN }}
-      - uses: DanySK/build-check-deploy-gradle-action@2.2.20
+      - uses: DanySK/build-check-deploy-gradle-action@2.4.0
         with:
+          retries-on-failure: 3
           build-command: |
-            COMMAND="mvn package -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -q"
-            eval $COMMAND || eval $COMMAND || eval $COMMAND
+            mvn package -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -q
           check-command: |
-            COMMAND="mvn test -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -q"
-            eval $COMMAND || eval $COMMAND || eval $COMMAND
+            mvn test -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -q
           deploy-command: |
             echo '${{ secrets.SIGNING_KEY }}' > key.asc
             gpg --import key.asc
             rm key.asc
-            COMMAND="mvn deploy nexus-staging:drop -B -Dmaven.test.skip=true -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -q"
-            eval $COMMAND || eval $COMMAND || eval $COMMAND
+            mvn deploy nexus-staging:drop -B -Dmaven.test.skip=true -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -q
             npm install
             npx semantic-release
           java-distribution: ${{ matrix.distribution }}
