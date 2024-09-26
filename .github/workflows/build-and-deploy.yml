@@ -5,7 +5,7 @@ on:
 
 jobs:
   compute-java-range:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     outputs:
       java-range: ${{ steps.range.outputs.java-range }}
       min-java: ${{ steps.range.outputs.min-java }}
@@ -23,7 +23,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ windows-2022, macos-14, ubuntu-22.04 ]
+        os: [ windows-2022, macos-14, ubuntu-24.04 ]
         jvm_version: ${{ fromJson(needs.compute-java-range.outputs.java-range) }}
         distribution: [ temurin ]
     defaults:
@@ -108,7 +108,7 @@ jobs:
           signing-password: ${{ secrets.SIGNING_PASSWORD }}
 
   success:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     needs:
       - build
       - compute-java-range
