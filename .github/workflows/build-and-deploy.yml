@@ -76,7 +76,7 @@ jobs:
           persist-credentials: true
           repository: Protelis/update-site
           token: ${{ secrets.DEPLOYMENT_TOKEN }}
-      - uses: DanySK/build-check-deploy-gradle-action@3.5.10
+      - uses: DanySK/build-check-deploy-gradle-action@3.5.11
         with:
           retries-on-failure: 3
           build-command: |
