@@ -12,9 +12,6 @@ jobs:
         os: [ windows, macos, ubuntu ]
     runs-on: ${{ matrix.os }}-latest
     timeout-minutes: 120
-    concurrency:
-      group: ${{ github.workflow }}-build-${{ matrix.os }}-${{ github.event.number || github.ref }}
-      cancel-in-progress: false
     steps:
       - name: Checkout
         uses: DanySK/action-checkout@0.2.22
@@ -33,14 +30,15 @@ jobs:
               && !github.event.repository.fork
               && github.event_name != 'pull_request'
             }}
-          gradle-publish-secret: ${{ secrets.GRADLE_PUBLISH_SECRET }}
-          gradle-publish-key: ${{ secrets.GRADLE_PUBLISH_KEY }}
+          codecov-token: ${{ secrets.CODECOV_TOKEN }}
           maven-central-username: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
           maven-central-password: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
           signing-key: ${{ secrets.SIGNING_KEY }}
           signing-password: ${{ secrets.SIGNING_PASSWORD }}
   # Performs a release if needed
   release:
+    permissions:
+      contents: write
     needs:
       - build
     runs-on: ubuntu-latest
@@ -71,11 +69,7 @@ jobs:
             npx semantic-release
           should-run-codecov: false
           should-deploy: true
-          custom-secret-0: ${{ secrets.SURGE_LOGIN }}
-          custom-secret-1: ${{ secrets.SURGE_TOKEN }}
           github-token: ${{ secrets.DEPLOYMENT_TOKEN }}
-          gradle-publish-secret: ${{ secrets.GRADLE_PUBLISH_SECRET }}
-          gradle-publish-key: ${{ secrets.GRADLE_PUBLISH_KEY }}
           maven-central-username: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
           maven-central-password: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
           signing-key: ${{ secrets.SIGNING_KEY }}

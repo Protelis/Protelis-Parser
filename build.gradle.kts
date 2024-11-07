@@ -21,42 +21,20 @@ plugins{
 }
 
 val Provider<PluginDependency>.id get() = get().pluginId
-subprojects {
-	repositories {
-		mavenCentral()
-	}
 
-	extra["xtextVersion"] = "2.36.0"
-	apply(plugin = "java-library")
-	dependencies {
-		api(platform(rootProject.libs.xtext.dev.bom))
-	}
-	apply(plugin = "org.xtext.xtend")
-	apply(from = "${rootDir}/gradle/source-layout.gradle")
+allprojects {
+	group = "org.protelis"
 	with(rootProject.libs.plugins) {
 		apply(plugin = gitSemVer.id)
-		apply(plugin = publishOnCentral.id)
 		apply(plugin = multiJvmTesting.id)
+		apply(plugin = publishOnCentral.id)
 	}
 
-	group = "org.protelis"
-
-	val minJavaVersion = 11
-	multiJvm {
-		jvmVersionForCompilation.set(minJavaVersion)
-		maximumSupportedJvmVersion.set(latestJava)
-	}
-
-	configurations.configureEach {
-		exclude(group = "asm")
-	}
-
-	tasks.withType<Test>().configureEach {
-        failFast = true
-		useJUnitPlatform()
-		testLogging {
-			events(*TestLogEvent.values())
-			showStandardStreams = true
+	if (System.getenv("CI") == true.toString()) {
+		signing {
+			val signingKey: String? by project
+			val signingPassword: String? by project
+			useInMemoryPgpKeys(signingKey, signingPassword)
 		}
 	}
 
@@ -95,6 +73,40 @@ subprojects {
 		}
 	}
 
+}
+
+subprojects {
+	repositories {
+		mavenCentral()
+	}
+
+	extra["xtextVersion"] = rootProject.libs.versions.xtext.get()
+	apply(plugin = "java-library")
+	dependencies {
+		api(platform(rootProject.libs.xtext.dev.bom))
+	}
+	apply(plugin = "org.xtext.xtend")
+	apply(from = "${rootDir}/gradle/source-layout.gradle")
+
+	val minJavaVersion = 11
+	multiJvm {
+		jvmVersionForCompilation.set(minJavaVersion)
+		maximumSupportedJvmVersion.set(latestJava)
+	}
+
+	configurations.configureEach {
+		exclude(group = "asm")
+	}
+
+	tasks.withType<Test>().configureEach {
+        failFast = true
+		useJUnitPlatform()
+		testLogging {
+			events(*TestLogEvent.values())
+			showStandardStreams = true
+		}
+	}
+
 	tasks.withType<Javadoc>().configureEach {
 		isFailOnError = false
 		options {
@@ -106,14 +118,6 @@ subprojects {
 			encoding = "UTF-8"
 			val title = "Protelis ${project.version} Javadoc API"
 			windowTitle(title)
-		}
-	}
-
-	if (System.getenv("CI") == true.toString()) {
-		signing {
-			val signingKey: String? by project
-			val signingPassword: String? by project
-			useInMemoryPgpKeys(signingKey, signingPassword)
 		}
 	}
 }

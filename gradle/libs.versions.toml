@@ -1,8 +1,21 @@
 [versions]
-xtext = "2.29.0"
+xtext = "2.35.0"
 
 [libraries]
+xbase = { module = "org.eclipse.xtext:org.eclipse.xtext.xbase", version.ref = "xtext" }
+xtext = { module = "org.eclipse.xtext:org.eclipse.xtext", version.ref = "xtext" }
+xtext-common-types = { module = "org.eclipse.xtext:org.eclipse.xtext.common.types", version.ref = "xtext" }
 xtext-dev-bom = { module = "org.eclipse.xtext:xtext-dev-bom", version.ref = "xtext" }
+xtext-generator = { module = "org.eclipse.xtext:org.eclipse.xtext.xtext.generator", version.ref = "xtext" }
+xtext-ide = { module = "org.eclipse.xtext:org.eclipse.xtext.ide", version.ref = "xtext" }
+xtext-testing = { module = "org.eclipse.xtext:org.eclipse.xtext.testing", version.ref = "xtext" }
+xtext-xbase-ide = { module = "org.eclipse.xtext:org.eclipse.xtext.xbase.ide", version.ref = "xtext" }
+xtext-xbase-testing = { module = "org.eclipse.xtext:org.eclipse.xtext.xbase.testing", version.ref = "xtext" }
+
+[bundles]
+xtext-mwe2 = ["xtext-common-types", "xtext-generator"]
+xtext-testing = ["xtext-testing", "xtext-xbase-testing"]
+xtext-ide = ["xtext-ide", "xtext-xbase-ide"]
 
 [plugins]
 gitSemVer = "org.danilopianini.git-sensitive-semantic-versioning-gradle-plugin:3.1.7"
