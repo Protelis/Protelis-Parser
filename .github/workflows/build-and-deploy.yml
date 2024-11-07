@@ -4,114 +4,86 @@ on:
   workflow_dispatch:
 
 jobs:
-  compute-java-range:
-    runs-on: ubuntu-24.04
-    outputs:
-      java-range: ${{ steps.range.outputs.java-range }}
-      min-java: ${{ steps.range.outputs.min-java }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4.2.2
-      - name: Compute range
-        id: range
-        run: .github/compute-java-range.rb >> "$GITHUB_OUTPUT"
-      - name: Show result
-        run: echo "java-range=${{ steps.range.outputs.java-range }}"
+  # Runs all tests
   build:
-    needs:
-      - compute-java-range
     strategy:
       fail-fast: false
       matrix:
-        os: [ windows-2022, macos-14, ubuntu-24.04 ]
-        jvm_version: ${{ fromJson(needs.compute-java-range.outputs.java-range) }}
-        distribution: [ temurin ]
-    defaults:
-      run:
-        shell: bash
+        os: [ windows, macos, ubuntu ]
+    runs-on: ${{ matrix.os }}-latest
+    timeout-minutes: 120
     concurrency:
-      group: ${{ github.workflow }}-build-${{ toJson(matrix) }}-${{ github.event.number || github.ref }}
-    runs-on: ${{ matrix.os }}
-    env:
-      JAVA_VERSION: ${{ matrix.jvm_version }}
-      OS: ${{ matrix.os }}
-      TERM: dumb
+      group: ${{ github.workflow }}-build-${{ matrix.os }}-${{ github.event.number || github.ref }}
+      cancel-in-progress: true
     steps:
       - name: Checkout
-        uses: danysk/action-checkout@0.2.22
-        with:
-          token: ${{ secrets.DEPLOYMENT_TOKEN }}
-      - name: Compute the version of Maven
-        id: maven
-        shell: bash
-        run: |
-          # Idea: the regex matcher of Renovate keeps this string up to date automatically
-          # The version is extracted and used to access the correct version of the scripts
-          USES=$(cat <<TRICK_RENOVATE
-          - uses: apache/maven@3.8.6
-          TRICK_RENOVATE
-          )
-          echo "Scripts update line: \"$USES\""
-          echo "Computed version: \"${USES#*@v}\""
-          echo "{version}={${USES#*@v}}" >> $GITHUB_OUTPUT
-      - name: Set up Maven
-        uses: stCarolas/setup-maven@v4.5
-        with:
-          maven-version: ${{ steps.maven.outputs.version }}
-      - name: Find the version of Node from package.json
-        if: matrix.jvm_version == ${{ needs.compute-java-range.outputs.min-java }} && contains('Linux', runner.os)
-        id: node-version
-        run: echo "version=$(jq -r .engines.node package.json)" >> $GITHUB_OUTPUT
-      - name: Install Node
-        if: matrix.jvm_version == ${{ needs.compute-java-range.outputs.min-java }} && contains('Linux', runner.os)
-        uses: actions/setup-node@v4.1.0
-        with:
-          node-version: ${{ steps.node-version.outputs.version }}
-      - name: Checkout the update site
-        if: matrix.jvm_version == ${{ needs.compute-java-range.outputs.min-java }} && contains('Linux', runner.os)
-        uses: actions/checkout@v4.2.2
-        with:
-          path: update-site
-          fetch-depth: 0
-          persist-credentials: true
-          repository: Protelis/update-site
-          token: ${{ secrets.DEPLOYMENT_TOKEN }}
+        uses: DanySK/action-checkout@0.2.22
       - uses: DanySK/build-check-deploy-gradle-action@3.5.12
         with:
           retries-on-failure: 3
-          build-command: |
-            mvn package -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -q
-          check-command: |
-            mvn test -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -q
-          deploy-command: |
-            echo '${{ secrets.SIGNING_KEY }}' > key.asc
-            gpg --import key.asc
-            rm key.asc
-            mvn deploy nexus-staging:drop -B -Dmaven.test.skip=true -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -q
-            npm install
-            npx semantic-release
-          java-distribution: ${{ matrix.distribution }}
-          java-version: ${{ matrix.jvm_version }}
-          should-run-codecov: false
+          build-command: >-
+            ./gradlew build --parallel
+          deploy-command: >-
+            ./gradlew uploadAllPublicationsToMavenCentralNexus close drop --parallel
+          should-run-codecov: ${{ runner.os == 'Linux' }}
           should-deploy: >-
             ${{
-              matrix.jvm_version == 11
-              && matrix.os == 'ubuntu'
+              runner.os == 'Linux'
               && !github.event.repository.fork
-              && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
+              && github.event_name != 'pull_request'
             }}
-          should-validate-wrapper: false
-          github-token: ${{ secrets.DEPLOYMENT_TOKEN }}
+          gradle-publish-secret: ${{ secrets.GRADLE_PUBLISH_SECRET }}
+          gradle-publish-key: ${{ secrets.GRADLE_PUBLISH_KEY }}
           maven-central-username: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
           maven-central-password: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
           signing-key: ${{ secrets.SIGNING_KEY }}
           signing-password: ${{ secrets.SIGNING_PASSWORD }}
-
-  success:
-    runs-on: ubuntu-24.04
+  # Performs a release if needed
+  release:
     needs:
       - build
-      - compute-java-range
+    runs-on: ubuntu-latest
+    if: >-
+      !github.event.repository.fork
+      && github.event_name != 'pull_request'
+    concurrency:
+      group: release-${{ github.event.number || github.ref }}
+      cancel-in-progress: false
+    timeout-minutes: 120
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.2.2
+        with:
+          submodules: recursive
+          token: ${{ secrets.DEPLOYMENT_TOKEN }}
+      - name: Install Node
+        uses: actions/setup-node@v4.1.0
+        with:
+          node-version-file: package.json
+      - uses: DanySK/build-check-deploy-gradle-action@3.5.12
+        with:
+          retries-on-failure: 1
+          build-command: true
+          check-command: true
+          deploy-command: |
+            npm install
+            npx semantic-release
+          should-run-codecov: false
+          should-deploy: true
+          custom-secret-0: ${{ secrets.SURGE_LOGIN }}
+          custom-secret-1: ${{ secrets.SURGE_TOKEN }}
+          github-token: ${{ secrets.DEPLOYMENT_TOKEN }}
+          gradle-publish-secret: ${{ secrets.GRADLE_PUBLISH_SECRET }}
+          gradle-publish-key: ${{ secrets.GRADLE_PUBLISH_KEY }}
+          maven-central-username: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+          maven-central-password: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
+          signing-key: ${{ secrets.SIGNING_KEY }}
+          signing-password: ${{ secrets.SIGNING_PASSWORD }}
+  success:
+    runs-on: ubuntu-latest
+    needs:
+      - build
+      - release
     if: >-
       always() && (
         contains(join(needs.*.result, ','), 'failure')
