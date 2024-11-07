@@ -23,6 +23,7 @@ jobs:
           retries-on-failure: 3
           build-command: >-
             ./gradlew build --parallel
+          check-command: true
           deploy-command: >-
             ./gradlew uploadAllPublicationsToMavenCentralNexus close drop --parallel
           should-run-codecov: ${{ runner.os == 'Linux' }}
