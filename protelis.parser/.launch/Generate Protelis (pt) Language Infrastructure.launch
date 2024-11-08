@@ -1,18 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<launchConfiguration type="org.eclipse.emf.mwe2.launch.Mwe2LaunchConfigurationType">
-<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-<listEntry value="/protelis.parser"/>
+<launchConfiguration type="org.eclipse.buildship.core.launch.runconfiguration">
+<listAttribute key="arguments"/>
+<stringAttribute key="gradle_distribution" value="GRADLE_DISTRIBUTION(WRAPPER)"/>
+<listAttribute key="jvm_arguments"/>
+<booleanAttribute key="show_console_view" value="true"/>
+<booleanAttribute key="show_execution_view" value="true"/>
+<listAttribute key="tasks">
+<listEntry value="build"/>
 </listAttribute>
-<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
-<listEntry value="4"/>
-</listAttribute>
-<listAttribute key="org.eclipse.debug.ui.favoriteGroups">
-<listEntry value="org.eclipse.debug.ui.launchGroup.debug"/>
-<listEntry value="org.eclipse.debug.ui.launchGroup.run"/>
-</listAttribute>
-<stringAttribute key="org.eclipse.debug.core.ATTR_REFRESH_SCOPE" value="${working_set:&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#10;&lt;resources&gt;&#10;&lt;item path=&quot;/protelis.parser.parent&quot; type=&quot;4&quot;/&gt;&#10;&lt;item path=&quot;/protelis.parser&quot; type=&quot;4&quot;/&gt;&#10;&lt;item path=&quot;/protelis.parser.ide&quot; type=&quot;4&quot;/&gt;&#10;&lt;item path=&quot;/protelis.parser.ui&quot; type=&quot;4&quot;/&gt;&#10;&lt;item path=&quot;/protelis.parser.target&quot; type=&quot;4&quot;/&gt;&#10;&lt;item path=&quot;/protelis.parser.feature&quot; type=&quot;4&quot;/&gt;&#10;&lt;item path=&quot;/protelis.parser.repository&quot; type=&quot;4&quot;/&gt;&#10;&lt;item path=&quot;/protelis.parser.tests&quot; type=&quot;4&quot;/&gt;&#10;&lt;item path=&quot;/protelis.parser.ui.tests&quot; type=&quot;4&quot;/&gt;&#10;&lt;item path=&quot;/protelis.parser.tests&quot; type=&quot;4&quot;/&gt;&#10;&lt;item path=&quot;/protelis.parser.ui.tests&quot; type=&quot;4&quot;/&gt;&#10;;&lt;/resources&gt;}"/>
-<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.eclipse.emf.mwe2.launch.runtime.Mwe2Launcher"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="org.protelis.parser.GenerateProtelis"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="protelis.parser"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xmx512m"/>
+<stringAttribute key="org.eclipse.debug.core.ATTR_REFRESH_SCOPE" value="${working_set:&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#10;&lt;resources&gt;&#10;&lt;item path=&quot;/protelis.parser.parent&quot; type=&quot;4&quot;/&gt;&#10;&lt;item path=&quot;/protelis.parser&quot; type=&quot;4&quot;/&gt;&#10;&lt;item path=&quot;/protelis.parser.ide&quot; type=&quot;4&quot;/&gt;&#10;&lt;item path=&quot;/protelis.parser.web&quot; type=&quot;4&quot;/&gt;&#10;&lt;item path=&quot;/protelis.parser.tests&quot; type=&quot;4&quot;/&gt;&#10;;&lt;/resources&gt;}"/>
+<booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_START_ON_FIRST_THREAD" value="true"/>
+<stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="${workspace_loc:/protelis.parser}"/>
 </launchConfiguration>

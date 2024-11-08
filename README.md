@@ -60,14 +60,6 @@ This project is of use for Protelis developers willing to make changes to the la
 Issues for this project are tracked together with the [issues of the Protelis interpreter](https://github.com/Protelis/Protelis/issues).
 Please open bug reports and feature requests there.
 
-### Development process
-
-Create your own fork of this project,
-make changes, and open a pull request towards the `develop` branch of this project.
-To make sure that changes get accepted,
-please open a discussion first on the [Protelis issue tracker](https://github.com/Protelis/Protelis/issues),
-where the project maintainer may contribute.
-
 ### Importing the project
 
 Eclipse is probably the best IDE to develop this component,
@@ -78,40 +70,6 @@ as it relies on the Xtext infrastructure.
 * Clone the project
 * Import the project in Eclipse.
 
-#### Troubleshooting issues with the target platform
-
-Even though we provide a target definition that you can use You can use your own Eclipse as a target platform for developing the system,
-the standard target is enforced in continuous integration anyway.
-
-You can pick the target plaform of your like from within the Eclipse preferences:
-
-![image](https://user-images.githubusercontent.com/1991673/77746024-9803c300-701c-11ea-9e1b-bdfa45908677.png)
-
-### Generating the grammar from within Eclipse
-
-If you make a change to the `Protelis.xtext` file describing the language grammar and crossreferences,
-you need to re-generate the parsing and linking infrastructure.
-
-To do so, right click on the GenerateProtelis.mw2 file and run as MWE2 Workflow:
-
-![image](https://user-images.githubusercontent.com/1991673/77746344-152f3800-701d-11ea-81cf-461ea0c96fe2.png)
-
-### Launching a custom Eclipse IDE with the in-development plugin installed
-
-If you want to quickly test your changes within an Eclipse environment,
-you can do so by launching the `.ui` project as Eclipse Application:
-
-![image](https://user-images.githubusercontent.com/1991673/77746542-5a536a00-701d-11ea-9b13-746c0530adc1.png)
-
-A new Eclipse IDE will pop up with your changes installed. Now:
-2. In the new Eclipse application that launches and make a new Java project
-125
-3. Right click on the project and select: Configure > Add Xtext Nature
-126
-4. In the src folder, create a new file, named [something].pt (.pt means it is a Protelis file)
-127
-5. Write some Protelis code or hit Ctrl-space for autocompletion: you should be getting Protelis syntax evaluation and coloring
-
 ### Writing tests
 
 All new features or bug fixes should get appropriately tested.
@@ -121,15 +79,23 @@ inside the `ProtelisParsingTest.xtend` file.
 
 The structure should be clear, and support is provided to verify that pieces of code emit warnings, throw errors, or parse correctly.
 
+### Build with Gradle
+
+The project is built with Gradle:
+* On Unix, run `./gradlew build --parallel`
+* On Windows, run `gradlew.bat build --parallel`
+
 ### Co-develop Protelis DSL and Protelis VM
 
 In order to co-develop on the Protelis DSL and VM simultaneously, you will need to leverage the local Maven repository.
 Once the changes in the parser are satisfactory, proceed as follows:
-0. (optional but recommended) customize the project version. To do so, search project-wide in Eclipse for the current version, and replace it in `pom.xml` and `MANIFEST.MF` files with one of your like;
-0. pull up a terminal and run `mvn clean install` (you must have Apache Maven installed)
+1. In the main `build.gradle.kts` file, enable publishing on the local Maven repository by adding `mavenLocal()`
+    to the `repositories` block found inside `subprojects`;
+0. pull up a terminal and run `./gradlew publishJavaOnMavenLocal`;
 0. open the Protelis interpreter project in a separate IDE;
-0. change the `build.gradle.kts` file of the interpreter project by adding, inside the `repositories` block, a call to the `mavenLocal()` method as the first entry of the block;
-0. in the `versions.properties` file of the interpreter project, change the parser version to the one you picked for your modified parser;
+0. change the `build.gradle.kts` file of the interpreter project by adding,
+    inside the `repositories` block, a call to the `mavenLocal()` method *as the first entry of the block*;
+0. in the `gradle/libs.versions.toml` file of the interpreter project,
+    change the parser version to the one you picked for your modified parser;
 0. tell your IDE of choice for the interpreter to refresh the Gradle project import;
 0. you should now be working with your custom parser!
-

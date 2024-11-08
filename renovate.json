@@ -3,13 +3,14 @@
   "extends": [
     "github>DanySK/renovate-config"
   ],
+  "includeForks": true,
   "packageRules": [
     {
-      "description": "Trigger a patch update on some dependencies",
-      "matchPackagePrefixes": [
-        "org.eclipse.xte"
+      "description": "Trigger a minor update on some dependencies",
+      "matchDepNames": [
+        "org.eclipse.xtext**"
       ],
-      "semanticCommitScope": "core-deps"
+      "semanticCommitScope": "api-deps"
     }
   ]
 }
