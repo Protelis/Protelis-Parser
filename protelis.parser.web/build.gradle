@@ -11,7 +11,7 @@ dependencies {
 	api "org.webjars:jquery:3.7.1"
 	api "org.webjars:ace:1.23.4"
 	providedCompile "org.eclipse.jetty:jetty-annotations:11.0.24"
-	providedCompile "org.slf4j:slf4j-simple:2.0.5"
+	providedCompile "org.slf4j:slf4j-simple:2.0.16"
 }
 task jettyRun(type:JavaExec) {
 	dependsOn(sourceSets.main.runtimeClasspath)
