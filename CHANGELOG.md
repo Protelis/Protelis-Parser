@@ -1,3 +1,14 @@
+## [12.1.0](https://github.com/Protelis/Protelis-Parser/compare/12.0.0...12.1.0) (2024-11-09)
+
+### Dependency updates
+
+* **api-deps:** update xtext to v2.36.0 ([#490](https://github.com/Protelis/Protelis-Parser/issues/490)) ([28f5dbd](https://github.com/Protelis/Protelis-Parser/commit/28f5dbd5c15c0ebc60db5bd9c7f1b02980940725))
+* **deps:** update dependency org.eclipse.jetty:jetty-annotations to v11.0.24 ([#487](https://github.com/Protelis/Protelis-Parser/issues/487)) ([5c54be4](https://github.com/Protelis/Protelis-Parser/commit/5c54be43594e2fd0007e32eac12df9ff51960a74))
+* **deps:** update dependency org.slf4j:slf4j-simple to v2.0.16 ([#488](https://github.com/Protelis/Protelis-Parser/issues/488)) ([bd63ade](https://github.com/Protelis/Protelis-Parser/commit/bd63ade09fdba59b2693d87c4ccc5a2369533c59))
+* **deps:** update dependency org.webjars:ace to v1.23.4 ([#491](https://github.com/Protelis/Protelis-Parser/issues/491)) ([864e8e2](https://github.com/Protelis/Protelis-Parser/commit/864e8e24851449135480c8c5ce384c58477ce849))
+* **deps:** update dependency org.webjars:jquery to v3.7.1 ([#492](https://github.com/Protelis/Protelis-Parser/issues/492)) ([61c2738](https://github.com/Protelis/Protelis-Parser/commit/61c2738800a60be9eab92c4f5ac411deafb21aa8))
+* **deps:** update plugin multijvmtesting to v1.3.0 ([#495](https://github.com/Protelis/Protelis-Parser/issues/495)) ([0d0c489](https://github.com/Protelis/Protelis-Parser/commit/0d0c4899471818f461238504be137428b5ecdc7e))
+
 ## [12.0.0](https://github.com/Protelis/Protelis-Parser/compare/11.0.3...12.0.0) (2024-11-08)
 
 ### ⚠ BREAKING CHANGES
