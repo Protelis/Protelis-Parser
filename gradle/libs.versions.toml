@@ -2,20 +2,36 @@
 xtext = "2.36.0"
 
 [libraries]
+ace = "org.webjars:ace:1.23.4"
+jetty-annotations = "org.eclipse.jetty:jetty-annotations:11.0.24"
+jquery = "org.webjars:jquery:3.7.1"
+requirejs = "org.webjars:requirejs:2.3.7"
+slf4j-simple = "org.slf4j:slf4j-simple:2.0.16"
 xbase = { module = "org.eclipse.xtext:org.eclipse.xtext.xbase", version.ref = "xtext" }
+xtend-lib = { module = "org.eclipse.xtend:org.eclipse.xtend.lib", version.ref = "xtext" }
 xtext = { module = "org.eclipse.xtext:org.eclipse.xtext", version.ref = "xtext" }
 xtext-common-types = { module = "org.eclipse.xtext:org.eclipse.xtext.common.types", version.ref = "xtext" }
 xtext-dev-bom = { module = "org.eclipse.xtext:xtext-dev-bom", version.ref = "xtext" }
 xtext-generator = { module = "org.eclipse.xtext:org.eclipse.xtext.xtext.generator", version.ref = "xtext" }
 xtext-ide = { module = "org.eclipse.xtext:org.eclipse.xtext.ide", version.ref = "xtext" }
 xtext-testing = { module = "org.eclipse.xtext:org.eclipse.xtext.testing", version.ref = "xtext" }
+xtext-web-servlet = { module = "org.eclipse.xtext:org.eclipse.xtext.web.servlet", version.ref = "xtext" }
 xtext-xbase-ide = { module = "org.eclipse.xtext:org.eclipse.xtext.xbase.ide", version.ref = "xtext" }
 xtext-xbase-testing = { module = "org.eclipse.xtext:org.eclipse.xtext.xbase.testing", version.ref = "xtext" }
+xtext-xbase-web = { module = "org.eclipse.xtext:org.eclipse.xtext.xbase.web", version.ref = "xtext" }
 
 [bundles]
 xtext-mwe2 = ["xtext-common-types", "xtext-generator"]
 xtext-testing = ["xtext-testing", "xtext-xbase-testing"]
 xtext-ide = ["xtext-ide", "xtext-xbase-ide"]
+xtext-web = [
+    "ace",
+    "jquery",
+    "requirejs",
+    "xtend-lib",
+    "xtext-web-servlet",
+    "xtext-xbase-web",
+]
 
 [plugins]
 gitSemVer = "org.danilopianini.git-sensitive-semantic-versioning-gradle-plugin:3.1.7"
