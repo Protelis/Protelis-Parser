@@ -1,3 +1,21 @@
+## [12.1.1](https://github.com/Protelis/Protelis-Parser/compare/12.1.0...12.1.1) (2024-11-11)
+
+### Dependency updates
+
+* **deps:** update dependency gradle to v8.11 ([#496](https://github.com/Protelis/Protelis-Parser/issues/496)) ([082f83f](https://github.com/Protelis/Protelis-Parser/commit/082f83f7c3919a92db4030daea0f9e6f992d8a98))
+
+### Bug Fixes
+
+* **web:** add lang attribute to index.html ([fbca0bb](https://github.com/Protelis/Protelis-Parser/commit/fbca0bb0b9ec47606c9c1b6fbaa428dbc85c5a73))
+* **web:** Insert a `<!DOCTYPE>` declaration ([217ef3d](https://github.com/Protelis/Protelis-Parser/commit/217ef3ddae5a5dbc22d1fb5abb3027dfb4875ac1))
+* **web:** publish the war on github ([cd91276](https://github.com/Protelis/Protelis-Parser/commit/cd912768e899fbfeacd8d8001a4cc85712a54b87))
+
+### Build and continuous integration
+
+* configure mergify ([5d444d0](https://github.com/Protelis/Protelis-Parser/commit/5d444d0a9be1f6fa25a0ec4672730bd8474cfa44))
+* **parser:** group dependencies by their destination ([b94bef8](https://github.com/Protelis/Protelis-Parser/commit/b94bef83af7da8daf64e240a7f1ca24d01444f4a))
+* switch protelis.parser.web build file to Kotlin ([7d16ca0](https://github.com/Protelis/Protelis-Parser/commit/7d16ca0d47453bd23c12425b646dfb97d06b90be))
+
 ## [12.1.0](https://github.com/Protelis/Protelis-Parser/compare/12.0.0...12.1.0) (2024-11-09)
 
 ### Dependency updates
