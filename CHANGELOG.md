@@ -1,3 +1,26 @@
+## [12.2.0](https://github.com/Protelis/Protelis-Parser/compare/12.1.1...12.2.0) (2024-11-20)
+
+### Dependency updates
+
+* **api-deps:** update xtext to v2.37.0 ([#511](https://github.com/Protelis/Protelis-Parser/issues/511)) ([304a5cf](https://github.com/Protelis/Protelis-Parser/commit/304a5cf9c14f7324f3bfa94f3524b957d2d69836))
+* **deps:** update dependency semantic-release-preconfigured-conventional-commits to v1.1.115 ([#497](https://github.com/Protelis/Protelis-Parser/issues/497)) ([d7b966a](https://github.com/Protelis/Protelis-Parser/commit/d7b966ad55052d1f2dd04880a548108f45649aa3))
+* **deps:** update plugin com.gradle.develocity to v3.18.2 ([#499](https://github.com/Protelis/Protelis-Parser/issues/499)) ([8fd317b](https://github.com/Protelis/Protelis-Parser/commit/8fd317bf01550e4e803e19e45045da3c8515b3a7))
+* **deps:** update plugin kotlin-qa to v0.70.0 ([#504](https://github.com/Protelis/Protelis-Parser/issues/504)) ([e3c84a6](https://github.com/Protelis/Protelis-Parser/commit/e3c84a6d15478f906ba82ec11663367aa9026199))
+* **deps:** update plugin kotlin-qa to v0.70.1 ([#505](https://github.com/Protelis/Protelis-Parser/issues/505)) ([87b9fac](https://github.com/Protelis/Protelis-Parser/commit/87b9fac64156de36e1d090a9d4474b1b8a3d28fa))
+* **deps:** update plugin multijvmtesting to v1.3.1 ([#506](https://github.com/Protelis/Protelis-Parser/issues/506)) ([64bf1a0](https://github.com/Protelis/Protelis-Parser/commit/64bf1a09a409b0d315c684230a2fdac906caba86))
+* **deps:** update plugin org.danilopianini.gradle-pre-commit-git-hooks to v2.0.14 ([#508](https://github.com/Protelis/Protelis-Parser/issues/508)) ([96ffcc4](https://github.com/Protelis/Protelis-Parser/commit/96ffcc4361d7a3416c4837f1bcfcdeb6c4e56bbf))
+* **deps:** update plugin publishoncentral to v5.1.10 ([#507](https://github.com/Protelis/Protelis-Parser/issues/507)) ([be9f6ac](https://github.com/Protelis/Protelis-Parser/commit/be9f6acbf41a1e7dddbb48e2d8a476f93610fc8c))
+
+### Build and continuous integration
+
+* **deps:** update danysk/build-check-deploy-gradle-action action to v3.5.13 ([#498](https://github.com/Protelis/Protelis-Parser/issues/498)) ([fdcf410](https://github.com/Protelis/Protelis-Parser/commit/fdcf4109462d4eae05911182bf0949a828a28f6a))
+* **deps:** update danysk/build-check-deploy-gradle-action action to v3.5.14 ([#500](https://github.com/Protelis/Protelis-Parser/issues/500)) ([0cfdb51](https://github.com/Protelis/Protelis-Parser/commit/0cfdb5160031491b15b13941666657eb1a8554e8))
+* **deps:** update danysk/build-check-deploy-gradle-action action to v3.5.15 ([#501](https://github.com/Protelis/Protelis-Parser/issues/501)) ([892166d](https://github.com/Protelis/Protelis-Parser/commit/892166dbd8e531ed578ce92102492293ba5a1a1b))
+* **deps:** update danysk/build-check-deploy-gradle-action action to v3.5.16 ([#502](https://github.com/Protelis/Protelis-Parser/issues/502)) ([511d233](https://github.com/Protelis/Protelis-Parser/commit/511d233509db5ae9b012d35071bd33f75bd1552a))
+* **deps:** update danysk/build-check-deploy-gradle-action action to v3.5.17 ([#503](https://github.com/Protelis/Protelis-Parser/issues/503)) ([c355f18](https://github.com/Protelis/Protelis-Parser/commit/c355f1835936f2c9d96aafee499027d6ba27fe27))
+* **deps:** update danysk/build-check-deploy-gradle-action action to v3.5.18 ([#509](https://github.com/Protelis/Protelis-Parser/issues/509)) ([6631b44](https://github.com/Protelis/Protelis-Parser/commit/6631b44b993b4a73ccde415ce3e1ffffe9407039))
+* **deps:** update danysk/build-check-deploy-gradle-action action to v3.5.19 ([#510](https://github.com/Protelis/Protelis-Parser/issues/510)) ([6800016](https://github.com/Protelis/Protelis-Parser/commit/6800016f7ec9ea0b66ef9fa4063540f5b55d276d))
+
 ## [12.1.1](https://github.com/Protelis/Protelis-Parser/compare/12.1.0...12.1.1) (2024-11-11)
 
 ### Dependency updates
