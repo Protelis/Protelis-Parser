@@ -37,5 +37,5 @@ xtext-web = [
 gitSemVer = "org.danilopianini.git-sensitive-semantic-versioning-gradle-plugin:3.1.7"
 kotlin-qa = "org.danilopianini.gradle-kotlin-qa:0.75.0"
 multiJvmTesting = "org.danilopianini.multi-jvm-test-plugin:1.3.2"
-publishOnCentral = "org.danilopianini.publish-on-central:5.1.11"
+publishOnCentral = "org.danilopianini.publish-on-central:6.0.0"
 shadowJar = "com.github.johnrengelman.shadow:8.1.1"
