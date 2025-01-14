@@ -120,4 +120,8 @@ subprojects {
 			windowTitle(title)
 		}
 	}
+
+	tasks.sourcesJar {
+		duplicatesStrategy = DuplicatesStrategy.WARN
+	}
 }
