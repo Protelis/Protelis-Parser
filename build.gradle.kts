@@ -1,4 +1,3 @@
-import org.danilopianini.multijvmtesting.TestOnSpecificJvmVersion
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 buildscript {
@@ -88,7 +87,7 @@ subprojects {
 	apply(plugin = "org.xtext.xtend")
 	apply(from = "${rootDir}/gradle/source-layout.gradle")
 
-	val minJavaVersion = 11
+	val minJavaVersion = 17
 	multiJvm {
 		jvmVersionForCompilation.set(minJavaVersion)
 		maximumSupportedJvmVersion.set(latestJava)
