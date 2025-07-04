@@ -3,7 +3,7 @@ echo 'Creating shadowJar and protelisdoc...'
 ./gradlew protelisdoc shadowJar --parallel || ./gradlew shadowJar --parallel || exit 2
 echo '...assemblage done.'
 echo 'Releasing on Maven Central...'
-./gradlew uploadAll releaseStaging --parallel
+./gradlew publishAllPublicationsToProjectLocalRepository zipMavenCentralPortalPublication releaseMavenCentralPortalPublication || exit 1
 `
 import config from 'semantic-release-preconfigured-conventional-commits' with { type: "json" };
 config.plugins.push(

@@ -22,7 +22,10 @@ jobs:
             ./gradlew build --parallel
           check-command: true
           deploy-command: >-
-            ./gradlew uploadAllPublicationsToMavenCentralNexus closeStaging dropStagingRepositoryOnMavenCentral --parallel
+            ./gradlew
+            publishAllPublicationsToProjectLocalRepository
+            zipMavenCentralPortalPublication releaseMavenCentralPortalPublication
+            --dry-run
           should-run-codecov: ${{ runner.os == 'Linux' }}
           should-deploy: >-
             ${{
