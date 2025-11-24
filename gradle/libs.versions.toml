@@ -1,5 +1,5 @@
 [versions]
-xtext = "2.40.0"
+xtext = "2.41.0"
 
 [libraries]
 ace = "org.webjars:ace:1.23.4"
