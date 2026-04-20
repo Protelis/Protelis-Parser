@@ -7,6 +7,7 @@ dependencies {
 	api(project(":protelis.parser.ide"))
 	api(libs.bundles.xtext.web)
 	providedCompile(libs.jetty.annotations)
+	providedCompile(libs.jetty.webapp)
 	providedCompile(libs.slf4j.simple)
 }
 

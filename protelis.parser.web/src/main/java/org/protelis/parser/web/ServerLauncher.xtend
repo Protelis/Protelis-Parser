@@ -4,13 +4,13 @@
 package org.protelis.parser.web
 
 import java.net.InetSocketAddress
-import org.eclipse.jetty.annotations.AnnotationConfiguration
+import org.eclipse.jetty.ee10.annotations.AnnotationConfiguration
+import org.eclipse.jetty.ee10.webapp.MetaInfConfiguration
+import org.eclipse.jetty.ee10.webapp.WebAppConfiguration
+import org.eclipse.jetty.ee10.webapp.WebAppContext
+import org.eclipse.jetty.ee10.webapp.WebInfConfiguration
+import org.eclipse.jetty.ee10.webapp.WebXmlConfiguration
 import org.eclipse.jetty.server.Server
-import org.eclipse.jetty.webapp.MetaInfConfiguration
-import org.eclipse.jetty.webapp.WebAppConfiguration
-import org.eclipse.jetty.webapp.WebAppContext
-import org.eclipse.jetty.webapp.WebInfConfiguration
-import org.eclipse.jetty.webapp.WebXmlConfiguration
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -24,10 +24,8 @@ class ServerLauncher {
 	
 	def static void main(String[] args) {
 		val server = new Server(new InetSocketAddress('localhost', 8080))
-		server.handler = new WebAppContext => [
-			resourceBase = 'src/main/webapp'
+		server.handler = new WebAppContext('src/main/webapp', '/') => [
 			welcomeFiles = #["index.html"]
-			contextPath = "/"
 			configurations = #[
 				new AnnotationConfiguration,
 				new WebXmlConfiguration,
