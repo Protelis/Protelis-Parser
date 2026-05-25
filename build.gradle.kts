@@ -87,7 +87,7 @@ subprojects {
 	apply(plugin = "org.xtext.xtend")
 	apply(from = "${rootDir}/gradle/source-layout.gradle")
 
-	val minJavaVersion = 17
+	val minJavaVersion = 21
 	multiJvm {
 		jvmVersionForCompilation.set(minJavaVersion)
 		maximumSupportedJvmVersion.set(latestJava)
