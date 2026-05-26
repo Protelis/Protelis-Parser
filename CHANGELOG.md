@@ -1,3 +1,44 @@
+## [12.8.0](https://github.com/Protelis/Protelis-Parser/compare/12.7.1...12.8.0) (2026-05-26)
+
+### Dependency updates
+
+* **api-deps:** update xtext to v2.43.0 ([1f5a5c6](https://github.com/Protelis/Protelis-Parser/commit/1f5a5c6220b2f4bed18443a8b15b5c68a3ea8d8b))
+* **deps:** update dependency org.eclipse.jetty:jetty-annotations to v12.1.8 ([#896](https://github.com/Protelis/Protelis-Parser/issues/896)) ([2dd81b0](https://github.com/Protelis/Protelis-Parser/commit/2dd81b0dedbbed09a779fb82d432ab52389f8f89))
+* **deps:** update dependency org.slf4j:slf4j-simple to v2.0.18 ([#914](https://github.com/Protelis/Protelis-Parser/issues/914)) ([0c9ef0a](https://github.com/Protelis/Protelis-Parser/commit/0c9ef0a0f720fad0ee9c2975205e9d7367854284))
+* **deps:** update gradle to v9.5.0 ([#910](https://github.com/Protelis/Protelis-Parser/issues/910)) ([0c772cb](https://github.com/Protelis/Protelis-Parser/commit/0c772cb009d03b9dbd265a261ee87bd7b2456095))
+* **deps:** update gradle to v9.5.1 ([#911](https://github.com/Protelis/Protelis-Parser/issues/911)) ([80578fb](https://github.com/Protelis/Protelis-Parser/commit/80578fbc224d41175f29796899692563b28d56fc))
+* **deps:** update jetty monorepo to v12.1.9 ([#905](https://github.com/Protelis/Protelis-Parser/issues/905)) ([eb07344](https://github.com/Protelis/Protelis-Parser/commit/eb07344c52b424ba581fe5f299040c3773a9ea3e))
+* **deps:** update node.js to 24.16 ([#920](https://github.com/Protelis/Protelis-Parser/issues/920)) ([0a41e60](https://github.com/Protelis/Protelis-Parser/commit/0a41e606b37b956a386a79a224c8658b4c465212))
+* **deps:** update plugin com.gradle.develocity to v4.4.2 ([#924](https://github.com/Protelis/Protelis-Parser/issues/924)) ([60f672a](https://github.com/Protelis/Protelis-Parser/commit/60f672a64b2b86e544b280eff5b3ef996c5e6d39))
+* **deps:** update plugin gitsemver to v7.0.17 ([#900](https://github.com/Protelis/Protelis-Parser/issues/900)) ([b860e6b](https://github.com/Protelis/Protelis-Parser/commit/b860e6bf02ee029c2fef6cb38d1ff2497423dd64))
+* **deps:** update plugin gitsemver to v7.0.18 ([#906](https://github.com/Protelis/Protelis-Parser/issues/906)) ([b67db23](https://github.com/Protelis/Protelis-Parser/commit/b67db23354806897570a94caaa7e995adf12d849))
+* **deps:** update plugin gitsemver to v7.0.19 ([#912](https://github.com/Protelis/Protelis-Parser/issues/912)) ([1bd6e0d](https://github.com/Protelis/Protelis-Parser/commit/1bd6e0d8a90c114915c3728b1bf4b7f104fb5b0e))
+* **deps:** update plugin gitsemver to v7.0.20 ([#919](https://github.com/Protelis/Protelis-Parser/issues/919)) ([6a9f74e](https://github.com/Protelis/Protelis-Parser/commit/6a9f74e55fe6b17e74677db94311e21deedda8ef))
+* **deps:** update plugin kotlin-qa to v1.4.1 ([#897](https://github.com/Protelis/Protelis-Parser/issues/897)) ([2922c30](https://github.com/Protelis/Protelis-Parser/commit/2922c30644e11ee1b167c3c2ce450795b0d9dd8a))
+* **deps:** update plugin kotlin-qa to v1.5.0 ([#898](https://github.com/Protelis/Protelis-Parser/issues/898)) ([52232ff](https://github.com/Protelis/Protelis-Parser/commit/52232ff88f022a4ddaada26f1ed753d692c662bc))
+* **deps:** update plugin kotlin-qa to v1.5.1 ([#903](https://github.com/Protelis/Protelis-Parser/issues/903)) ([7b92173](https://github.com/Protelis/Protelis-Parser/commit/7b921738bd54205ba45a7faf0050cf550b02e41e))
+* **deps:** update plugin kotlin-qa to v1.6.1 ([#904](https://github.com/Protelis/Protelis-Parser/issues/904)) ([17041f8](https://github.com/Protelis/Protelis-Parser/commit/17041f8f0d97712fff36a6179c20625005a6db08))
+* **deps:** update plugin kotlin-qa to v1.6.2 ([#915](https://github.com/Protelis/Protelis-Parser/issues/915)) ([d30e0a3](https://github.com/Protelis/Protelis-Parser/commit/d30e0a387d6715c9bf051f639955cab6fa73e374))
+* **deps:** update plugin multijvmtesting to v4.3.5 ([#907](https://github.com/Protelis/Protelis-Parser/issues/907)) ([1aa8534](https://github.com/Protelis/Protelis-Parser/commit/1aa85347930c6acf57d2ddb8567d677096da0a38))
+* **deps:** update plugin multijvmtesting to v4.3.6 ([#916](https://github.com/Protelis/Protelis-Parser/issues/916)) ([e6fa331](https://github.com/Protelis/Protelis-Parser/commit/e6fa33191df0fded19f7ff704f73278a86fa42ba))
+* **deps:** update plugin multijvmtesting to v4.4.0 ([#922](https://github.com/Protelis/Protelis-Parser/issues/922)) ([301bd44](https://github.com/Protelis/Protelis-Parser/commit/301bd44f6018bbc3cc266580622ab90901bbc8c0))
+* **deps:** update plugin multijvmtesting to v4.5.0 ([#923](https://github.com/Protelis/Protelis-Parser/issues/923)) ([bf9a5fc](https://github.com/Protelis/Protelis-Parser/commit/bf9a5fcc0585a31965144cd4c1056ebf2225b003))
+* **deps:** update plugin org.danilopianini.gradle-pre-commit-git-hooks to v2.1.15 ([#901](https://github.com/Protelis/Protelis-Parser/issues/901)) ([7b3f90c](https://github.com/Protelis/Protelis-Parser/commit/7b3f90c0e8db6d5a45e3fc2c7832b90db47f8364))
+* **deps:** update plugin org.danilopianini.gradle-pre-commit-git-hooks to v2.1.16 ([#908](https://github.com/Protelis/Protelis-Parser/issues/908)) ([438fc32](https://github.com/Protelis/Protelis-Parser/commit/438fc320550c300be2654e5dbcb17839dcc2ed84))
+* **deps:** update plugin org.danilopianini.gradle-pre-commit-git-hooks to v2.1.17 ([#913](https://github.com/Protelis/Protelis-Parser/issues/913)) ([8c9a1e5](https://github.com/Protelis/Protelis-Parser/commit/8c9a1e5405c3abc1b7e442fce46ac3e5302e5cab))
+* **deps:** update plugin publishoncentral to v9.2.0 ([#899](https://github.com/Protelis/Protelis-Parser/issues/899)) ([16c48a4](https://github.com/Protelis/Protelis-Parser/commit/16c48a4cd493f959ab0bad5fb4a8e8269b51699c))
+* **deps:** update plugin publishoncentral to v9.2.1 ([#902](https://github.com/Protelis/Protelis-Parser/issues/902)) ([a20fe63](https://github.com/Protelis/Protelis-Parser/commit/a20fe633ad3f0d7b436108b4d7c9a39580df94f3))
+* **deps:** update plugin publishoncentral to v9.2.3 ([#909](https://github.com/Protelis/Protelis-Parser/issues/909)) ([094a2fd](https://github.com/Protelis/Protelis-Parser/commit/094a2fd992024548597de410f9ee5d46c89f6a83))
+* **deps:** update plugin publishoncentral to v9.2.4 ([#917](https://github.com/Protelis/Protelis-Parser/issues/917)) ([16db2b6](https://github.com/Protelis/Protelis-Parser/commit/16db2b660413e5766738d4295a0c2ae9bf03df81))
+
+### Bug Fixes
+
+* **parser:** update junitVersion from 5 to 6 in GenerateProtelis.mwe2 ([02cf381](https://github.com/Protelis/Protelis-Parser/commit/02cf381c50772f42b8433fea7159a707b3ea84ce))
+
+### Build and continuous integration
+
+* **deps:** update danysk/build-check-deploy-gradle-action action to v4.0.33 ([#918](https://github.com/Protelis/Protelis-Parser/issues/918)) ([6d1b2cd](https://github.com/Protelis/Protelis-Parser/commit/6d1b2cd3e4dfc1b0c49b93a6e7b265e5b86dbc29))
+
 ## [12.7.1](https://github.com/Protelis/Protelis-Parser/compare/12.7.0...12.7.1) (2026-04-20)
 
 ### Dependency updates
