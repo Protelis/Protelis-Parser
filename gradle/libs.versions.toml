@@ -3,8 +3,8 @@ xtext = "2.43.0"
 
 [libraries]
 ace = "org.webjars:ace:1.23.4"
-jetty-annotations = "org.eclipse.jetty.ee10:jetty-ee10-annotations:12.1.10"
-jetty-webapp = "org.eclipse.jetty.ee10:jetty-ee10-webapp:12.1.10"
+jetty-annotations = "org.eclipse.jetty.ee10:jetty-ee10-annotations:12.1.11"
+jetty-webapp = "org.eclipse.jetty.ee10:jetty-ee10-webapp:12.1.11"
 jquery = "org.webjars:jquery:4.0.0"
 requirejs = "org.webjars:requirejs:2.3.7"
 slf4j-simple = "org.slf4j:slf4j-simple:2.0.18"
