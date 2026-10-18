@@ -15,6 +15,9 @@ Workflow {
 				runtimeTest = {
 					enabled = true
 				}
+				genericIde = {
+					enabled = true
+				}
 				mavenLayout = true
 			}
 			code = {
