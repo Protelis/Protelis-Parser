@@ -7,7 +7,7 @@ dependencies {
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
-val mwe2 by configurations.creating {
+val mwe2 = configurations.create("mwe2") {
 	extendsFrom(configurations.compileClasspath.get())
 }
 
@@ -17,9 +17,9 @@ dependencies {
 	mwe2(libs.bundles.xtext.mwe2)
 }
 
-val generateXtextLanguage by tasks.registering(JavaExec::class) {
+val generateXtextLanguage = tasks.register<JavaExec>("generateXtextLanguage") {
 	mainClass.set("org.eclipse.emf.mwe2.launch.runtime.Mwe2Launcher")
-	classpath = configurations["mwe2"]
+	classpath = mwe2
 	inputs.file("src/main/java/org/protelis/parser/GenerateProtelis.mwe2")
 	inputs.file("src/main/java/org/protelis/parser/Protelis.xtext")
 	outputs.dir("src/main/xtext-gen")

@@ -11,7 +11,7 @@ dependencies {
 	providedCompile(libs.slf4j.simple)
 }
 
-val jettyRun by tasks.registering(JavaExec::class) {
+tasks.register<JavaExec>("jettyRun") {
 	val runtimeClasspath = sourceSets.main.map { it.runtimeClasspath }
 	dependsOn(runtimeClasspath)
 	classpath = runtimeClasspath.map { collection -> collection.filter { file -> file.exists() } }.get()
