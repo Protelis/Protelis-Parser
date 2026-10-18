@@ -13,7 +13,6 @@ plugins {
 
 include("protelis.parser")
 include("protelis.parser.ide")
-include("protelis.parser.web")
 
 rootProject.name = "protelis.parser.parent"
 

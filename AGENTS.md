@@ -9,7 +9,7 @@ These instructions apply to the whole repository.
 - Use the Gradle wrapper from the repository root. Do not substitute local Gradle installations or ad hoc build commands.
 - Run `./gradlew build --parallel` after code changes before finishing. This is the repository's canonical verification path and matches the configured pre-commit hook.
 - Keep working from the repository root unless a task clearly targets a single module.
-- Prefer small changes that preserve the current multi-module layout: `protelis.parser` for the grammar and parser, `protelis.parser.ide` for IDE/server support, and `protelis.parser.web` for the web packaging and demo server.
+- Prefer small changes that preserve the current multi-module layout: `protelis.parser` for the grammar and parser, and `protelis.parser.ide` for IDE/server support.
 
 ## Code Changes
 

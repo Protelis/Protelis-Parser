@@ -13,7 +13,6 @@ config.plugins.push(
     ["@semantic-release/github", {
         "assets": [
             { "path": "protelis.parser.ide/build/libs/*-all.jar" },
-            { "path": "protelis.parser.web/build/libs/*.war" },
         ]
     }],
     "@semantic-release/git",
