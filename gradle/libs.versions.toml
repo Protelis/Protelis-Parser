@@ -21,5 +21,5 @@ xtext-ide = ["xtext-ide", "xtext-xbase-ide"]
 gitSemVer = "org.danilopianini.git-sensitive-semantic-versioning-gradle-plugin:7.3.0"
 kotlin-qa = "org.danilopianini.gradle-kotlin-qa:1.10.2"
 multiJvmTesting = "org.danilopianini.multi-jvm-test-plugin:4.5.11"
-publishOnCentral = "org.danilopianini.publish-on-central:9.3.1"
+publishOnCentral = "org.danilopianini.publish-on-central:9.3.2"
 shadowJar = "com.gradleup.shadow:9.6.1"
